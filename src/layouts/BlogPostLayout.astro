@@ -1,0 +1,134 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import { generateOrganizationSchema } from '@/lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  author: string;
+  readingTime?: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, author, readingTime, tags = [] } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://kalarislabs.com').toString();
+
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: description,
+  datePublished: pubDate.toISOString(),
+  author: [{ '@type': 'Person', name: author }],
+  publisher: generateOrganizationSchema(),
+  mainEntityOfPage: canonicalURL,
+};
+---
+
+<BaseLayout title={title} description={description} article={true} schema={[generateOrganizationSchema(), blogSchema]}>
+  <Header />
+  <main id="main-content" class="reading-column post-main">
+    <div class="post-header">
+      <a href="/blogs" class="back-link">← Back to all posts</a>
+      <div class="post-meta">
+        <time datetime={pubDate.toISOString()} class="post-date">
+          {pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        {readingTime && <span class="meta-dot">·</span>}
+        {readingTime && <span class="reading-time">{readingTime}</span>}
+      </div>
+      <h1 class="post-title">{title}</h1>
+      <p class="post-author">By {author}</p>
+    </div>
+
+    <article class="post-body">
+      <slot />
+    </article>
+
+    {tags.length > 0 && (
+      <div class="post-tags">
+        <span class="tags-label">Tags:</span>
+        {tags.map((tag) => (
+          <span class="tag-pill">{tag}</span>
+        ))}
+      </div>
+    )}
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .post-main {
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    text-decoration: none;
+    margin-bottom: var(--space-6);
+  }
+
+  .back-link:hover {
+    color: var(--kalari-green);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    margin-bottom: var(--space-2);
+  }
+
+  .post-title {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.15;
+    margin-bottom: var(--space-3);
+  }
+
+  .post-author {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--muted-ink);
+    margin-bottom: var(--space-8);
+  }
+
+  .post-body {
+    font-size: var(--text-base);
+    line-height: 1.7;
+    margin-bottom: var(--space-12);
+  }
+
+  .post-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+  }
+
+  .tags-label {
+    color: var(--muted-ink);
+    font-weight: 600;
+  }
+
+  .tag-pill {
+    background: var(--paper-muted);
+    border: 1px solid var(--rule);
+    color: var(--muted-ink);
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+  }
+</style>

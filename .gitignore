@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Production build output
+dist/
+
+# Astro cache & generated types
+.astro/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Binaries & Executables
+*.exe
+
+# Local IDE & agent runtimes
+.kiro/
+.opencode/
+.gemini/
+.agent/
+.agents/
+.codex/
+.impeccable/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

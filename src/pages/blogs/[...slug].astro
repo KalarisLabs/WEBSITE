@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const blogs = await getCollection('blogs');
+  return blogs.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<PageLayout
+  title={`${post.data.title} | Kalaris Labs`}
+  description={post.data.description}
+  layoutType="reading"
+>
+  <div class="page-intro">
+    <a href="/blogs" class="back-link">← Back to blogs</a>
+    <span class="eyebrow">ARTICLE SCAFFOLDING</span>
+    <h1 class="page-title">{post.data.title}</h1>
+  </div>
+
+  <div class="wireframe-placeholder-canvas">
+    <div class="wireframe-placeholder-inner">
+      <span class="wireframe-tag">Article View Live</span>
+      <p class="wireframe-status">
+        Ready for reference screenshots & design specs to build out the blog article reader layout.
+      </p>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .page-intro {
+    margin-bottom: var(--space-6);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    text-decoration: none;
+    margin-bottom: var(--space-4);
+  }
+
+  .back-link:hover {
+    color: var(--kalari-green);
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    margin-bottom: var(--space-2);
+  }
+</style>

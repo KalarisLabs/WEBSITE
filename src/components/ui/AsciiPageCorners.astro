@@ -1,0 +1,237 @@
+---
+/**
+ * AsciiPageCorners.astro
+ * Renders technical ASCII corner brackets and telemetry in the four corners
+ * of the landing page, complete with subtle hover/interactive scramble micro-interactions.
+ */
+interface Props {
+  className?: string;
+}
+
+const { className = '' } = Astro.props;
+---
+
+<div class={`ascii-corners-container ${className}`} aria-hidden="true">
+  <!-- Top Left Corner -->
+  <div class="ascii-corner-item ascii-tl" data-ascii-text="KALARIS_LABS // 01">
+    <div class="ascii-row">
+      <span class="ascii-cross">+</span>
+      <span class="ascii-dash">──</span>
+      <span class="ascii-bracket">[</span>
+      <span class="ascii-text-content">KALARIS_LABS // 01</span>
+      <span class="ascii-bracket">]</span>
+    </div>
+    <div class="ascii-row-sub">
+      <span class="ascii-pipe">|</span>
+      <span class="ascii-subtext">SYS.CORE: ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- Top Right Corner -->
+  <div class="ascii-corner-item ascii-tr" data-ascii-text="12.97°N · 77.59°E">
+    <div class="ascii-row">
+      <span class="ascii-bracket">[</span>
+      <span class="ascii-text-content">12.97°N · 77.59°E</span>
+      <span class="ascii-bracket">]</span>
+      <span class="ascii-dash">──</span>
+      <span class="ascii-cross">+</span>
+    </div>
+    <div class="ascii-row-sub">
+      <span class="ascii-subtext">AST.TOPOLOGY: RIGOR</span>
+      <span class="ascii-pipe">|</span>
+    </div>
+  </div>
+
+  <!-- Bottom Left Corner -->
+  <div class="ascii-corner-item ascii-bl" data-ascii-text="REC.EVAL.LOOP">
+    <div class="ascii-row-sub">
+      <span class="ascii-pipe">|</span>
+      <span class="ascii-subtext">HARNESS: VERIFIED</span>
+    </div>
+    <div class="ascii-row">
+      <span class="ascii-cross">+</span>
+      <span class="ascii-dash">──</span>
+      <span class="ascii-bracket">[</span>
+      <span class="ascii-text-content">REC.EVAL.LOOP</span>
+      <span class="ascii-bracket">]</span>
+    </div>
+  </div>
+
+  <!-- Bottom Right Corner -->
+  <div class="ascii-corner-item ascii-br" data-ascii-text="SPEC // v2.6.LABS">
+    <div class="ascii-row-sub">
+      <span class="ascii-subtext">SOVEREIGN.AI: ON</span>
+      <span class="ascii-pipe">|</span>
+    </div>
+    <div class="ascii-row">
+      <span class="ascii-bracket">[</span>
+      <span class="ascii-text-content">SPEC // v2.6.LABS</span>
+      <span class="ascii-bracket">]</span>
+      <span class="ascii-dash">──</span>
+      <span class="ascii-cross">+</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Micro-interaction: Subtle ASCII character scramble on hover
+  const glyphs = '+*~x·░▒■_/#|:';
+  const cornerItems = document.querySelectorAll<HTMLElement>('.ascii-corner-item');
+
+  cornerItems.forEach((item) => {
+    const textSpan = item.querySelector<HTMLElement>('.ascii-text-content');
+    if (!textSpan) return;
+
+    const originalText = item.getAttribute('data-ascii-text') || textSpan.innerText;
+    let interval: number | null = null;
+
+    item.addEventListener('mouseenter', () => {
+      let iteration = 0;
+      if (interval) clearInterval(interval);
+
+      interval = window.setInterval(() => {
+        textSpan.innerText = originalText
+          .split('')
+          .map((char, index) => {
+            if (char === ' ' || char === '/' || char === '·') return char;
+            if (index < iteration) return originalText[index];
+            return glyphs[Math.floor(Math.random() * glyphs.length)];
+          })
+          .join('');
+
+        if (iteration >= originalText.length) {
+          if (interval) clearInterval(interval);
+          textSpan.innerText = originalText;
+        }
+        iteration += 1 / 2;
+      }, 25);
+    });
+
+    item.addEventListener('mouseleave', () => {
+      if (interval) clearInterval(interval);
+      textSpan.innerText = originalText;
+    });
+  });
+</script>
+
+<style>
+  .ascii-corners-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    overflow: hidden;
+  }
+
+  .ascii-corner-item {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.6875rem; /* 11px */
+    line-height: 1.35;
+    color: #9CA3AF;
+    pointer-events: auto;
+    cursor: default;
+    user-select: none;
+    transition: color 200ms ease, opacity 200ms ease;
+    opacity: 0.75;
+  }
+
+  .ascii-corner-item:hover {
+    color: var(--kalari-green, #1B4D3E);
+    opacity: 1;
+  }
+
+  .ascii-row {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    letter-spacing: 0.04em;
+  }
+
+  .ascii-row-sub {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.625rem; /* 10px */
+    color: #9CA3AF;
+    opacity: 0.75;
+    letter-spacing: 0.06em;
+  }
+
+  .ascii-corner-item:hover .ascii-row-sub {
+    color: #4B5563;
+    opacity: 1;
+  }
+
+  .ascii-cross {
+    font-weight: 700;
+    color: var(--kalari-green, #1B4D3E);
+    display: inline-block;
+    transition: transform 200ms ease;
+  }
+
+  .ascii-corner-item:hover .ascii-cross {
+    transform: scale(1.25);
+  }
+
+  .ascii-bracket {
+    color: #6B7280;
+    font-weight: 600;
+  }
+
+  .ascii-text-content {
+    font-weight: 500;
+  }
+
+  .ascii-subtext {
+    font-family: var(--font-mono, monospace);
+  }
+
+  .ascii-pipe {
+    color: #D1D5DB;
+  }
+
+  /* Absolute position in 4 corners of viewport */
+  .ascii-tl {
+    top: calc(var(--header-height, 4.5rem) + 0.85rem);
+    left: clamp(1rem, 2.5vw, 2.25rem);
+    text-align: left;
+  }
+
+  .ascii-tr {
+    top: calc(var(--header-height, 4.5rem) + 0.85rem);
+    right: clamp(1rem, 2.5vw, 2.25rem);
+    text-align: right;
+  }
+  .ascii-tr .ascii-row-sub {
+    justify-content: flex-end;
+  }
+
+  .ascii-bl {
+    bottom: 1.25rem;
+    left: clamp(1rem, 2.5vw, 2.25rem);
+    text-align: left;
+  }
+
+  .ascii-br {
+    bottom: 1.25rem;
+    right: clamp(1rem, 2.5vw, 2.25rem);
+    text-align: right;
+  }
+  .ascii-br .ascii-row-sub {
+    justify-content: flex-end;
+  }
+
+  /* Responsive handling */
+  @media (max-width: 1024px) {
+    .ascii-row-sub {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .ascii-corners-container {
+      display: none;
+    }
+  }
+</style>

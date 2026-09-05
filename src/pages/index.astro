@@ -1,0 +1,1088 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import PublicationCard from '@/components/ui/PublicationCard.astro';
+import AsciiPageCorners from '@/components/ui/AsciiPageCorners.astro';
+
+interface ResearchTopic {
+  title: string;
+  category: string;
+  date: string;
+  abstract: string;
+  href: string;
+  actionText: string;
+}
+
+const topics: ResearchTopic[] = [
+  {
+    title: 'Recursive Evaluation Harnesses for Scientific Discovery Agents',
+    category: 'Preprint',
+    date: 'Aug 2026',
+    abstract: 'An auditable closed-loop evaluation harness evaluating multi-step hypothesis generation, literature grounding, and error correction in computational biology.',
+    href: '/research/recursive-scientific-loops',
+    actionText: 'Read Preprint',
+  },
+  {
+    title: 'High-Fidelity Document Parsing for Complex Biochemical Corpora',
+    category: 'Research',
+    date: 'Sep 2026',
+    abstract: 'Deep multimodal parsing preserving inline LaTeX semantic ASTs, multi-page chemical tables, and figure sub-panels with grounded citation anchoring.',
+    href: '/research',
+    actionText: 'Explore Architecture',
+  },
+  {
+    title: 'Citation Topology & Contradiction Detection in Scientific Literature',
+    category: 'Whitepaper',
+    date: 'Oct 2026',
+    abstract: 'Ingestion graphs combining dense vector semantics with sparse exact match to identify retracted claims, conflicting findings, and grounded citation chains.',
+    href: '/research',
+    actionText: 'View Methodology',
+  },
+  {
+    title: 'Hardware-Aware Inference & Sovereign Local Lab Runtimes',
+    category: 'Systems',
+    date: 'Nov 2026',
+    abstract: 'Custom kernel optimizations for 256k+ context scientific preprints, air-gapped on-premise execution, and private institutional weights.',
+    href: '/support',
+    actionText: 'Read Systems Spec',
+  },
+  {
+    title: 'Announcing Kalaris Labs: Research Infrastructure for Scientific Discovery',
+    category: 'Essay',
+    date: 'Sep 2026',
+    abstract: 'Why we are building sovereign, reproducible AI systems designed for empirical science rather than another conversational wrapper.',
+    href: '/blogs/welcome-to-kalaris-labs',
+    actionText: 'Read Essay',
+  },
+  {
+    title: 'Institutional Sovereignty and Auditable Scientific Traceability',
+    category: 'Manifesto',
+    date: 'Aug 2026',
+    abstract: 'The foundational thesis on data ownership, reproducible compute harnesses, and transparent agent provenance in university and pharmaceutical research.',
+    href: '/manifesto',
+    actionText: 'Read Manifesto',
+  },
+];
+
+// Showcase ONLY 2 featured papers / notes per user instruction
+const featuredTopics = topics.slice(0, 2);
+---
+
+<BaseLayout
+  title="Kalaris Labs: AI Infrastructure for Scientific Discovery"
+  description="Kalaris Labs builds autonomous, reproducible AI infrastructure for scientific discovery."
+>
+  <Header currentPath="/" />
+
+  <main id="main-content">
+    <!-- Viewport / Extreme Page Frame ASCII Corners -->
+    <AsciiPageCorners />
+
+    <!-- 1-3. Top Monograph Section (Centered in Reading Column with ASCII Framing) -->
+    <div class="monograph-outer-wrapper">
+      <!-- Ambient ASCII Telemetry Flanks (Visible on wide screens) -->
+      <div class="ascii-flank ascii-flank-left" aria-hidden="true">
+        <div class="ascii-flank-box">
+          <span class="ascii-flank-line">+ · · · · · · · · +</span>
+          <span class="ascii-flank-line">| 0x4B 0x41 0x4C 0x41 |</span>
+          <span class="ascii-flank-line">| SCIENTIFIC_MODELS |</span>
+          <span class="ascii-flank-line">+ · · · · · · · · +</span>
+        </div>
+      </div>
+      <div class="ascii-flank ascii-flank-right" aria-hidden="true">
+        <div class="ascii-flank-box">
+          <span class="ascii-flank-line">+ · · · · · · · · +</span>
+          <span class="ascii-flank-line">| 0x52 0x49 0x53 0x20 |</span>
+          <span class="ascii-flank-line">| RECURSIVE_HARNESS |</span>
+          <span class="ascii-flank-line">+ · · · · · · · · +</span>
+        </div>
+      </div>
+
+      <div class="reading-column page-article">
+        <!-- Monograph Frame ASCII Corner Crosshairs -->
+        <span class="monograph-corner mc-tl" aria-hidden="true">+ 01</span>
+        <span class="monograph-corner mc-tr" aria-hidden="true">HARN +</span>
+        <span class="monograph-corner mc-bl" aria-hidden="true">+ AGNT</span>
+        <span class="monograph-corner mc-br" aria-hidden="true">MODL +</span>
+
+        <!-- 1. The Kalaris Labs logo in the middle of the page (top middle) -->
+        <section class="hero-brand" aria-label="Kalaris Labs Logo">
+          <img
+            src="/kalaris-wordmark.png"
+            alt="Kalaris Labs"
+            class="hero-wordmark"
+            width="380"
+            height="95"
+            loading="eager"
+            decoding="async"
+          />
+        </section>
+
+        <!-- 2. The CTA centered directly below the logo -->
+        <section class="hero-cta-wrap" aria-label="Announcement">
+          <a href="/manifesto" class="announcement-pill">
+            <span class="pill-tag">NEW</span>
+            <span class="pill-text">AI for Science and Good</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+        </section>
+
+        <!-- 3. Editorial Prose with Balanced Rhythm & Pillars -->
+        <section class="editorial-body" aria-label="About Kalaris Labs">
+          <p class="mission-lead">
+            <strong>Kalaris Labs</strong> is an artificial intelligence research and infrastructure company. We are building a future where scientists, principal investigators, and institutions have access to autonomous, reproducible AI systems that eliminate operational friction, so researchers can spend their time on discovery.
+          </p>
+
+          <p>
+            While AI capabilities have advanced dramatically, key gaps remain across the sciences. The scientific community's ability to leverage frontier AI is hindered by brittle document parsing, unverified citations, and non-reproducible workflows. Complex scientific literature, dense with mathematical equations, multi-page biomedical tables, and retracted claims, remains difficult for general-purpose conversational models to parse with verified ground truth.
+          </p>
+
+          <!-- 3 Core Technical Pillars with ASCII Corner Accents -->
+          <div class="thesis-stack" aria-label="Core Technical Capabilities">
+            <span class="ascii-thesis-corner atc-tl" aria-hidden="true">+</span>
+            <span class="ascii-thesis-corner atc-tr" aria-hidden="true">+</span>
+            <span class="ascii-thesis-corner atc-bl" aria-hidden="true">+</span>
+            <span class="ascii-thesis-corner atc-br" aria-hidden="true">+</span>
+
+            <div class="thesis-entry">
+              <span class="thesis-ascii-tag" aria-hidden="true">[01/HARNESS]</span>
+              <div class="thesis-dot" aria-hidden="true"></div>
+              <div class="thesis-content">
+                <h3 class="thesis-heading">Stronger Scientific Harness</h3>
+                <p class="thesis-desc">Rigorous, auditable evaluation frameworks with deterministic verification gates, sandboxed computation, and reproducible benchmarking built specifically for scientific discovery.</p>
+              </div>
+            </div>
+
+            <div class="thesis-entry">
+              <span class="thesis-ascii-tag" aria-hidden="true">[02/AGENTS]</span>
+              <div class="thesis-dot" aria-hidden="true"></div>
+              <div class="thesis-content">
+                <h3 class="thesis-heading">Agents as Co-Scientists (Self-Learning)</h3>
+                <p class="thesis-desc">Autonomous research agents operating as adaptive co-investigators: formulating hypotheses, analyzing complex datasets, evaluating outcomes against ground truth, and recursively learning through closed loops.</p>
+              </div>
+            </div>
+
+            <div class="thesis-entry">
+              <span class="thesis-ascii-tag" aria-hidden="true">[03/MODELS]</span>
+              <div class="thesis-dot" aria-hidden="true"></div>
+              <div class="thesis-content">
+                <h3 class="thesis-heading">In-House Scientific Models</h3>
+                <p class="thesis-desc">Domain-adapted scientific foundation models trained on empirical literature, physical systems, and biochemical data, prioritizing grounded mathematical reasoning over conversational chit-chat.</p>
+              </div>
+            </div>
+          </div>
+
+          <p class="mission-closing">
+            We are an AI research team to solve this problem for better science, as AI truly cannot help in scientific discovery unless the infrastructure is ready for it.
+          </p>
+        </section>
+
+        <!-- Quick Action Pills Row -->
+        <nav class="quick-links-row" aria-label="Quick links">
+          <a href="/careers" class="quick-link-pill">
+            <span>Join us</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/research" class="quick-link-pill">
+            <span>Research</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/manifesto" class="quick-link-pill">
+            <span>Manifesto</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/blogs" class="quick-link-pill">
+            <span>Writing</span>
+            <span class="pill-arrow" aria-hidden="true">→</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Tavus Conversational Video AI (PAL) Embed (Bottom Right First Frame) -->
+      <aside class="tavus-pal-dock" id="tavus-pal-dock" aria-label="Interactive AI Co-Scientist (Tavus PAL)">
+        <div class="tavus-pal-frame">
+          <!-- ASCII Corner Crosshairs matching the design system -->
+          <span class="ascii-pal-corner apc-tl" aria-hidden="true">+</span>
+          <span class="ascii-pal-corner apc-tr" aria-hidden="true">+</span>
+          <span class="ascii-pal-corner apc-bl" aria-hidden="true">+</span>
+          <span class="ascii-pal-corner apc-br" aria-hidden="true">+</span>
+
+          <!-- Telemetry Header Bar -->
+          <div class="tavus-pal-bar">
+            <div class="tavus-pal-status">
+              <span class="pal-live-pulse" aria-hidden="true"></span>
+              <span class="pal-title-text">AI CO-SCIENTIST // PAL</span>
+            </div>
+            <div class="tavus-bar-actions">
+              <span class="pal-tech-pill">TAVUS CVI</span>
+              <button
+                type="button"
+                class="pal-toggle-btn"
+                id="tavus-toggle-btn"
+                aria-label="Minimize or expand Tavus AI Co-Scientist"
+                title="Minimize / Expand"
+              >
+                <span id="tavus-toggle-icon">−</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Video Embed Host Container -->
+          <div class="tavus-embed-container" id="tavus-embed-container">
+            <tavus-embed deployment-id="8d30fbcf-5aea-4bd1-8719-0d6a0339792d"></tavus-embed>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Tavus Embed CDN Script & Client Toggle Controller -->
+    <script is:inline src="https://unpkg.com/@tavus/embed@latest"></script>
+    <script is:inline>
+      (() => {
+        const toggleBtn = document.getElementById('tavus-toggle-btn');
+        const dock = document.getElementById('tavus-pal-dock');
+        const toggleIcon = document.getElementById('tavus-toggle-icon');
+        if (!toggleBtn || !dock || !toggleIcon) return;
+
+        toggleBtn.addEventListener('click', () => {
+          const isCollapsed = dock.classList.toggle('collapsed');
+          toggleIcon.textContent = isCollapsed ? '+' : '−';
+          toggleBtn.setAttribute('aria-expanded', !isCollapsed);
+        });
+      })();
+    </script>
+
+    <!-- 4. Recent Publications & Notes (Boxed Cards - Only 2 Showcased) -->
+    <section class="publications-fullwidth-section" aria-labelledby="publications-heading">
+      <div class="wide-frame-container">
+        <div class="section-top-header">
+          <div class="section-title-group">
+            <h2 id="publications-heading" class="section-title">Recent Publications & Notes</h2>
+            <p class="section-desc">Auditable research preprints and infrastructure architecture specifications.</p>
+          </div>
+          <a href="/research" class="view-all-header-link">
+            <span>View All Research</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="publications-boxes-grid">
+          {featuredTopics.map((item) => (
+            <PublicationCard {...item} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Section Box: We Are Hiring (Takes them to Careers) -->
+    <section class="hiring-callout-section" aria-label="Careers Opportunity">
+      <div class="wide-frame-container">
+        <a href="/careers" class="hiring-banner-box">
+          <!-- ASCII Corner Accents -->
+          <span class="ascii-hiring-corner ahc-tl" aria-hidden="true">┌</span>
+          <span class="ascii-hiring-corner ahc-tr" aria-hidden="true">┐</span>
+          <span class="ascii-hiring-corner ahc-bl" aria-hidden="true">└</span>
+          <span class="ascii-hiring-corner ahc-br" aria-hidden="true">┘</span>
+          <span class="ascii-hiring-badge" aria-hidden="true">[+/CAREERS_ENGINE]</span>
+
+          <div class="hiring-banner-header">
+            <span class="hiring-pill-tag">WE ARE HIRING</span>
+            <span class="hiring-geo-tag">Bengaluru · Remote friendly</span>
+          </div>
+          <h3 class="hiring-banner-title">Build sovereign AI infrastructure for empirical scientific discovery</h3>
+          <p class="hiring-banner-text">
+            We are actively seeking research scientists, compiler engineers, and systems builders to join our laboratory in eliminating operational friction across scientific literature and autonomous discovery.
+          </p>
+          <div class="hiring-banner-action">
+            <span>Explore Open Positions</span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  /* 1. Monograph outer wrapper & ASCII corners */
+  .monograph-outer-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Ambient ASCII Telemetry Flanks (Wide Screens) */
+  .ascii-flank {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (min-width: 1240px) {
+    .ascii-flank {
+      display: block;
+    }
+  }
+
+  .ascii-flank-left {
+    left: clamp(1rem, 3.5vw, 4.5rem);
+  }
+
+  .ascii-flank-right {
+    right: clamp(1rem, 3.5vw, 4.5rem);
+  }
+
+  .ascii-flank-box {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    line-height: 1.35;
+    color: #9CA3AF;
+    opacity: 0.55;
+    user-select: none;
+    pointer-events: auto;
+    cursor: default;
+    transition: opacity var(--duration-fast) ease, color var(--duration-fast) ease;
+  }
+
+  .ascii-flank-box:hover {
+    color: var(--kalari-green);
+    opacity: 1;
+  }
+
+  .ascii-flank-line {
+    letter-spacing: 0.08em;
+  }
+
+  /* Monograph Frame Corner Crosshairs */
+  .monograph-corner {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.625rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #D1D5DB;
+    user-select: none;
+    pointer-events: none;
+    letter-spacing: 0.06em;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .mono-corner-tl {
+    top: 0.75rem;
+    left: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .mono-corner-tr {
+    top: 0.75rem;
+    right: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .mono-corner-bl {
+    bottom: 0.75rem;
+    left: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .mono-corner-br {
+    bottom: 0.75rem;
+    right: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .page-article:hover .monograph-corner {
+    color: var(--kalari-green);
+  }
+
+  /* 1. Central reading column for top monograph */
+  .reading-column {
+    width: 100%;
+    max-width: var(--max-reading-width);
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    box-sizing: border-box;
+  }
+
+  .page-article {
+    position: relative;
+    padding-top: clamp(2rem, 4.5vh, 3.5rem);
+    padding-bottom: clamp(2.5rem, 5vh, 3.75rem);
+  }
+
+  /* Logo in middle of the page */
+  .hero-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+
+  .hero-wordmark {
+    max-width: 360px;
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    user-select: none;
+    margin-inline: auto;
+    display: block;
+  }
+
+  /* Centered CTA */
+  .hero-cta-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .announcement-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background-color: #F3F4F6;
+    border: 1px solid #E5E7EB;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .announcement-pill:hover {
+    background-color: #E5E7EB;
+    border-color: #D1D5DB;
+    transform: translateY(-1px);
+    color: var(--ink);
+  }
+
+  .pill-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: #111827;
+    color: #FFFFFF;
+    padding: 0.15rem 0.45rem;
+    border-radius: 9999px;
+  }
+
+  .pill-text {
+    font-weight: 500;
+  }
+
+  .pill-arrow {
+    font-size: 0.8rem;
+    color: #4B5563;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .announcement-pill:hover .pill-arrow {
+    transform: translateX(2px);
+  }
+
+  /* Editorial Body */
+  .editorial-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .editorial-body p {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: #1F2937;
+    margin-bottom: 1.25rem;
+  }
+
+  .editorial-body p strong {
+    color: #111827;
+    font-weight: 600;
+  }
+
+  .mission-lead {
+    font-size: 1.15rem !important;
+    line-height: 1.65 !important;
+    color: var(--ink) !important;
+  }
+
+  /* Thesis Stack: 3 Structured Capabilities */
+  .thesis-stack {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    margin: 1.5rem 0 1.75rem 0;
+    padding: 1.25rem 1.4rem;
+    background-color: #FBFBFB;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color var(--duration-fast) ease;
+  }
+
+  .thesis-stack:hover {
+    border-color: #9CA3AF;
+  }
+
+  .ascii-thesis-corner {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #D1D5DB;
+    pointer-events: none;
+    user-select: none;
+    transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .atc-tl {
+    top: 6px;
+    left: 8px;
+  }
+
+  .atc-tr {
+    top: 6px;
+    right: 8px;
+  }
+
+  .atc-bl {
+    bottom: 6px;
+    left: 8px;
+  }
+
+  .atc-br {
+    bottom: 6px;
+    right: 8px;
+  }
+
+  .thesis-stack:hover .ascii-thesis-corner {
+    color: var(--kalari-green);
+  }
+
+  .thesis-ascii-tag {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #9CA3AF;
+    letter-spacing: 0.05em;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .thesis-entry:hover .thesis-ascii-tag {
+    color: var(--kalari-green);
+  }
+
+  .thesis-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .thesis-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--kalari-green);
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  .thesis-content {
+    flex: 1;
+  }
+
+  .thesis-heading {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.2rem 0;
+    line-height: 1.35;
+  }
+
+  .thesis-desc {
+    font-family: var(--font-sans);
+    font-size: 0.85rem !important;
+    line-height: 1.55 !important;
+    color: var(--muted-ink) !important;
+    margin: 0 !important;
+  }
+
+  .mission-closing {
+    margin-top: 0.25rem;
+  }
+
+  /* Quick Action Pills */
+  .quick-links-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+  }
+
+  .quick-link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.95rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    transition: all var(--duration-fast) ease;
+  }
+
+  .quick-link-pill:hover {
+    border-color: #9CA3AF;
+    background-color: #F9FAFB;
+    color: var(--kalari-green);
+    transform: translateY(-1px);
+  }
+
+  .quick-link-pill:hover .pill-arrow {
+    transform: translateX(2px);
+  }
+
+  /* 2. Wide frame container for full-width sections */
+  .wide-frame-container {
+    width: 100%;
+    max-width: 1360px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 3.5vw, 3.5rem);
+    box-sizing: border-box;
+  }
+
+
+  .section-top-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(1.75rem, 3vh, 2.5rem);
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: clamp(1.4rem, 2vw, 1.75rem);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem 0;
+  }
+
+  .section-desc {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--muted-ink);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* 4. Recent Publications & Notes (Boxed Cards) */
+  .publications-fullwidth-section {
+    width: 100%;
+    padding-top: clamp(3.5rem, 6vh, 5rem);
+    padding-bottom: clamp(2.5rem, 5vh, 3.5rem);
+    border-top: 1px solid var(--rule);
+    background-color: #FFFFFF;
+  }
+
+  .publications-boxes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.25rem, 2vw, 2rem);
+    width: 100%;
+  }
+
+  .view-all-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--muted-ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #E5E7EB;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  }
+
+  .view-all-header-link:hover {
+    color: var(--kalari-green);
+    text-decoration-color: var(--kalari-green);
+  }
+
+  /* 6. Section Box: We Are Hiring */
+  .hiring-callout-section {
+    width: 100%;
+    padding-bottom: clamp(3.5rem, 7vh, 5.5rem);
+    background-color: #FFFFFF;
+  }
+
+  .hiring-banner-box {
+    position: relative;
+    display: block;
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    background-color: #FAFAFA;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease, transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  .ascii-hiring-corner {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #D1D5DB;
+    pointer-events: none;
+    user-select: none;
+    transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .ahc-tl {
+    top: 8px;
+    left: 10px;
+  }
+
+  .ahc-tr {
+    top: 8px;
+    right: 10px;
+  }
+
+  .ahc-bl {
+    bottom: 8px;
+    left: 10px;
+  }
+
+  .ahc-br {
+    bottom: 8px;
+    right: 10px;
+  }
+
+  .hiring-banner-box:hover .ascii-hiring-corner {
+    color: var(--kalari-green);
+  }
+
+  .hiring-banner-box:hover .ahc-tl {
+    transform: translate(-1px, -1px);
+  }
+
+  .hiring-banner-box:hover .ahc-tr {
+    transform: translate(1px, -1px);
+  }
+
+  .hiring-banner-box:hover .ahc-bl {
+    transform: translate(-1px, 1px);
+  }
+
+  .hiring-banner-box:hover .ahc-br {
+    transform: translate(1px, 1px);
+  }
+
+  .ascii-hiring-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 28px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #9CA3AF;
+    letter-spacing: 0.06em;
+    user-select: none;
+    pointer-events: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .hiring-banner-box:hover .ascii-hiring-badge {
+    color: var(--kalari-green);
+  }
+
+  .hiring-banner-box:hover {
+    border-color: #9CA3AF;
+    background-color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .hiring-banner-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .hiring-pill-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background-color: var(--soft-green);
+    color: var(--kalari-green);
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+
+  .hiring-geo-tag {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    font-weight: 500;
+  }
+
+  .hiring-banner-title {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .hiring-banner-text {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: #4B5563;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .hiring-banner-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #D1D5DB;
+    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  }
+
+  .hiring-banner-box:hover .hiring-banner-action {
+    color: var(--kalari-green);
+    text-decoration-color: var(--kalari-green);
+  }
+
+  .action-arrow {
+    font-size: 0.85rem;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .hiring-banner-box:hover .action-arrow,
+  .view-all-header-link:hover .action-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 1080px) {
+    .founders-horizontal-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .publications-boxes-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-top-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .founders-horizontal-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Tavus PAL Embed - Bottom Right First Frame */
+  .tavus-pal-dock {
+    position: absolute;
+    bottom: 1.5rem;
+    right: clamp(1rem, 2.5vw, 3.5rem);
+    z-index: 35;
+    width: clamp(280px, 22vw, 320px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  }
+
+  @media (max-width: 1280px) {
+    .tavus-pal-dock {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      z-index: 95;
+      width: min(320px, calc(100vw - 2.5rem));
+    }
+  }
+
+  .tavus-pal-frame {
+    position: relative;
+    border: 1px solid var(--rule, #e5e3dc);
+    background: var(--paper, #f6f4ef);
+    border-radius: 8px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tavus-pal-dock.collapsed .tavus-embed-container {
+    display: none;
+  }
+
+  /* ASCII Corner Accents */
+  .ascii-pal-corner {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.68rem;
+    line-height: 1;
+    color: var(--rule-dark, #8a8880);
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 2;
+    user-select: none;
+  }
+
+  .apc-tl { top: 4px; left: 5px; }
+  .apc-tr { top: 4px; right: 5px; }
+  .apc-bl { bottom: 4px; left: 5px; }
+  .apc-br { bottom: 4px; right: 5px; }
+
+  /* Header Bar */
+  .tavus-pal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.85rem;
+    background: rgba(23, 25, 20, 0.03);
+    border-bottom: 1px solid var(--rule, #e5e3dc);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.68rem;
+    user-select: none;
+  }
+
+  .tavus-pal-status {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .pal-live-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    animation: palPulse 2s infinite;
+  }
+
+  @keyframes palPulse {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+    }
+  }
+
+  .pal-title-text {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink, #171914);
+  }
+
+  .tavus-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .pal-tech-pill {
+    font-size: 0.58rem;
+    letter-spacing: 0.03em;
+    padding: 1px 5px;
+    background: rgba(23, 25, 20, 0.06);
+    border: 1px solid var(--rule, #e5e3dc);
+    border-radius: 3px;
+    color: var(--muted, #66645e);
+  }
+
+  .pal-toggle-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    color: var(--muted, #66645e);
+    cursor: pointer;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.85rem;
+    line-height: 1;
+    padding: 1px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+
+  .pal-toggle-btn:hover {
+    background: rgba(23, 25, 20, 0.08);
+    color: var(--ink, #171914);
+  }
+
+  /* Embed Container */
+  .tavus-embed-container {
+    width: 100%;
+    height: 400px;
+    background: #0d1117;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tavus-embed-container tavus-embed {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

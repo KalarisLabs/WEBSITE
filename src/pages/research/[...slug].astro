@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const papers = await getCollection('research');
+  return papers.map((paper) => ({
+    params: { slug: paper.id },
+    props: { paper },
+  }));
+}
+
+const { paper } = Astro.props;
+---
+
+<PageLayout
+  title={`${paper.data.title} | Kalaris Labs`}
+  description={paper.data.abstract}
+  layoutType="reading"
+>
+  <div class="page-intro">
+    <a href="/research" class="back-link">← Back to research</a>
+    <span class="eyebrow">PREPRINT & PAPER SCAFFOLDING</span>
+    <h1 class="page-title">{paper.data.title}</h1>
+  </div>
+
+  <div class="wireframe-placeholder-canvas">
+    <div class="wireframe-placeholder-inner">
+      <span class="wireframe-tag">Preprint Reader Live</span>
+      <p class="wireframe-status">
+        Ready for reference screenshots & design specs to build out the research paper reader layout.
+      </p>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .page-intro {
+    margin-bottom: var(--space-6);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    text-decoration: none;
+    margin-bottom: var(--space-4);
+  }
+
+  .back-link:hover {
+    color: var(--kalari-green);
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    margin-bottom: var(--space-2);
+  }
+</style>

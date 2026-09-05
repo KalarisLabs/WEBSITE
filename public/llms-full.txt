@@ -1,0 +1,90 @@
+# Kalaris Labs: Full Architecture, Thesis & Reference Monograph (LLMs Full)
+# Canonical URL: https://kalarislabs.com/llms-full.txt
+# Entity: Kalaris Labs (Organization)
+# Updated: 2026
+
+## 1. Executive Summary & Brand Premise
+Kalaris Labs builds recursive, self-improving agentic AI infrastructure for scientific discovery. We are based in India, building sovereign, globally capable research infrastructure.
+
+Our guiding mission is "AI for Science and Good": building the infrastructure that removes non-scientific operational friction so researchers, principal investigators, universities, and biotech teams can dedicate their energy to discovery.
+
+We are not building another chatbot wrapper or basic document question-answering tool. We are engineering the full scientific AI stack, from document intelligence to agentic hypothesis loops and edge runtimes.
+
+---
+
+## 2. The Kalaris Manifesto: Science, Not Busywork
+
+### The Problem
+Researchers spend upwards of 70-80% of their working hours on non-scientific tasks:
+1. Re-formatting, cleaning, and standardizing messy PDF tables, LaTeX equations, and multi-column figures.
+2. Manually cross-referencing citations across fractured paywalled databases.
+3. Writing ad-hoc scripts to bridge incompatible computational chemistry, genomics, or materials science packages.
+4. Struggling to reproduce published findings due to missing hyperparameter logs or unspecified environments.
+
+### The Solution: The Recursive Scientific Loop
+Kalaris infrastructure implements an auditable, recursive research loop:
+1. Observe: Parse raw literature, preprints, lab notebooks, and experimental datasets.
+2. Reason: Formulate mechanistic hypotheses and map citation dependencies across the knowledge graph.
+3. Plan: Structure reproducible computational experiments and verification protocols.
+4. Test: Execute simulations, benchmark models, or query external tools.
+5. Evaluate: Compare experimental outputs against ground-truth literature or physical constraints.
+6. Improve: Learn from failure modes, refine retrieval queries, and store validated checkpoints.
+
+---
+
+## 3. The 7-Layer Kalaris Infrastructure Stack
+
+1. High-Fidelity Document AST & Formula Parsing:
+   - Purpose: High-fidelity scientific document OCR and semantic parser.
+   - Capability: Extracts LaTeX formulas, complex nested chemical tables, multi-panel figures, and bib references with exact bounding boxes and semantic tagging.
+
+2. Citation Graph Traversal & Topology Indexing:
+   - Purpose: Scientific corpus ingestion, citation graph traversal, and hybrid retrieval.
+   - Capability: Combines dense vector embeddings with sparse BM25 and explicit citation topology to prevent hallucinated literature claims.
+
+3. Recursive Evaluation Harness & Agent Orchestration:
+   - Purpose: Recursive agentic orchestration and self-evaluating execution harness.
+   - Capability: Coordinates multi-agent planning, self-correction, tool verification, and automated hypothesis refinement.
+
+4. Hardware-Aware Inference Runtime:
+   - Purpose: Hardware-optimized scientific model inference.
+   - Capability: Optimized for long-context scientific preprints, molecular tokenizers, and cost-efficient edge-to-cloud serving across NVIDIA, AMD, and TPU accelerators.
+
+5. Domain-Adapted Scientific Reasoning Models:
+   - Purpose: In-house frontier scientific foundation reasoning models.
+   - Capability: Pretrained and post-trained on rigorous mathematical, chemical, biological, and physical literature for synthesis and reasoning.
+
+6. Sovereign Air-Gapped Local Lab Runtime:
+   - Purpose: Local and edge runtime engine.
+   - Capability: Enables sovereign, air-gapped institutions and biotech labs to run quantized scientific models on local workstations without data leaving their premises.
+
+7. Collaborative Institutional Research Surface:
+   - Purpose: The daily collaborative research workspace.
+   - Capability: A calm, distraction-free environment for principal investigators and lab teams to co-work with agentic loops, inspect traces, and verify reproducibility.
+
+---
+
+## 4. Institutional Principles & Data Sovereignty
+- Institutional Privacy: Zero training on proprietary customer data, unpublished preprints, or proprietary molecular structures without explicit, verified agreements.
+- Verifiable Reproducibility: Every inference pass, citation lookup, and agent loop generates an auditable cryptographic log of source papers and reasoning traces.
+- Open Science Commitment: We actively publish preprints, release open evaluation benchmarks, and grant computational credits to academic labs and graduate researchers worldwide.
+
+---
+
+## 5. Site Map & Canonical Link Directory
+- Homepage: https://kalarislabs.com/
+- Manifesto: https://kalarislabs.com/manifesto
+- About: https://kalarislabs.com/about
+- Research Publications: https://kalarislabs.com/research
+- Engineering & Research Blog: https://kalarislabs.com/blogs
+- Infrastructure & Products: https://kalarislabs.com/products
+- Join Us / Careers: https://kalarislabs.com/careers
+- Brand Guidelines & Assets: https://kalarislabs.com/brand
+- Product Changelog: https://kalarislabs.com/changelog
+- Supported Tech & Ecosystem: https://kalarislabs.com/support
+- Customer & Lab Stories: https://kalarislabs.com/customer-stories
+- Institutional Partnerships: https://kalarislabs.com/partnerships
+- Academic Programs & Grants: https://kalarislabs.com/programs
+- Privacy Policy & Sovereignty: https://kalarislabs.com/privacy
+- Machine Index (llms.txt): https://kalarislabs.com/llms.txt
+- Sitemap: https://kalarislabs.com/sitemap-index.xml

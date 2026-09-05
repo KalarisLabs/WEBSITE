@@ -1,0 +1,20 @@
+{
+  "name": "Kalaris Labs",
+  "short_name": "Kalaris",
+  "icons": [
+    {
+      "src": "/kalaris-mark.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "theme_color": "#f6f4ef",
+  "background_color": "#f6f4ef",
+  "display": "standalone",
+  "start_url": "/"
+}

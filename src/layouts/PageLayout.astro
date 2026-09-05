@@ -1,0 +1,35 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  layoutType?: 'reading' | 'wide';
+  schema?: Record<string, any> | Record<string, any>[];
+}
+
+const {
+  title,
+  description,
+  image,
+  layoutType = 'reading',
+  schema,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} image={image} schema={schema}>
+  <Header />
+  <main id="main-content" class={layoutType === 'wide' ? 'wide-column page-main' : 'reading-column page-main'}>
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .page-main {
+    padding-block: clamp(2rem, 5vw, 4.5rem);
+  }
+</style>

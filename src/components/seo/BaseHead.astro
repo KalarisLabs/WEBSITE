@@ -1,0 +1,73 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const {
+  title,
+  description = 'Kalaris Labs builds recursive, self-improving AI infrastructure for scientific discovery.',
+  image = '/brand/kalaris-wordmark.png',
+  article = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://kalarislabs.com');
+const formattedTitle = title.includes('Kalaris Labs') ? title : `${title} | Kalaris Labs`;
+---
+
+<!-- Global Metadata -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="color-scheme" content="light" />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{formattedTitle}</title>
+<meta name="title" content={formattedTitle} />
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+<!-- Search Engine Favicon & Browser Icons -->
+<link rel="icon" type="image/png" href="/kalaris-mark.png" />
+<link rel="apple-touch-icon" href="/kalaris-mark.png" />
+<link rel="shortcut icon" type="image/png" href="/kalaris-mark.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- LLMs.txt Discovery for AI Agents & Answer Engines -->
+<link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt Guide" />
+<link rel="alternate" type="text/plain" href="/llms-full.txt" title="LLMs Full Knowledge Base" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content="Kalaris Labs" />
+<meta property="og:title" content={formattedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, canonicalURL)} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={formattedTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, canonicalURL)} />
+<meta name="twitter:site" content="@kalarislabs" />
+
+<!-- Google Fonts preconnect for Inter and Newsreader -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- PostHog Analytics Client Loader -->
+<script>
+  import { initPostHog } from '@/lib/posthog';
+  initPostHog();
+</script>

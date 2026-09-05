@@ -1,0 +1,247 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-content-wrap">
+    <div class="footer-inner">
+      <!-- Brand Info -->
+      <div class="footer-col brand-col">
+        <a href="/" class="footer-brand" aria-label="Kalaris Labs: Home">
+          <img src="/STACKED LOGO TRANSPARENT.png" alt="Kalaris Labs" width="145" height="48" class="footer-stacked-logo" />
+        </a>
+        <p class="footer-mission">
+          Autonomous, reproducible AI infrastructure for scientific discovery.
+        </p>
+      </div>
+
+      <!-- Platform & Research -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Platform & Research</h3>
+        <ul class="footer-list">
+          <li><a href="/products">Products & Infrastructure</a></li>
+          <li><a href="/research">Research Publications</a></li>
+          <li><a href="/blogs">Writing & Blog</a></li>
+          <li><a href="/manifesto">Manifesto ("AI for Science")</a></li>
+          <li><a href="/customer-stories">Customer Stories</a></li>
+          <li><a href="/partnerships">Partnerships</a></li>
+          <li><a href="/programs">Academic Programs</a></li>
+        </ul>
+      </div>
+
+      <!-- Laboratory & Company -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Laboratory & Team</h3>
+        <ul class="footer-list">
+          <li><a href="/about">About Kalaris Labs</a></li>
+          <li><a href="/careers">Join Us / Careers</a></li>
+          <li><a href="/support">Supported Tech & Compute</a></li>
+          <li><a href="/changelog">Changelog & Updates</a></li>
+          <li><a href="/brand">Brand & Media Kit</a></li>
+          <li><a href="/privacy">Privacy & Data Sovereignty</a></li>
+        </ul>
+      </div>
+
+      <!-- Media & Engine Index -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Media & Agent Index</h3>
+        <ul class="footer-list">
+          <li><a href="/robots.txt">Robots Directives</a></li>
+          <li><a href="/sitemap-index.xml">Meta Engine Index</a></li>
+          <li><a href="/llms.txt" class="agent-link"><span>AEO</span> /llms.txt</a></li>
+          <li><a href="/llms_full.txt" class="agent-link"><span>AEO</span> /llms_full.txt</a></li>
+          <li><a href="/llms-full.txt" class="agent-link"><span>AEO</span> /llms-full.txt</a></li>
+        </ul>
+      </div>
+
+      <!-- Connect -->
+      <div class="footer-col">
+        <h3 class="footer-heading">Connect</h3>
+        <ul class="footer-list">
+          <li><a href="mailto:hello@kalarislabs.com">hello@kalarislabs.com</a></li>
+          <li><a href="https://www.linkedin.com/company/kalarislabs/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://x.com/kalarislabs" target="_blank" rel="noopener noreferrer">X / Twitter</a></li>
+          <li><a href="https://github.com/kalarislabs" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://huggingface.co/kalarislabs" target="_blank" rel="noopener noreferrer">Hugging Face</a></li>
+        </ul>
+      </div>
+    </div>
+
+  <div class="footer-bottom">
+    <p class="copyright">
+      © {currentYear} Kalaris Labs. Designed for reproducible discovery.
+    </p>
+  </div>
+  </div>
+
+  <!-- Giant Bold Typography Wordmark Section at the bottom of the complete footer -->
+  <section class="footer-giant-section" aria-label="Kalaris Labs Wordmark">
+    <div class="giant-wordmark-container">
+      <span class="giant-wordmark">kalarislabs</span>
+    </div>
+  </section>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+    padding: clamp(3rem, 6vh, 4.5rem) 0 0 0;
+    font-family: var(--font-sans);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .footer-content-wrap {
+    padding: 0 clamp(1.25rem, 5vw, 4rem) clamp(2rem, 4vh, 3rem);
+  }
+
+  /* Giant Bold Typography Wordmark Section (Commonry-inspired) */
+  .footer-giant-section {
+    width: 100%;
+    overflow: hidden;
+    padding: clamp(2rem, 5vh, 4rem) 0 clamp(2.5rem, 6vh, 4.5rem);
+    border-top: 1px solid var(--rule);
+    background-color: var(--paper);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .giant-wordmark-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+    box-sizing: border-box;
+  }
+
+  .giant-wordmark {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: clamp(3.25rem, 14.8vw, 14rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.86;
+    color: var(--ink);
+    text-transform: lowercase;
+    white-space: nowrap;
+    user-select: none;
+    text-align: center;
+    width: 100%;
+  }
+
+  .footer-inner {
+    max-width: var(--max-wide-width);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin-bottom: var(--space-12);
+  }
+
+  @media (max-width: 1024px) {
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+    .brand-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: var(--space-3);
+  }
+
+  .footer-stacked-logo {
+    height: clamp(2rem, 2.5vw, 2.35rem);
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .footer-brand:hover .footer-stacked-logo {
+    opacity: 0.85;
+    transform: translateY(-0.5px);
+  }
+
+  .footer-mission {
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--muted-ink);
+    max-width: 20rem;
+    margin-bottom: var(--space-4);
+  }
+
+  .footer-heading {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    margin-bottom: var(--space-4);
+  }
+
+  .footer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .footer-list a {
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .footer-list a:hover {
+    color: var(--kalari-green);
+  }
+
+  .agent-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+  }
+
+  .agent-link span {
+    font-size: 0.58rem;
+    background: var(--soft-green);
+    color: var(--kalari-green);
+    padding: 0.05rem 0.25rem;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+
+  .footer-bottom {
+    max-width: var(--max-wide-width);
+    margin-inline: auto;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+  }
+</style>

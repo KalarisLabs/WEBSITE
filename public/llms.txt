@@ -1,0 +1,26 @@
+# Kalaris Labs
+> Recursive, self-improving agentic AI infrastructure for scientific discovery. Built in India for global science.
+
+Kalaris Labs builds the underlying scientific AI stack, not merely a workflow interface or chat wrapper. Our systems are designed to read, reason, plan, test, improve, and support discovery reproducibly.
+
+## Core Pages & Documentation
+- [Home](https://kalarislabs.com/): Primary editorial entry point, architecture, and thesis summary.
+- [Manifesto](https://kalarislabs.com/manifesto): "AI for Science and Good": The foundational thesis on why researchers must be freed from operational busywork.
+- [About](https://kalarislabs.com/about): Mission, background, institutional values, and sovereignty.
+- [Research](https://kalarislabs.com/research): Technical preprints, peer-reviewed publications, evaluation harness benchmarks, and BibTeX citations.
+- [Blogs](https://kalarislabs.com/blogs): Technical essays, engineering logs, and research notes.
+- [Products](https://kalarislabs.com/products): Autonomous AI infrastructure and research systems for scientific discovery.
+- [Careers / Join Us](https://kalarislabs.com/careers): Opportunities for research scientists, systems engineers, and infrastructure architects.
+- [Brand & Media Kit](https://kalarislabs.com/brand): Official vector marks, wordmarks, color tokens, and media guidelines.
+- [Changelog](https://kalarislabs.com/changelog): Chronological log of model releases, harness updates, and parser improvements.
+- [Support & Ecosystem](https://kalarislabs.com/support): Supported accelerator hardware (NVIDIA, AMD, TPU), deep learning frameworks, and scientific libraries.
+- [Customer Stories](https://kalarislabs.com/customer-stories): Impact case studies from partner labs, biotech teams, and university consortia.
+- [Partnerships](https://kalarislabs.com/partnerships): Collaborative research programs, sovereign computing initiatives, and institutional access.
+- [Programs](https://kalarislabs.com/programs): Academic grants, compute fellowships, and open science credits.
+- [Privacy Policy](https://kalarislabs.com/privacy): Data sovereignty, zero training on institutional private data without consent, and auditability.
+
+## LLM Ingestion Guide
+- For complete unabridged text and architecture specs, fetch: [llms-full.txt](https://kalarislabs.com/llms-full.txt)
+- Structured Schema: Every page contains embedded Schema.org JSON-LD (`Organization`, `ScholarlyArticle`, `BlogPosting`).
+- Canonical URL: https://kalarislabs.com/
+- Contact: hello@kalarislabs.com

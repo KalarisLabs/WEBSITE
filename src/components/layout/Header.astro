@@ -1,0 +1,418 @@
+---
+import MobileNav from './MobileNav';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+const navItems = [
+  { label: 'Research', href: '/research' },
+  { label: 'Blogs', href: '/blogs' },
+  { label: 'Products', href: '/products' },
+  { label: 'Manifesto', href: '/manifesto' },
+  { label: 'Join Us', href: '/careers' },
+];
+
+const subSections = [
+  { label: 'About', href: '/about' },
+  { label: 'Brand & Media', href: '/brand' },
+  { label: 'Changelog', href: '/changelog' },
+  { label: 'Supported Tech', href: '/support' },
+  { label: 'Customer Stories', href: '/customer-stories' },
+  { label: 'Partnerships', href: '/partnerships' },
+  { label: 'Programs', href: '/programs' },
+  { label: 'Privacy', href: '/privacy' },
+];
+---
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <!-- Brand Logo on EXTREME LEFT -->
+    <div class="header-left">
+      <a href="/" class="brand-link" aria-label="Kalaris Labs: Home">
+        <img
+          src="/STACKED LOGO TRANSPARENT.png"
+          alt="Kalaris Labs"
+          class="brand-stacked-logo"
+          width="135"
+          height="45"
+          loading="eager"
+          decoding="async"
+        />
+      </a>
+    </div>
+
+    <!-- Desktop Navigation in the MIDDLE -->
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          class={`nav-link ${currentPath === item.href || currentPath.startsWith(`${item.href}/`) ? 'active' : ''}`}
+        >
+          {item.label}
+        </a>
+      ))}
+
+      <!-- Dropdown for Extended Sections -->
+      <div class="nav-dropdown-wrapper">
+        <button type="button" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+          <span>More</span>
+          <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+
+        <div class="nav-dropdown-menu">
+          <div class="dropdown-header">Ecosystem & Media</div>
+          {subSections.map((sub) => (
+            <a href={sub.href} class="dropdown-item">
+              {sub.label}
+            </a>
+          ))}
+          <div class="dropdown-footer">
+            <a href="/llms.txt" class="agent-spec-link">
+              <span class="agent-tag">AEO</span> llms.txt standard
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- EXTREME RIGHT: Live Visitor Timer & Mobile Navigation -->
+    <div class="header-right">
+      <div class="live-visitor-timer" id="header-visitor-timer" title="Live time from your location">
+        <svg class="timer-clock-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span id="header-live-time" class="timer-time">--:-- --</span>
+        <span id="header-live-location" class="timer-location">LOC</span>
+      </div>
+
+      <!-- Mobile Navigation Toggle on the RIGHT for mobile -->
+      <div class="mobile-nav-wrapper">
+        <MobileNav client:media="(max-width: 860px)" />
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  function updateVisitorTimer() {
+    const timeEl = document.getElementById('header-live-time');
+    const locEl = document.getElementById('header-live-location');
+    if (!timeEl || !locEl) return;
+
+    const now = new Date();
+    
+    // Format: "3:33 PM"
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    timeEl.textContent = `${formattedHours}:${formattedMinutes} ${ampm}`;
+
+    // Detect visitor timezone / city
+    try {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      const city = timeZone.split('/')[1] || '';
+      const cityMap: Record<string, string> = {
+        'New_York': 'NYC',
+        'Los_Angeles': 'LAX',
+        'San_Francisco': 'SFO',
+        'Chicago': 'CHI',
+        'London': 'LON',
+        'Paris': 'PAR',
+        'Berlin': 'BER',
+        'Tokyo': 'TYO',
+        'Singapore': 'SGP',
+        'Calcutta': 'IST',
+        'Kolkata': 'BLR',
+        'Bengaluru': 'BLR',
+        'Bangalore': 'BLR',
+        'Dubai': 'DXB',
+        'Sydney': 'SYD',
+        'Toronto': 'YYZ',
+        'Hong_Kong': 'HKG',
+        'Amsterdam': 'AMS',
+        'Frankfurt': 'FRA',
+        'Seoul': 'SEL'
+      };
+
+      let locLabel = cityMap[city];
+      if (!locLabel) {
+        const parts = new Intl.DateTimeFormat([], { timeZoneName: 'short' }).formatToParts(now);
+        const tzPart = parts.find((p) => p.type === 'timeZoneName');
+        if (tzPart && !tzPart.value.includes('GMT') && !tzPart.value.includes('UTC')) {
+          locLabel = tzPart.value.trim();
+        } else if (city) {
+          locLabel = city.replace(/_/g, '').slice(0, 3).toUpperCase();
+        } else {
+          locLabel = 'LOC';
+        }
+      }
+      locEl.textContent = locLabel;
+    } catch {
+      locEl.textContent = 'LOC';
+    }
+  }
+
+  updateVisitorTimer();
+  setInterval(updateVisitorTimer, 1000);
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: clamp(1.25rem, 3.5vw, 3.5rem);
+    box-sizing: border-box;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .brand-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .brand-stacked-logo {
+    height: clamp(2.1rem, 2.8vw, 2.45rem);
+    width: auto;
+    max-width: 175px;
+    object-fit: contain;
+    display: block;
+    image-rendering: -webkit-optimize-contrast;
+    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .brand-link:hover .brand-stacked-logo {
+    opacity: 0.85;
+    transform: translateY(-0.5px);
+  }
+
+  /* Desktop Nav in the Middle */
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.85rem, 1.8vw, 2rem);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.85rem;
+  }
+
+  /* Live Visitor Location Timer */
+  .live-visitor-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600;
+    color: var(--ink);
+    user-select: none;
+    line-height: 1;
+  }
+
+  .timer-clock-icon {
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .timer-time {
+    color: var(--ink);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .timer-location {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #9CA3AF;
+    letter-spacing: 0.04em;
+    margin-left: 0.15rem;
+  }
+
+  .mobile-nav-wrapper {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+    }
+    .desktop-nav {
+      display: none;
+    }
+    .mobile-nav-wrapper {
+      display: block;
+    }
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: var(--muted-ink);
+    font-weight: 500;
+    padding-block: 0.4rem;
+    position: relative;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .nav-link:hover {
+    color: var(--ink);
+  }
+
+  .nav-link.active {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--kalari-green);
+    border-radius: 2px;
+  }
+
+  /* Dropdown for More sections */
+  .nav-dropdown-wrapper {
+    position: relative;
+  }
+
+  .nav-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--muted-ink);
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .nav-dropdown-trigger:hover,
+  .nav-dropdown-wrapper:hover .nav-dropdown-trigger {
+    color: var(--ink);
+    background: var(--paper-muted);
+  }
+
+  .dropdown-chevron {
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .nav-dropdown-wrapper:hover .dropdown-chevron {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    width: 14rem;
+    background: var(--paper-elevated);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(23, 25, 20, 0.06);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    z-index: 120;
+  }
+
+  .nav-dropdown-wrapper:hover .nav-dropdown-menu,
+  .nav-dropdown-wrapper:focus-within .nav-dropdown-menu {
+    display: flex;
+  }
+
+  .dropdown-header {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-ink);
+    padding: 0.4rem 0.6rem 0.2rem;
+  }
+
+  .dropdown-item {
+    font-size: var(--text-xs);
+    color: var(--ink);
+    text-decoration: none;
+    padding: 0.45rem 0.6rem;
+    border-radius: 4px;
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .dropdown-item:hover {
+    background-color: var(--paper-muted);
+    color: var(--kalari-green);
+  }
+
+  .dropdown-footer {
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--rule-light);
+  }
+
+  .agent-spec-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--kalari-green);
+    text-decoration: none;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .agent-tag {
+    font-size: 0.6rem;
+    background: var(--soft-green);
+    color: var(--kalari-green);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+</style>

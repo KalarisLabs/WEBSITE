@@ -1,0 +1,49 @@
+---
+interface Props {
+  variant?: 'green' | 'muted' | 'outline';
+  class?: string;
+}
+
+const { variant = 'green', class: className = '' } = Astro.props;
+
+const variantStyles = {
+  green: 'badge-green',
+  muted: 'badge-muted',
+  outline: 'badge-outline',
+}[variant];
+---
+
+<span class={`kalaris-badge ${variantStyles} ${className}`}>
+  <slot />
+</span>
+
+<style>
+  .kalaris-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+    line-height: 1.2;
+  }
+
+  .badge-green {
+    background-color: var(--soft-green);
+    color: var(--kalari-green);
+  }
+
+  .badge-muted {
+    background-color: var(--paper-muted);
+    color: var(--muted-ink);
+  }
+
+  .badge-outline {
+    background-color: transparent;
+    border: 1px solid var(--rule);
+    color: var(--muted-ink);
+  }
+</style>

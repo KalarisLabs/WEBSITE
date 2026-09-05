@@ -1,0 +1,208 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  date: string;
+  abstract: string;
+  href: string;
+  actionText: string;
+}
+
+const { title, category, date, abstract, href, actionText } = Astro.props;
+---
+
+<article class="pub-box-card">
+  <!-- ASCII Corner Accents -->
+  <span class="ascii-corner ascii-corner-tl" aria-hidden="true">+</span>
+  <span class="ascii-corner ascii-corner-tr" aria-hidden="true">+</span>
+  <span class="ascii-corner ascii-corner-bl" aria-hidden="true">+</span>
+  <span class="ascii-corner ascii-corner-br" aria-hidden="true">+</span>
+
+  <div class="pub-box-top">
+    <div class="pub-box-meta">
+      <span class="pub-category-tag">{category}</span>
+      <time class="pub-date">{date}</time>
+    </div>
+
+    <h3 class="pub-box-title">
+      <a href={href}>{title}</a>
+    </h3>
+
+    <p class="pub-box-abstract">{abstract}</p>
+  </div>
+
+  <div class="pub-box-footer">
+    <a href={href} class="pub-box-action-link">
+      <span>{actionText}</span>
+      <span class="action-arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .pub-box-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    background-color: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color var(--duration-fast) ease, transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  .ascii-corner {
+    position: absolute;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #D1D5DB;
+    user-select: none;
+    pointer-events: none;
+    transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
+  }
+
+  .ascii-corner-tl {
+    top: 6px;
+    left: 8px;
+  }
+
+  .ascii-corner-tr {
+    top: 6px;
+    right: 8px;
+  }
+
+  .ascii-corner-bl {
+    bottom: 6px;
+    left: 8px;
+  }
+
+  .ascii-corner-br {
+    bottom: 6px;
+    right: 8px;
+  }
+
+  .pub-box-card:hover .ascii-corner {
+    color: var(--kalari-green);
+  }
+
+  .pub-box-card:hover .ascii-corner-tl {
+    transform: translate(-1px, -1px);
+  }
+
+  .pub-box-card:hover .ascii-corner-tr {
+    transform: translate(1px, -1px);
+  }
+
+  .pub-box-card:hover .ascii-corner-bl {
+    transform: translate(-1px, 1px);
+  }
+
+  .pub-box-card:hover .ascii-corner-br {
+    transform: translate(1px, 1px);
+  }
+
+  .pub-box-card:hover {
+    border-color: #9CA3AF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  .pub-box-top {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
+
+  .pub-box-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .pub-category-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: var(--soft-green);
+    color: var(--kalari-green);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .pub-date {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted-ink);
+    font-weight: 500;
+  }
+
+  .pub-box-title {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 0.65rem 0;
+  }
+
+  .pub-box-title a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #9CA3AF;
+    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  }
+
+  .pub-box-title a:hover {
+    color: var(--kalari-green);
+    text-decoration-color: var(--kalari-green);
+  }
+
+  .pub-box-abstract {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4B5563;
+    margin: 0;
+  }
+
+  .pub-box-footer {
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule-light);
+  }
+
+  .pub-box-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: #D1D5DB;
+    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  }
+
+  .pub-box-action-link:hover {
+    color: var(--kalari-green);
+    text-decoration-color: var(--kalari-green);
+  }
+
+  .action-arrow {
+    font-size: 0.85rem;
+    transition: transform var(--duration-fast) ease;
+  }
+
+  .pub-box-card:hover .action-arrow {
+    transform: translateX(4px);
+  }
+</style>

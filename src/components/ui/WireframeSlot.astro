@@ -1,0 +1,133 @@
+---
+interface Props {
+  slotName: string;
+  category?: string;
+  guidelines?: string;
+  schemaFields?: string[];
+  class?: string;
+}
+
+const {
+  slotName,
+  category = 'Editorial Content Slot',
+  guidelines = 'Awaiting verified copy and peer review.',
+  schemaFields = [],
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`wireframe-slot ${className}`}>
+  <div class="wireframe-slot-header">
+    <div class="wireframe-slot-meta">
+      <span class="wireframe-slot-badge">{category}</span>
+      <span class="wireframe-slot-title">{slotName}</span>
+    </div>
+    <span class="wireframe-status-indicator">Wireframe Scaffold</span>
+  </div>
+
+  <div class="wireframe-slot-body">
+    <p class="wireframe-guideline">{guidelines}</p>
+    {schemaFields.length > 0 && (
+      <div class="wireframe-schema-block">
+        <span class="schema-label">Required Frontmatter / Data Schema:</span>
+        <ul class="schema-pills">
+          {schemaFields.map((field) => (
+            <li class="schema-pill">{field}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+    <slot />
+  </div>
+</div>
+
+<style>
+  .wireframe-slot {
+    background: var(--paper-muted);
+    border: 1px dashed var(--rule);
+    border-radius: 6px;
+    padding: var(--space-4) var(--space-6);
+    margin-block: var(--space-6);
+    font-family: var(--font-sans);
+  }
+
+  .wireframe-slot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--rule-light);
+    margin-bottom: var(--space-3);
+  }
+
+  .wireframe-slot-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .wireframe-slot-badge {
+    background: var(--soft-green);
+    color: var(--kalari-green);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .wireframe-slot-title {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .wireframe-status-indicator {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    color: var(--muted-ink);
+  }
+
+  .wireframe-guideline {
+    font-size: var(--text-sm);
+    color: var(--muted-ink);
+    line-height: 1.5;
+    margin-bottom: var(--space-3);
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .wireframe-schema-block {
+    margin-top: var(--space-3);
+  }
+
+  .schema-label {
+    display: block;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    color: var(--muted-ink);
+    margin-bottom: var(--space-2);
+  }
+
+  .schema-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+  }
+
+  .schema-pill {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+</style>
