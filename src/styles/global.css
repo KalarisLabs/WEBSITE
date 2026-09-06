@@ -1,4 +1,22 @@
+@import "tailwindcss";
 @import './tokens.css';
+
+@theme {
+  --color-kalari-green: var(--kalari-green);
+  --color-kalari-green-hover: var(--kalari-green-hover);
+  --color-soft-green: var(--soft-green);
+  --color-paper: var(--paper);
+  --color-paper-muted: var(--paper-muted);
+  --color-paper-elevated: var(--paper-elevated);
+  --color-ink: var(--ink);
+  --color-muted-ink: var(--muted-ink);
+  --color-rule: var(--rule);
+  --color-rule-light: var(--rule-light);
+
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
 
 /* CSS Reset & Box Sizing */
 *, *::before, *::after {

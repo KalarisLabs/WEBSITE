@@ -1,11 +1,17 @@
 ---
 import MobileNav from './MobileNav';
+import NavDropdownMenu from '@/components/ui/NavDropdownMenu';
 
 interface Props {
   currentPath?: string;
 }
 
 const { currentPath = Astro.url.pathname } = Astro.props;
+
+// Dynamic Cloudflare SSR Edge Context
+const cfCountry = Astro.request?.headers?.get('cf-ipcountry') || '';
+const cfRay = Astro.request?.headers?.get('cf-ray') || '';
+const edgeColo = cfRay.includes('-') ? cfRay.split('-')[1] : '';
 
 const navItems = [
   { label: 'Research', href: '/research' },
@@ -55,29 +61,8 @@ const subSections = [
         </a>
       ))}
 
-      <!-- Dropdown for Extended Sections -->
-      <div class="nav-dropdown-wrapper">
-        <button type="button" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
-          <span>More</span>
-          <svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </button>
-
-        <div class="nav-dropdown-menu">
-          <div class="dropdown-header">Ecosystem & Media</div>
-          {subSections.map((sub) => (
-            <a href={sub.href} class="dropdown-item">
-              {sub.label}
-            </a>
-          ))}
-          <div class="dropdown-footer">
-            <a href="/llms.txt" class="agent-spec-link">
-              <span class="agent-tag">AEO</span> llms.txt standard
-            </a>
-          </div>
-        </div>
-      </div>
+      <!-- Radix UI Accessible Dropdown for Extended Sections -->
+      <NavDropdownMenu client:load items={subSections} />
     </nav>
 
     <!-- EXTREME RIGHT: Live Visitor Timer & Mobile Navigation -->
@@ -88,7 +73,7 @@ const subSections = [
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
         <span id="header-live-time" class="timer-time">--:-- --</span>
-        <span id="header-live-location" class="timer-location">LOC</span>
+        <span id="header-live-location" class="timer-location">{cfCountry ? `${cfCountry} • ${edgeColo}` : 'LOC'}</span>
       </div>
 
       <!-- Mobile Navigation Toggle on the RIGHT for mobile -->

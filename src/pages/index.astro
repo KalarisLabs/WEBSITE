@@ -4,6 +4,14 @@ import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import PublicationCard from '@/components/ui/PublicationCard.astro';
 import AsciiPageCorners from '@/components/ui/AsciiPageCorners.astro';
+import EarlyAccessDialog from '@/components/ui/EarlyAccessDialog';
+import MetricTooltip from '@/components/ui/MetricTooltip';
+
+// Cloudflare SSR Edge Context (dynamic on-demand server rendering)
+const cfCountry = Astro.request?.headers?.get('cf-ipcountry') || 'GLO';
+const cfRay = Astro.request?.headers?.get('cf-ray') || 'LOCAL-DEV';
+const edgeColo = cfRay.includes('-') ? cfRay.split('-')[1] : 'EDGE';
+const serverTime = new Date().toISOString();
 
 interface ResearchTopic {
   title: string;
@@ -81,12 +89,13 @@ const featuredTopics = topics.slice(0, 2);
 
     <!-- 1-3. Top Monograph Section (Centered in Reading Column with ASCII Framing) -->
     <div class="monograph-outer-wrapper">
-      <!-- Ambient ASCII Telemetry Flanks (Visible on wide screens) -->
+      <!-- Ambient ASCII Telemetry Flanks (Visible on wide screens with Cloudflare Edge Telemetry) -->
       <div class="ascii-flank ascii-flank-left" aria-hidden="true">
         <div class="ascii-flank-box">
           <span class="ascii-flank-line">+ · · · · · · · · +</span>
           <span class="ascii-flank-line">| 0x4B 0x41 0x4C 0x41 |</span>
           <span class="ascii-flank-line">| SCIENTIFIC_MODELS |</span>
+          <span class="ascii-flank-line">| EDGE: {cfCountry.padEnd(2)} [{edgeColo.slice(0, 4)}] |</span>
           <span class="ascii-flank-line">+ · · · · · · · · +</span>
         </div>
       </div>
@@ -95,6 +104,7 @@ const featuredTopics = topics.slice(0, 2);
           <span class="ascii-flank-line">+ · · · · · · · · +</span>
           <span class="ascii-flank-line">| 0x52 0x49 0x53 0x20 |</span>
           <span class="ascii-flank-line">| RECURSIVE_HARNESS |</span>
+          <span class="ascii-flank-line">| SSR: {serverTime.slice(11, 19)}Z   |</span>
           <span class="ascii-flank-line">+ · · · · · · · · +</span>
         </div>
       </div>
@@ -149,7 +159,10 @@ const featuredTopics = topics.slice(0, 2);
               <span class="thesis-ascii-tag" aria-hidden="true">[01/HARNESS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
-                <h3 class="thesis-heading">Stronger Scientific Harness</h3>
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                  <h3 class="thesis-heading m-0">Stronger Scientific Harness</h3>
+                  <MetricTooltip client:load label="Sandboxed Gates" code="WASM" tooltipText="Continuous deterministic verification gates with isolated sandboxed execution for reproducible experiments." />
+                </div>
                 <p class="thesis-desc">Rigorous, auditable evaluation frameworks with deterministic verification gates, sandboxed computation, and reproducible benchmarking built specifically for scientific discovery.</p>
               </div>
             </div>
@@ -158,7 +171,10 @@ const featuredTopics = topics.slice(0, 2);
               <span class="thesis-ascii-tag" aria-hidden="true">[02/AGENTS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
-                <h3 class="thesis-heading">Agents as Co-Scientists (Self-Learning)</h3>
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                  <h3 class="thesis-heading m-0">Agents as Co-Scientists (Self-Learning)</h3>
+                  <MetricTooltip client:load label="Active Grounding" code="TOPOLOGY" tooltipText="Autonomous co-investigators that cross-reference citation graphs and retracted claims before forming conclusions." />
+                </div>
                 <p class="thesis-desc">Autonomous research agents operating as adaptive co-investigators: formulating hypotheses, analyzing complex datasets, evaluating outcomes against ground truth, and recursively learning through closed loops.</p>
               </div>
             </div>
@@ -167,7 +183,10 @@ const featuredTopics = topics.slice(0, 2);
               <span class="thesis-ascii-tag" aria-hidden="true">[03/MODELS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
-                <h3 class="thesis-heading">In-House Scientific Models</h3>
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                  <h3 class="thesis-heading m-0">In-House Scientific Models</h3>
+                  <MetricTooltip client:load label="Domain Adapted" code="256K" tooltipText="Scientific foundation models preserving LaTeX ASTs, complex biochemical tables, and formula structures." />
+                </div>
                 <p class="thesis-desc">Domain-adapted scientific foundation models trained on empirical literature, physical systems, and biochemical data, prioritizing grounded mathematical reasoning over conversational chit-chat.</p>
               </div>
             </div>
@@ -178,8 +197,13 @@ const featuredTopics = topics.slice(0, 2);
           </p>
         </section>
 
-        <!-- Quick Action Pills Row -->
+        <!-- Quick Action Pills Row with Radix UI EarlyAccessDialog -->
         <nav class="quick-links-row" aria-label="Quick links">
+          <EarlyAccessDialog
+            client:load
+            triggerText="Request Protocol Access"
+            triggerClass="quick-link-pill bg-[#1B4D3E] text-white hover:bg-[#143B30] border-[#1B4D3E] cursor-pointer shadow-sm"
+          />
           <a href="/careers" class="quick-link-pill">
             <span>Join us</span>
             <span class="pill-arrow" aria-hidden="true">→</span>
