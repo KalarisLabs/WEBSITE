@@ -1,34 +1,307 @@
 ---
-import PageLayout from '@/layouts/PageLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import CornerFiligree from '@/components/ui/CornerFiligree.astro';
+
+// Manifesto sections matching the editorial monograph reference
+const manifestoSections = [
+  {
+    id: 'ai-for-all',
+    title: 'AI for all from India',
+    content:
+      "We're building toward a future where AI is widely accessible to everyone in India. With a world-class team of researchers and experts, we're dedicated to developing AI that gets India. What excites us is the chance to build and shape this technology to reflect how the country thinks, speaks, reasons, and solves problems.",
+  },
+  {
+    id: 'building-for-india',
+    title: 'We are building for India',
+    content:
+      "We want India to embrace the most important technological shift of our time with confidence and control. Our ambition is to build foundational components and apply them to the country's unique needs. To this end, we've built a full-stack AI platform, with everything developed, deployed, and governed entirely in India.",
+  },
+  {
+    id: 'everyday-uses',
+    title: 'We are building for Everyday uses',
+    content:
+      'We believe the real value of our research work will come from everyday use. That means translating our research into compelling products and applications that can be put to work by enterprises, governments and developers.',
+  },
+  {
+    id: 'building-for-community',
+    title: 'We are building for the Community',
+    content:
+      'Sovereign AI is a nationwide, collective effort. With AI opening the door to a new builder era, we want to help catalyze momentum in India. It starts by powering the ecosystem with cost-efficient, high-quality models and tools, so developers, researchers, builders, and startups can create with full agency. The goal is to enable creation at scale by putting state-of-the-art AI in the hands of the community.',
+  },
+];
 ---
 
-<PageLayout
+<BaseLayout
   title="Manifesto | Kalaris Labs"
-  description="AI for Science and Good: The foundational thesis of Kalaris Labs."
-  layoutType="reading"
+  description="Our foundational thesis: Sovereign, reproducible AI infrastructure built with confidence, agency, and purpose."
 >
-  <div class="page-intro">
-    <span class="eyebrow">FOUNDATIONAL THESIS</span>
-    <h1 class="page-title">Manifesto</h1>
-  </div>
+  <Header currentPath="/manifesto" />
 
-  <div class="wireframe-placeholder-canvas">
-    <div class="wireframe-placeholder-inner">
-      <span class="wireframe-tag">Scaffolding Live</span>
-      <p class="wireframe-status">
-        Ready for reference screenshots & design specs to build out the manifesto editorial wireframe.
-      </p>
+  <main id="main-content" class="manifesto-viewport">
+    <!-- Ambient glowing aura background matching reference -->
+    <div class="manifesto-ambient-backdrop" aria-hidden="true">
+      <div class="glow-orb-flank glow-orb-left"></div>
+      <div class="glow-orb-flank glow-orb-right"></div>
+      <div class="glow-horizontal-beam"></div>
     </div>
-  </div>
-</PageLayout>
+
+    <!-- Floating Monograph Sheet Card -->
+    <section class="manifesto-sheet-wrapper" aria-label="Kalaris Labs Manifesto">
+      <div class="manifesto-sheet">
+        <!-- 4 Corner Filigree Ornaments -->
+        <div class="filigree-slot filigree-tl" aria-hidden="true">
+          <CornerFiligree size={44} />
+        </div>
+        <div class="filigree-slot filigree-tr" aria-hidden="true">
+          <CornerFiligree size={44} />
+        </div>
+        <div class="filigree-slot filigree-bl" aria-hidden="true">
+          <CornerFiligree size={44} />
+        </div>
+        <div class="filigree-slot filigree-br" aria-hidden="true">
+          <CornerFiligree size={44} />
+        </div>
+
+        <!-- Centered Editorial Manifesto Content Flow -->
+        <div class="manifesto-content-flow">
+          {
+            manifestoSections.map((section, idx) => (
+              <article class="manifesto-block" id={section.id}>
+                {idx === 0 ? (
+                  <h1 class="manifesto-heading">{section.title}</h1>
+                ) : (
+                  <h2 class="manifesto-heading">{section.title}</h2>
+                )}
+                <p class="manifesto-body">{section.content}</p>
+              </article>
+            ))
+          }
+        </div>
+
+        <!-- Monograph Bottom Indicator Handle -->
+        <div class="manifesto-indicator-handle" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
 
 <style>
-  .page-intro {
-    margin-bottom: var(--space-6);
+  /* Viewport Container with Ambient Atmosphere */
+  .manifesto-viewport {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - var(--header-height, 72px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 3.5vw, 2.5rem);
+    background-color: #dbeafe;
+    overflow: hidden;
   }
 
-  .page-title {
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    margin-bottom: var(--space-2);
+  /* Multi-layered blurred ambient aura creating warm sunset / periwinkle glow */
+  .manifesto-ambient-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: linear-gradient(
+      180deg,
+      #dbeafe 0%,
+      #e0e7ff 22%,
+      #fed7aa 42%,
+      #fb923c 50%,
+      #fed7aa 58%,
+      #e0e7ff 78%,
+      #dbeafe 100%
+    );
+    overflow: hidden;
+  }
+
+  .glow-orb-flank {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(350px, 45vw, 650px);
+    height: clamp(350px, 45vw, 650px);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(249, 115, 22, 0.85) 0%,
+      rgba(234, 88, 12, 0.6) 35%,
+      rgba(251, 146, 60, 0.2) 65%,
+      transparent 80%
+    );
+    filter: blur(55px);
+  }
+
+  .glow-orb-left {
+    left: -15%;
+  }
+
+  .glow-orb-right {
+    right: -15%;
+  }
+
+  .glow-horizontal-beam {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 38%;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(251, 146, 60, 0.75) 0%,
+      rgba(249, 115, 22, 0.45) 45%,
+      transparent 75%
+    );
+    filter: blur(50px);
+  }
+
+  /* Sheet Card Wrapper */
+  .manifesto-sheet-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* The Paper Monograph Sheet Card */
+  .manifesto-sheet {
+    position: relative;
+    width: 100%;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow:
+      0 28px 65px -15px rgba(15, 23, 42, 0.16),
+      0 12px 30px -8px rgba(15, 23, 42, 0.09),
+      0 0 0 1px rgba(255, 255, 255, 0.85);
+    padding: clamp(3.25rem, 6.5vw, 5.5rem) clamp(1.75rem, 5.5vw, 4.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* Corner Filigrees Positioning */
+  .filigree-slot {
+    position: absolute;
+    color: #9ca3af;
+    opacity: 0.78;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .filigree-tl {
+    top: clamp(1.25rem, 2.5vw, 1.85rem);
+    left: clamp(1.25rem, 2.5vw, 1.85rem);
+  }
+
+  .filigree-tr {
+    top: clamp(1.25rem, 2.5vw, 1.85rem);
+    right: clamp(1.25rem, 2.5vw, 1.85rem);
+    transform: scaleX(-1);
+  }
+
+  .filigree-bl {
+    bottom: clamp(1.25rem, 2.5vw, 1.85rem);
+    left: clamp(1.25rem, 2.5vw, 1.85rem);
+    transform: scaleY(-1);
+  }
+
+  .filigree-br {
+    bottom: clamp(1.25rem, 2.5vw, 1.85rem);
+    right: clamp(1.25rem, 2.5vw, 1.85rem);
+    transform: scale(-1, -1);
+  }
+
+  /* Editorial Content Flow */
+  .manifesto-content-flow {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 4.8vw, 3.85rem);
+  }
+
+  .manifesto-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Serif Heading matching reference */
+  .manifesto-heading {
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.34;
+    letter-spacing: -0.015em;
+    color: #111827;
+    margin: 0 0 0.85rem 0;
+  }
+
+  /* Paragraph Text matching reference */
+  .manifesto-body {
+    font-family: var(--font-sans);
+    font-size: clamp(0.85rem, 1.05vw, 0.9375rem);
+    font-weight: 400;
+    line-height: 1.72;
+    color: #4b5563;
+    max-width: 650px;
+    margin: 0 auto;
+    text-wrap: pretty;
+  }
+
+  /* Bottom Pill Handle matching reference */
+  .manifesto-indicator-handle {
+    width: 36px;
+    height: 4.5px;
+    border-radius: 9999px;
+    background: #6b7280;
+    opacity: 0.65;
+    margin-top: clamp(2.5rem, 4.5vw, 3.75rem);
+  }
+
+  /* Responsive tuning */
+  @media (max-width: 640px) {
+    .manifesto-sheet {
+      border-radius: 16px;
+      padding: 3rem 1.25rem 2.25rem;
+    }
+
+    .filigree-slot {
+      opacity: 0.65;
+    }
+
+    .filigree-tl,
+    .filigree-tr {
+      top: 1rem;
+    }
+
+    .filigree-bl,
+    .filigree-br {
+      bottom: 1rem;
+    }
+
+    .filigree-tl,
+    .filigree-bl {
+      left: 1rem;
+    }
+
+    .filigree-tr,
+    .filigree-br {
+      right: 1rem;
+    }
   }
 </style>
