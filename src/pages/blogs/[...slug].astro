@@ -1,6 +1,7 @@
 ---
-import { getCollection } from 'astro:content';
-import PageLayout from '@/layouts/PageLayout.astro';
+import { getCollection, render } from 'astro:content';
+import BlogPostLayout from '@/layouts/BlogPostLayout.astro';
+
 export const prerender = true;
 
 export async function getStaticPaths() {
@@ -12,49 +13,23 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const { Content, headings } = await render(post);
 ---
 
-<PageLayout
-  title={`${post.data.title} | Kalaris Labs`}
+<BlogPostLayout
+  title={post.data.title}
   description={post.data.description}
-  layoutType="reading"
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  author={post.data.author}
+  authorRole={post.data.authorRole}
+  authorAvatar={post.data.authorAvatar}
+  readingTime={post.data.readingTime}
+  category={post.data.category}
+  tags={post.data.tags}
+  tldr={post.data.tldr}
+  image={post.data.image}
+  headings={headings}
 >
-  <div class="page-intro">
-    <a href="/blogs" class="back-link">← Back to blogs</a>
-    <span class="eyebrow">ARTICLE SCAFFOLDING</span>
-    <h1 class="page-title">{post.data.title}</h1>
-  </div>
-
-  <div class="wireframe-placeholder-canvas">
-    <div class="wireframe-placeholder-inner">
-      <span class="wireframe-tag">Article View Live</span>
-      <p class="wireframe-status">
-        Ready for reference screenshots & design specs to build out the blog article reader layout.
-      </p>
-    </div>
-  </div>
-</PageLayout>
-
-<style>
-  .page-intro {
-    margin-bottom: var(--space-6);
-  }
-
-  .back-link {
-    display: inline-block;
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    color: var(--muted-ink);
-    text-decoration: none;
-    margin-bottom: var(--space-4);
-  }
-
-  .back-link:hover {
-    color: var(--kalari-green);
-  }
-
-  .page-title {
-    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-    margin-bottom: var(--space-2);
-  }
-</style>
+  <Content />
+</BlogPostLayout>

@@ -8,10 +8,18 @@ const blogs = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
     author: z.string().default('Kalaris Labs Research Team'),
+    authorRole: z.string().default('Research Scientist'),
+    authorAvatar: z.string().default('/sayan-chowdhury.jpg'),
+    category: z.string().default('Research'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    featured: z.boolean().default(false),
     readingTime: z.string().optional(),
+    tldr: z.string().optional(),
+    headerGradient: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 

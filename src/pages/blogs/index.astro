@@ -1,34 +1,380 @@
 ---
-import PageLayout from '@/layouts/PageLayout.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import BlogCard from '@/components/ui/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+const rawBlogs = await getCollection('blogs');
+// Sort by pubDate descending
+const publishedBlogs = rawBlogs
+  .filter((b) => !b.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+// Featured post for the top hero banner
+const featuredPost = publishedBlogs.find((b) => b.data.featured) || publishedBlogs[0];
+
+// Skeleton posts matching Reference 1 layout and visual diversity
+interface SkeletonPost {
+  title: string;
+  slug: string;
+  category: string;
+  date: Date;
+  description: string;
+  headerGradient: string;
+}
+
+const skeletonPosts: SkeletonPost[] = [
+  {
+    title: 'Autonomous Evaluation Loops for Frontier Scientific Reasoning',
+    slug: 'autonomous-evaluation-loops',
+    category: 'Research',
+    date: new Date('2026-08-07'),
+    description: 'Deterministic verification gates and sandboxed replay for multi-step scientific inferences.',
+    headerGradient: 'coral',
+  },
+  {
+    title: 'Hardware-Aware In-House Scientific Kernels on Sovereign Compute',
+    slug: 'hardware-aware-scientific-kernels',
+    category: 'Launch',
+    date: new Date('2026-07-29'),
+    description: 'Custom kernel optimizations for 256k+ context preprints and private institutional weights.',
+    headerGradient: 'orange',
+  },
+  {
+    title: 'Evaluating Multi-Page Biochemical Literature & Complex Tables',
+    slug: 'evaluating-biochemical-literature',
+    category: 'Research',
+    date: new Date('2026-04-02'),
+    description: 'High-fidelity document intelligence preserving tabular ASTs and formula structures.',
+    headerGradient: 'blue',
+  },
+  {
+    title: 'Sovereign Local Lab Runtimes & Air-Gapped Weights Deployment',
+    slug: 'sovereign-local-lab-runtimes',
+    category: 'Research',
+    date: new Date('2026-03-06'),
+    description: 'Zero-leakage inference architecture for institutional universities and pharmaceutical labs.',
+    headerGradient: 'green',
+  },
+  {
+    title: 'Deterministic WASM Gates for Empirical Scientific Reproducibility',
+    slug: 'deterministic-wasm-gates',
+    category: 'Product',
+    date: new Date('2026-02-20'),
+    description: 'Isolated computation harnesses verifying algorithmic proofs before hypothesis synthesis.',
+    headerGradient: 'amber',
+  },
+  {
+    title: 'Citation Graph Traversal and Real-Time Retraction Auditing',
+    slug: 'citation-graph-traversal',
+    category: 'Product',
+    date: new Date('2026-02-15'),
+    description: 'Grounded citation verification cross-referencing live DOI registers and retraction alerts.',
+    headerGradient: 'orange',
+  },
+  {
+    title: 'Agents as Adaptive Co-Investigators in Laboratory Discovery',
+    slug: 'agents-as-co-investigators',
+    category: 'Research',
+    date: new Date('2026-02-14'),
+    description: 'Closed-loop recursive reasoning agents formulating experiments and learning from outcomes.',
+    headerGradient: 'purple',
+  },
+  {
+    title: 'Kalaris Studio: Scientific Workbench for Principal Investigators',
+    slug: 'kalaris-studio-workbench',
+    category: 'Product',
+    date: new Date('2026-02-12'),
+    description: 'An interactive sovereign research workspace designed for empirical scientific discovery.',
+    headerGradient: 'teal',
+  },
+  {
+    title: 'High-Fidelity LaTeX AST Preservation Engine for Preprints',
+    slug: 'latex-ast-preservation-engine',
+    category: 'Research',
+    date: new Date('2026-02-10'),
+    description: 'Preventing formula distortion in mathematical physics and quantum mechanical literature.',
+    headerGradient: 'indigo',
+  },
+  {
+    title: 'Recursive Verification: Moving From Preprints to Verifiable Proofs',
+    slug: 'recursive-verification-proofs',
+    category: 'Research',
+    date: new Date('2026-02-10'),
+    description: 'Automated synthesis pipelines transforming theoretical papers into executable test suites.',
+    headerGradient: 'coral',
+  },
+  {
+    title: 'Announcing Sovereign AI Partnerships with Research Institutions',
+    slug: 'sovereign-ai-partnerships',
+    category: 'Company',
+    date: new Date('2026-02-08'),
+    description: 'Deploying air-gapped laboratory infrastructure across university medical centers.',
+    headerGradient: 'amber',
+  },
+  {
+    title: 'Open-Sourcing the Scientific Evaluation Harness Core (v1.0)',
+    slug: 'open-sourcing-scientific-harness',
+    category: 'Open source',
+    date: new Date('2026-02-05'),
+    description: 'The foundational verification benchmark suite for empirical artificial intelligence.',
+    headerGradient: 'blue',
+  },
+];
+
+// Combine collection blogs with skeleton cards for complete 4-column visual fidelity
+const allGridPosts = [
+  ...publishedBlogs.map((b) => ({
+    title: b.data.title,
+    slug: b.id,
+    category: b.data.category || 'Launch',
+    date: b.data.pubDate,
+    description: b.data.description,
+    headerGradient: b.data.headerGradient || 'green',
+  })),
+  ...skeletonPosts,
+];
+
+// Unique categories for filter pills
+const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open source'];
 ---
 
-<PageLayout
-  title="Blogs | Kalaris Labs"
-  description="Blogs, essays, and engineering logs from Kalaris Labs."
-  layoutType="reading"
+<BaseLayout
+  title="Latest News & Writing | Kalaris Labs"
+  description="Research dispatches, technical updates, and architectural breakthroughs from building AI for science."
 >
-  <div class="page-intro">
-    <span class="eyebrow">WRITING & ESSAYS</span>
-    <h1 class="page-title">Blogs</h1>
-  </div>
+  <Header currentPath="/blogs" />
 
-  <div class="wireframe-placeholder-canvas">
-    <div class="wireframe-placeholder-inner">
-      <span class="wireframe-tag">Scaffolding Live</span>
-      <p class="wireframe-status">
-        Ready for reference screenshots & design specs to build out the blogs section wireframe.
-      </p>
+  <main id="main-content" class="min-h-screen bg-black text-neutral-100 pt-10 pb-24 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- 1. Header Section: Title & Editorial Subtitle (Reference 1) -->
+      <header class="mb-10 sm:mb-12">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3 font-sans">
+          Latest news
+        </h1>
+        <p class="text-sm sm:text-base text-neutral-400 max-w-2xl leading-relaxed m-0 font-sans">
+          Product launches, technical updates, and lessons from building AI for science.
+        </p>
+      </header>
+
+      <!-- 2. Featured Top Post: 2-Column Hero Card (Reference 1) -->
+      {featuredPost && (
+        <section class="mb-14 sm:mb-16" aria-label="Featured Story">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-neutral-950/50 border border-neutral-800/80 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden group">
+            
+            <!-- Left: Featured Banner / Graphic Canvas -->
+            <div class="lg:col-span-7">
+              <a
+                href={`/blogs/${featuredPost.id}`}
+                class="block aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden relative border border-neutral-800/80 shadow-md group-hover:border-neutral-700 transition-colors"
+                aria-label={`Read featured article: ${featuredPost.data.title}`}
+              >
+                <div class="w-full h-full bg-gradient-to-br from-[#0D382B] via-[#1B4D3E] to-[#2E856E] flex items-center justify-center p-8 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ease-out">
+                  <!-- Ambient radial glow and decorative geometric arcs -->
+                  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3)_0%,transparent_70%)] pointer-events-none"></div>
+                  <div class="absolute -right-12 -bottom-12 w-48 h-48 border border-white/20 rounded-full pointer-events-none"></div>
+                  <div class="absolute -left-12 -top-12 w-40 h-40 border border-white/15 rounded-full pointer-events-none"></div>
+                  
+                  <!-- Center Featured Title Graphic Badge -->
+                  <div class="relative z-10 px-5 py-4 rounded-xl backdrop-blur-md bg-black/30 border border-white/15 shadow-2xl max-w-[90%]">
+                    <span class="font-sans font-bold text-xl sm:text-2xl lg:text-3xl text-white tracking-tight leading-tight block drop-shadow-sm">
+                      {featuredPost.data.title}
+                    </span>
+                    <span class="font-mono text-xs text-emerald-300 tracking-wider uppercase mt-2 block font-medium">
+                      Featured Research Dispatch
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            <!-- Right: Content, Metadata & Read Button -->
+            <div class="lg:col-span-5 flex flex-col items-start">
+              <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug mb-3">
+                <a href={`/blogs/${featuredPost.id}`} class="no-underline text-inherit hover:text-emerald-400 transition-colors">
+                  {featuredPost.data.title}
+                </a>
+              </h2>
+
+              <p class="text-sm sm:text-base text-neutral-300 leading-relaxed mb-6">
+                {featuredPost.data.description}
+              </p>
+
+              <!-- Meta: Date · Category -->
+              <div class="flex items-center gap-2 text-xs font-mono text-neutral-400 mb-8">
+                <time datetime={featuredPost.data.pubDate.toISOString()}>
+                  {featuredPost.data.pubDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </time>
+                <span class="text-neutral-600">·</span>
+                <span class="text-neutral-300 font-medium">
+                  {featuredPost.data.category || 'Launch'}
+                </span>
+              </div>
+
+              <!-- Action Button (Reference 1) -->
+              <a
+                href={`/blogs/${featuredPost.id}`}
+                class="inline-flex items-center justify-center px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold text-white bg-neutral-900 border border-neutral-700 hover:bg-white hover:text-black hover:border-white transition-all shadow-sm no-underline"
+              >
+                Read the Article
+              </a>
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      <!-- 3. Filter Bar & Search Tool (Reference 1) -->
+      <section class="mb-10 sm:mb-12" aria-label="Article Filters">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-800">
+          
+          <!-- Category Filter Pills -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none" id="category-filter-group">
+            {categories.map((cat, idx) => (
+              <button
+                type="button"
+                data-category={cat}
+                class={`category-btn px-3.5 py-1.5 rounded-full text-xs font-medium font-sans whitespace-nowrap transition-colors cursor-pointer ${
+                  idx === 0
+                    ? 'active bg-neutral-100 text-black'
+                    : 'bg-neutral-900/80 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          <!-- Right: Search Box & Grid View Icons (Reference 1) -->
+          <div class="flex items-center gap-3">
+            <div class="relative w-full sm:w-64">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-neutral-500">
+                <svg class="w-3.5 h-3.5 stroke-current stroke-2 fill-none" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </span>
+              <input
+                type="text"
+                id="blog-search-input"
+                placeholder="Search articles..."
+                class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-neutral-900/90 border border-neutral-800 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-[#1B4D3E] transition-colors font-sans"
+              />
+            </div>
+
+            <!-- View indicators matching Reference 1 icons -->
+            <div class="hidden sm:flex items-center gap-1 text-neutral-500 border-l border-neutral-800 pl-3">
+              <button type="button" aria-label="Grid layout view" class="p-1.5 text-neutral-300 hover:text-white transition-colors cursor-default">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
+                  <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. 4-Column Responsive Blog Grid (Reference 1) -->
+      <section aria-label="Articles Grid">
+        <div
+          id="blog-cards-grid"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+        >
+          {allGridPosts.map((post) => (
+            <div
+              class="blog-card-item"
+              data-title={post.title.toLowerCase()}
+              data-category={post.category.toLowerCase()}
+            >
+              <BlogCard
+                title={post.title}
+                slug={post.slug}
+                pubDate={post.date}
+                category={post.category}
+                description={post.description}
+                headerGradient={post.headerGradient}
+              />
+            </div>
+          ))}
+        </div>
+
+        <!-- No results message -->
+        <div id="no-results-msg" class="hidden text-center py-16 text-neutral-500 font-mono text-xs">
+          No articles found matching your criteria. Try resetting the category filter or search query.
+        </div>
+      </section>
+
     </div>
-  </div>
-</PageLayout>
+  </main>
 
-<style>
-  .page-intro {
-    margin-bottom: var(--space-6);
+  <Footer />
+</BaseLayout>
+
+<script>
+  // Client-Side Interactive Filtering for Categories & Live Search (Reference 1)
+  const categoryButtons = document.querySelectorAll<HTMLButtonElement>('.category-btn');
+  const searchInput = document.getElementById('blog-search-input') as HTMLInputElement | null;
+  const cardItems = document.querySelectorAll<HTMLElement>('.blog-card-item');
+  const noResults = document.getElementById('no-results-msg');
+
+  let activeCategory = 'all';
+  let searchQuery = '';
+
+  function filterCards() {
+    let visibleCount = 0;
+
+    cardItems.forEach((card) => {
+      const cardCategory = card.getAttribute('data-category') || '';
+      const cardTitle = card.getAttribute('data-title') || '';
+
+      const matchesCategory =
+        activeCategory === 'all' ||
+        cardCategory === activeCategory.toLowerCase();
+
+      const matchesSearch =
+        !searchQuery || cardTitle.includes(searchQuery.toLowerCase());
+
+      if (matchesCategory && matchesSearch) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (noResults) {
+      noResults.classList.toggle('hidden', visibleCount > 0);
+    }
   }
 
-  .page-title {
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    margin-bottom: var(--space-2);
+  categoryButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      categoryButtons.forEach((b) => {
+        b.classList.remove('active', 'bg-neutral-100', 'text-black');
+        b.classList.add('bg-neutral-900/80', 'text-neutral-400', 'border', 'border-neutral-800');
+      });
+
+      btn.classList.add('active', 'bg-neutral-100', 'text-black');
+      btn.classList.remove('bg-neutral-900/80', 'text-neutral-400', 'border', 'border-neutral-800');
+
+      activeCategory = btn.getAttribute('data-category') || 'all';
+      filterCards();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value.trim();
+      filterCards();
+    });
   }
-</style>
+</script>

@@ -1,0 +1,89 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  pubDate: Date;
+  category?: string;
+  description?: string;
+  headerGradient?: string;
+  image?: string;
+}
+
+const {
+  title,
+  slug,
+  pubDate,
+  category = 'Research',
+  description,
+  headerGradient = 'green',
+  image,
+} = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+// Vibrant, curated color gradients inspired by modern AI research labs (Reference 1)
+const gradientMap: Record<string, string> = {
+  green: 'from-[#0B3B2C] via-[#1B4D3E] to-[#2E856E]',
+  blue: 'from-[#1E3A8A] via-[#2563EB] to-[#60A5FA]',
+  purple: 'from-[#3B0764] via-[#6B21A8] to-[#A855F7]',
+  orange: 'from-[#7C2D12] via-[#C2410C] to-[#F97316]',
+  amber: 'from-[#78350F] via-[#D97706] to-[#FBBF24]',
+  coral: 'from-[#881337] via-[#E11D48] to-[#FB7185]',
+  indigo: 'from-[#1E1B4B] via-[#4338CA] to-[#818CF8]',
+  teal: 'from-[#134E4A] via-[#0D9488] to-[#2DD4BF]',
+};
+
+const gradientClass = gradientMap[headerGradient] || gradientMap.green;
+---
+
+<article class="blog-card group flex flex-col h-full bg-neutral-950/40 border border-neutral-800/60 rounded-xl overflow-hidden hover:border-neutral-700/80 transition-all duration-300 hover:shadow-lg hover:shadow-black/40">
+  <a href={`/blogs/${slug}`} class="block overflow-hidden relative aspect-[16/10] bg-neutral-900 border-b border-neutral-800/60">
+    {image ? (
+      <img
+        src={image}
+        alt={title}
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <div class={`w-full h-full bg-gradient-to-br ${gradientClass} flex items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.03] transition-transform duration-500 ease-out`}>
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.4)_0%,transparent_70%)] pointer-events-none"></div>
+        <div class="absolute -right-8 -bottom-8 w-28 h-28 border border-white/20 rounded-full pointer-events-none"></div>
+        <div class="absolute -left-6 -top-6 w-24 h-24 border border-white/15 rounded-full pointer-events-none"></div>
+        
+        <div class="relative z-10 px-3 py-1.5 rounded-lg backdrop-blur-xs bg-black/20 border border-white/10 shadow-sm max-w-[85%]">
+          <span class="font-sans font-bold text-base sm:text-lg text-white tracking-tight drop-shadow-sm line-clamp-2">
+            {title}
+          </span>
+        </div>
+      </div>
+    )}
+  </a>
+
+  <div class="flex flex-col flex-1 p-4 sm:p-5">
+    <!-- Meta row: Date · Category -->
+    <div class="flex items-center gap-1.5 text-[11px] font-mono text-neutral-400 mb-2">
+      <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+      <span class="text-neutral-600">·</span>
+      <span class="text-neutral-300 font-medium">{category}</span>
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-base sm:text-[17px] font-semibold text-neutral-100 group-hover:text-white transition-colors leading-snug line-clamp-2 mb-2 m-0">
+      <a href={`/blogs/${slug}`} class="no-underline text-inherit hover:underline decoration-neutral-500 underline-offset-4">
+        {title}
+      </a>
+    </h3>
+
+    {description && (
+      <p class="text-xs text-neutral-400 line-clamp-2 leading-relaxed m-0 mt-auto pt-1">
+        {description}
+      </p>
+    )}
+  </div>
+</article>
