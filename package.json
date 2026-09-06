@@ -28,6 +28,7 @@
     "@types/node": "^22.13.9",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "impeccable": "^4.0.2"
+    "impeccable": "^4.0.2",
+    "wrangler": "^4.129.0"
   }
 }

@@ -1,0 +1,1163 @@
+{
+  "version": 1,
+  "skills": {
+    "account-handover": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/product-led-sales/account-handover/SKILL.md",
+      "computedHash": "17fa242345c5d6db315984aa8b63d610d9d5bb31d2c5f3faafec3a0113ca23d0"
+    },
+    "adding-warehouse-person-properties": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/adding-warehouse-person-properties/SKILL.md",
+      "computedHash": "17b17a0f673b5a6864a786ab43ab060cb28775054b75092a7ddb0e9ca80cb2aa"
+    },
+    "agents-sdk": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/agents-sdk/SKILL.md",
+      "computedHash": "7bf1628a1b217eeb522b8150582cd31a16738259a10fdd415ab28b25efe68c16"
+    },
+    "analyzing-expensive-users": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/analyzing-expensive-users/SKILL.md",
+      "computedHash": "d928804fbbed9de211213b7fde3b101022fe9fd21b8254a050acf892877d008a"
+    },
+    "analyzing-experiment-session-replays": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/analyzing-experiment-session-replays/SKILL.md",
+      "computedHash": "2ae4418cb8588d424be63007e9702ddd05479bea23d965266f1850a96124f5ec"
+    },
+    "analyzing-task-runs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/analyzing-task-runs/SKILL.md",
+      "computedHash": "55dedfb05b2549ed69b3e02926a36608424fa2480806a4b60ec654ba8452bfe3"
+    },
+    "assessing-heatmaps": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/assessing-heatmaps/SKILL.md",
+      "computedHash": "ededd67ed9036049d16c2a12180c65731dfb93f24148c24b2cbe6b6705f3b796"
+    },
+    "astro": {
+      "source": "astrolicious/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/astro/SKILL.md",
+      "computedHash": "3a70f9666e7b6a03efb939b7e62938f4d3a6a5d956b2cc3c10011fda6ba27e9b"
+    },
+    "auditing-endpoints": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/auditing-endpoints/SKILL.md",
+      "computedHash": "cd04f10dd5a367e8cb61dae5c2d3644e534e7f5d6d361337954d15a6bbb6fdd3"
+    },
+    "auditing-experiments-flags": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/auditing-experiments-flags/SKILL.md",
+      "computedHash": "72b0512570a614bdfa7176f15a34e43f1e86ce502c6214e7502d58266b7856e7"
+    },
+    "auditing-warehouse-source-health": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/auditing-warehouse-source-health/SKILL.md",
+      "computedHash": "b06cc42bb47c8961682eded1d1ca1a0f6b2eb2358092514c96a58cf54eec071e"
+    },
+    "auditing-warehouse-view-health": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/auditing-warehouse-view-health/SKILL.md",
+      "computedHash": "1064904ee60a498e5fc69b6efa5a5f008a1a48ed5859f5bf03c40501e80da583"
+    },
+    "authoring-data-quality-checks": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/authoring-data-quality-checks/SKILL.md",
+      "computedHash": "8d5a174b3e5c84867a8862822b0fa30351725345ff24f319d89b9fd72e6cf53f"
+    },
+    "authoring-error-tracking-alerts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/authoring-error-tracking-alerts/SKILL.md",
+      "computedHash": "afba15af21f2c08137d0d9f78ff83dde4d6b0613fabf3d17deff347092692920"
+    },
+    "authoring-log-alerts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/authoring-log-alerts/SKILL.md",
+      "computedHash": "beeb0693474a747ef0c02cb064b6ed3ef428d5c51bddd1ad0a5ceb4cf9bdc7e4"
+    },
+    "authoring-scouts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/authoring-scouts/SKILL.md",
+      "computedHash": "f0bbb9c75afd0dc8d43364e4bf7ed97d8ecbf117c4c21c1694c57e37fedd00b9"
+    },
+    "building-a-dashboard": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/building-a-dashboard/SKILL.md",
+      "computedHash": "6f9827f6388ce6ccea9066aae763e8daf5e21db57d8aa3fbe3c3fdbf92f83aca"
+    },
+    "building-canvases": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/building-canvases/SKILL.md",
+      "computedHash": "a9c7a67ea9c73c571499fbb5bc1e2bced9a1284a6a0d1937e1a0f4343874ab8f"
+    },
+    "building-html-canvases": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/building-html-canvases/SKILL.md",
+      "computedHash": "786ccc5c63b40f6d8af68883aa1e22d9434077dd5f2c5285ac6b40abac1474ff"
+    },
+    "building-react-quill-canvases": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/building-react-quill-canvases/SKILL.md",
+      "computedHash": "7bd8abdcada7c9bab789c36de3818a4f9d2fdf17da1b83f7d6e7d59444806182"
+    },
+    "building-workflows": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/building-workflows/SKILL.md",
+      "computedHash": "cd924921501ad92211c5b137352a7910cceee4105c2a7132051bce15d4517eee"
+    },
+    "checking-deploy-timing": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/checking-deploy-timing/SKILL.md",
+      "computedHash": "e7847e306226ac310495ebbf14b0a8610c565d705d8b6cd53fdcea5e11d1d546"
+    },
+    "choosing-trend-or-slope-view": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/choosing-trend-or-slope-view/SKILL.md",
+      "computedHash": "28ecfa7f4f8ee0dfa2c6531dd71b39c27b2184f0573036a19ca43021928b6894"
+    },
+    "cleaning-up-stale-feature-flags": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/cleaning-up-stale-feature-flags/SKILL.md",
+      "computedHash": "23b82cdb13d78f36999c1e1d2da7ace264553985dc1f602b98966a401facd11c"
+    },
+    "cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare/SKILL.md",
+      "computedHash": "61b6c4b68c6b155302edeb63779d39600d88a0029ef2bb0667aedc07c9732ba4"
+    },
+    "cloudflare-email-service": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare-email-service/SKILL.md",
+      "computedHash": "1e25b3f80019846897e4177eaf9859e2d2e1bf9852d2b08d6b4ef6ded5b8f519"
+    },
+    "cloudflare-one": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare-one/SKILL.md",
+      "computedHash": "5a987a5bd6d1a45bc8d48b5a69e4f87dff35af363c1ef3a4bb7d1c2e30510671"
+    },
+    "cloudflare-one-migrations": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare-one-migrations/SKILL.md",
+      "computedHash": "d00186658f458cb2b3dffafc371f3635cfdd980daa8c5579aa99c2e05b8ce5e0"
+    },
+    "composing-grid-canvases": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/composing-grid-canvases/SKILL.md",
+      "computedHash": "747d50af6a9194c2743fa72dcb8b6211cd935cd81912d767f4b86909b9992025"
+    },
+    "configuring-experiment-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/configuring-experiment-analytics/SKILL.md",
+      "computedHash": "f57788dc48ec3afe1b6a4a843d127789329c39832741fb5e7d5614a9de369915"
+    },
+    "configuring-experiment-rollout": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/configuring-experiment-rollout/SKILL.md",
+      "computedHash": "f86525c3ac590e33b31b76eb55afe5d8203ceca226916cc63355dd172562cc92"
+    },
+    "consuming-endpoints-from-client-code": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/consuming-endpoints-from-client-code/SKILL.md",
+      "computedHash": "9e96cda378322a2dd2a0970b6e8498d828ee5a2b74c4764d458a01944ab136a9"
+    },
+    "context-layer-consolidation": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/context-layer-consolidation/SKILL.md",
+      "computedHash": "f4fdfc0c095ef91430df1094f175df7675597a58a340b02b2b440aad714071fe"
+    },
+    "context-layer-dreaming": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/context-layer-dreaming/SKILL.md",
+      "computedHash": "d2957a3028df74aef945228ebef0da2ebb1cc574aa0245bc1f1b21a5f17a45a7"
+    },
+    "context-layer-health-check": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/context-layer-health-check/SKILL.md",
+      "computedHash": "ccdebf6d85cec72d7498b40606943cbe47df4e19d1fad8f70b8e57c4a419e9c4"
+    },
+    "copying-endpoints-across-projects": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/copying-endpoints-across-projects/SKILL.md",
+      "computedHash": "5604517f6bd45e52326e2e440ef5546c5c6ecc79b0d131aff85598d69ad681eb"
+    },
+    "copying-flags-across-projects": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/copying-flags-across-projects/SKILL.md",
+      "computedHash": "13b90f64ddb425d101125b80b4079440e354185edeb11782649bfc5e4453ea6f"
+    },
+    "creating-ai-subscription": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-ai-subscription/SKILL.md",
+      "computedHash": "88469c77257af580298a955901054a159143d0495c417ce4bb260a55dd80b264"
+    },
+    "creating-an-endpoint": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-an-endpoint/SKILL.md",
+      "computedHash": "60c704aa1309d297c9d5d4aae7e3b855f133e43900a6f7d6812547f8d946dbdb"
+    },
+    "creating-box-plot-insights": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-box-plot-insights/SKILL.md",
+      "computedHash": "cca057219f155b61a3efd737ccecfa4334f2717c63b04d8e89f2ece4addb2df5"
+    },
+    "creating-experiments": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-experiments/SKILL.md",
+      "computedHash": "2c583eddc3b47dc4b968f9246e0a348874450831ea2384ced13f2e3495b217d4"
+    },
+    "creating-online-evaluations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-online-evaluations/SKILL.md",
+      "computedHash": "4a19b139727fc7805e79bbaf3e1eeeaf8073318e8a658d9fc750fe1054f3cf7d"
+    },
+    "creating-replay-vision-scanners": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/creating-replay-vision-scanners/SKILL.md",
+      "computedHash": "2a60859cd0dbeb0b786656610b5c80bc1dd962286a573ed87ccf3a3cc1cc77b6"
+    },
+    "debugging-experiments": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/debugging-experiments/SKILL.md",
+      "computedHash": "1603abf262c1f6189649dd4d6b9294ff471e7786c94757b70c8cf89adce5df58"
+    },
+    "debugging-local-replay": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/debugging-local-replay/SKILL.md",
+      "computedHash": "0575a2905b22e438cb33a0765d7cc39fd7f9ee6db56cc1f372c66393a08d2e07"
+    },
+    "debugging-mcp-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/debugging-mcp-analytics/SKILL.md",
+      "computedHash": "455fd293329763c1185b3e507535420aa2ce8d5f4ad412d78014c4b65b2bb60b"
+    },
+    "debugging-signals-pipeline": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/debugging-signals-pipeline/SKILL.md",
+      "computedHash": "02658e4f0cf22344e12ae28806211267eb40bd38d878de345084bda250f3d247"
+    },
+    "debugging-surveys": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/debugging-surveys/SKILL.md",
+      "computedHash": "4af94fd1ada011a072f68436d09928505354ebf9271a32ba303023a685a6ff34"
+    },
+    "designing-email-templates": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/designing-email-templates/SKILL.md",
+      "computedHash": "d37a79010663ec3dd5f4b0067a6622ffa801348dd7ab8dfc54f4aa6ed3192e65"
+    },
+    "diagnosing-ci-and-merge-bottlenecks": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-ci-and-merge-bottlenecks/SKILL.md",
+      "computedHash": "3d060aa7a247cc638cdeabfcffef7eaf46e36b28847c4d336a83f6419414d873"
+    },
+    "diagnosing-endpoint-performance": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-endpoint-performance/SKILL.md",
+      "computedHash": "7fa5ed135761f03cd9e28aa873c09dabddf35da2dea460b22846cc70a8e63acd"
+    },
+    "diagnosing-experiment-results": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-experiment-results/SKILL.md",
+      "computedHash": "f1ce0935e6b0506bc6576b5f33e785540e2a6440e73abab9438406cc10644a3b"
+    },
+    "diagnosing-failed-warehouse-syncs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-failed-warehouse-syncs/SKILL.md",
+      "computedHash": "1b3621a745452279b23469f3511a5ca82a00505e90147acf58a71e390538f627"
+    },
+    "diagnosing-missing-recordings": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-missing-recordings/SKILL.md",
+      "computedHash": "083a281f8bb1615fc1daa8a45837284ca5d73831022cebe4b2d28638b5a6d9ad"
+    },
+    "diagnosing-sdk-health": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-sdk-health/SKILL.md",
+      "computedHash": "2d659054b19260f838b67adcf84733744632fb9b010673a8f1c888c585019e58"
+    },
+    "diagnosing-stacktrace-symbolication": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-stacktrace-symbolication/SKILL.md",
+      "computedHash": "497cb192b63a7592262aff72125b5ca24f3c7ffb58e49af226e8b9444f24d7b8"
+    },
+    "downloading-batch-export-files": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/downloading-batch-export-files/SKILL.md",
+      "computedHash": "8476c5158d0cbb38e9992121187f0f60aa78d8fd82bf259d9cfba8d4e42f8727"
+    },
+    "durable-objects": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/durable-objects/SKILL.md",
+      "computedHash": "c02fdc3bbf3cf892c3ab9e22c7c8dafc1db2275d02735389e7741c6b40da75ec"
+    },
+    "experiment-audit": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/impersonation-toolkit/SKILL.md",
+      "computedHash": "4f28b5e8baf75d943582fd39442ce976c01d89eebab77d4d510de02ee2d4cebe"
+    },
+    "exploring-ai-failures": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-ai-failures/SKILL.md",
+      "computedHash": "7128c6092e73ac705a0fe61574fc86b8c51dc7fdc88b5b339e99c4601ce1c595"
+    },
+    "exploring-apm-traces": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-apm-traces/SKILL.md",
+      "computedHash": "8793500967202f4be840843704ccd473894f84f5ab089d48d20058f07eb86aa7"
+    },
+    "exploring-autocapture-events": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-autocapture-events/SKILL.md",
+      "computedHash": "1254da112677a2db00ae4fd8a1e5b7abaa7977bd5d1c3d138471e1c911421928"
+    },
+    "exploring-endpoint-execution-logs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-endpoint-execution-logs/SKILL.md",
+      "computedHash": "438e40e096dbb9531415c8ca8d590e423e02c6c4fda49508c86058d7a3f8d921"
+    },
+    "exploring-live-traffic": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-live-traffic/SKILL.md",
+      "computedHash": "4d9438ca35e8644da51c28dcf6e42cb21b85d39bf382178e35764e4631aa97fe"
+    },
+    "exploring-llm-clusters": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-llm-clusters/SKILL.md",
+      "computedHash": "08a4daa57357d189f2a036d0b55f6c91c3f8c0964bba8c5321b06834a0ee0c0d"
+    },
+    "exploring-llm-costs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-llm-costs/SKILL.md",
+      "computedHash": "f0549165bb5ee712527133a0f7bf1f01d2f02fa6f2160b46a729ba8340b39b52"
+    },
+    "exploring-llm-evaluations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-llm-evaluations/SKILL.md",
+      "computedHash": "fbd98dbf93619c03f14e1e8772a8522ba0310cf8a4cf271abfc7267fda96d1d7"
+    },
+    "exploring-llm-traces": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-llm-traces/SKILL.md",
+      "computedHash": "0a8cf6f020f93392632505022d129ce760b80a7c5f14e80ee054290f6b8fbb29"
+    },
+    "exploring-mcp-intent-clusters": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-mcp-intent-clusters/SKILL.md",
+      "computedHash": "5e92d21db86bd45fb3bd751fe5a4693a1cef14fad117feb9a0c1a57d114bfd0e"
+    },
+    "exploring-mcp-sessions": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-mcp-sessions/SKILL.md",
+      "computedHash": "bf36f614ed4bb03ca3b0d28936ea7c0d9d3a78334da3a6eb4fc22462a89a83a5"
+    },
+    "exploring-mcp-tool-original-user-motive": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-mcp-tool-original-user-motive/SKILL.md",
+      "computedHash": "ecb1b793ab08cc04df7452d45b6a09276092a2a54bdec043f93fffb099669199"
+    },
+    "exploring-mcp-tool-quality": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-mcp-tool-quality/SKILL.md",
+      "computedHash": "b0fdef5717572f6ed40f86ea4e719d0e9f3d116421d9a052a5a9741cb0748034"
+    },
+    "exploring-mcp-tool-usage": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-mcp-tool-usage/SKILL.md",
+      "computedHash": "9f01a490d840f0a34ed4ac45e115df67761850943b69461a900c8b5fd0152cfa"
+    },
+    "exploring-replay-vision-observations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-replay-vision-observations/SKILL.md",
+      "computedHash": "675a6a51ed80938665294f0c25fc05e2afcd218870051ffa7dbaf3a2e2452a64"
+    },
+    "exploring-scouts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/exploring-scouts/SKILL.md",
+      "computedHash": "6a68c520f46d4ab1a36de77be3bdcb0675db74d709d5a1760db4897e015b0944"
+    },
+    "feature-usage-feed": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/feature-usage-feed/SKILL.md",
+      "computedHash": "44b73473b12b58e83ca25c1e53e2a179c4911994591531a34ee1891f950f11da"
+    },
+    "filtering-bot-traffic": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/filtering-bot-traffic/SKILL.md",
+      "computedHash": "aed0d8e1fcc9399f5a0b2b9b29d17e6a586d943ef064741c67b4a66d004b3632"
+    },
+    "finding-deleted-feature-flags": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/finding-deleted-feature-flags/SKILL.md",
+      "computedHash": "bc20edf04d28c9b39e26820cf0e4f7aa7caf639f5a8ae740cc81dc3879f542e4"
+    },
+    "finding-experiments": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/finding-experiments/SKILL.md",
+      "computedHash": "f90949702baa796405e63b5ff75e72b87d97b61d6a5a0aed3d5c984dd40c0d99"
+    },
+    "finding-replay-for-issue": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/finding-replay-for-issue/SKILL.md",
+      "computedHash": "2c034ba2d24dde89e1d529bc672aedb146dc4b52252cbff5bb56dfa32469dc81"
+    },
+    "finding-sessions-to-watch": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/finding-sessions-to-watch/SKILL.md",
+      "computedHash": "0158d1821f755383b32e2284f214a4f6a549fcbe57d18fe47740e8bb87d8e295"
+    },
+    "formatting-insight-axes": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/formatting-insight-axes/SKILL.md",
+      "computedHash": "298f211b5dfca1d0d1d063dc1064875196ad924a8797b355a042fda594986342"
+    },
+    "grouping-noisy-errors": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/grouping-noisy-errors/SKILL.md",
+      "computedHash": "5a8d217ff117a85244d1cfd06a6a8ff51563648f7babfcfb7ef9e095eb6ab02a"
+    },
+    "improving-mcp-tools": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/improving-mcp-tools/SKILL.md",
+      "computedHash": "182f35c520621cbe476a89d570485c5e9f234cf937cc476226ffdc2f3e59b143"
+    },
+    "inbox-exploration": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/inbox-exploration/SKILL.md",
+      "computedHash": "1e95105e80e6b0ed7504da83c05f4be30029e17b990519fca604ebeb6119800c"
+    },
+    "instrument-error-tracking": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-error-tracking/SKILL.md",
+      "computedHash": "8f82589c97d629d3ef82ee05af3a36038af49d41fd12ae6e9a4b3874da7f9f7e"
+    },
+    "instrument-feature-flags": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-feature-flags/SKILL.md",
+      "computedHash": "1ed99c3e2216d149658f202e6a293123039243548ef26f930ebbb77f6f5bd370"
+    },
+    "instrument-integration": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-integration/SKILL.md",
+      "computedHash": "4c763ade9c98178e842d3e7a6e996caf945987d6c463ce3d377e96eb9b779dd6"
+    },
+    "instrument-llm-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-llm-analytics/SKILL.md",
+      "computedHash": "748cc3361e40fd15f974acdcef6593dcdb7767511ddbc7cf1e29469b1253e2b8"
+    },
+    "instrument-logs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-logs/SKILL.md",
+      "computedHash": "e568f3468fb4f753135f6305a89651514a59feabc02948309d8af95bef1cbd7d"
+    },
+    "instrument-metrics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-metrics/SKILL.md",
+      "computedHash": "82380e025be7049da9d135c0f7c86644518cdeeca190c6340c25212b4ea3e6ef"
+    },
+    "instrument-product-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-product-analytics/SKILL.md",
+      "computedHash": "41a31f7a6d4e64fa18caa3a78c4a02aaf79848693fcfda7d5e83765fb65fb7e4"
+    },
+    "investigate-metric": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigate-metric/SKILL.md",
+      "computedHash": "8d5cb9e391a6896d2f2ddb7c7b283913af35a2a5f228c4afc6dbcc0a1da63ccd"
+    },
+    "investigating-ci-failures": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigating-ci-failures/SKILL.md",
+      "computedHash": "29226b412df40fbf9961d5d69ad6e38d86ad6566064c8980129e93dc632ed51c"
+    },
+    "investigating-error-issue": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigating-error-issue/SKILL.md",
+      "computedHash": "a1efa87d947c6fc8b00a3b330ebc95e3833e4a56486f86ad1d79879bf5ed930e"
+    },
+    "investigating-logs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigating-logs/SKILL.md",
+      "computedHash": "f868d9be345685b68a4ca4ef1d2049754c485b21d4861dbcdb6e4dcb228e3ce7"
+    },
+    "investigating-metric-anomalies": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigating-metric-anomalies/SKILL.md",
+      "computedHash": "607cfdb604c2a7216c4c289cd0b8032bc604a95a0383745ed962e40122bab777"
+    },
+    "investigating-replay": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/investigating-replay/SKILL.md",
+      "computedHash": "afe1e3be08b1e7ca9ae5631f302721dc1cb8b3a10e46e65cf5882e71fe8a04ec"
+    },
+    "managing-endpoint-versions": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-endpoint-versions/SKILL.md",
+      "computedHash": "71294de28ce453a6de12d3c778b2292f331c7902e4828be674a8d5cbe0de2834"
+    },
+    "managing-experiment-lifecycle": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-experiment-lifecycle/SKILL.md",
+      "computedHash": "8f761d89ae78b77bca03851ce7de701328470416d6c75e913dc017d193b1b22c"
+    },
+    "managing-path-cleaning-rules": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-path-cleaning-rules/SKILL.md",
+      "computedHash": "48edda4618211f79ded30e85e49a11a38034e79738e088c7c18f445acda846f5"
+    },
+    "managing-reminders": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-reminders/SKILL.md",
+      "computedHash": "4087109f67886d7bbbaa13db9cee78ab8df86ef7accc2849bc28041ed055e160"
+    },
+    "managing-streamlit-apps": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-streamlit-apps/SKILL.md",
+      "computedHash": "e016d3859b12fa99836153a77b6712f628321a81fbca75f2643830d0d5642126"
+    },
+    "managing-subscriptions": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/managing-subscriptions/SKILL.md",
+      "computedHash": "20c6dd08ca20d348a66047f630c6242032d60c67e109188c80f84108b24aa339"
+    },
+    "modeling-activation-metrics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-activation-metrics/SKILL.md",
+      "computedHash": "364d1e35b9eefb9a9e8f48272acba3f4766e4bb5475def0e69feabf8d3e7705e"
+    },
+    "modeling-conversion-metrics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-conversion-metrics/SKILL.md",
+      "computedHash": "c61ec24004274993ecf38f49267f56ff6ebdc4d7e6c69ce5629720799d9015bc"
+    },
+    "modeling-dimension-tables": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-dimension-tables/SKILL.md",
+      "computedHash": "accb5d12b22a7f9ac375c757acabd729d74d6359f0c3c022067fcbaca6ef0f08"
+    },
+    "modeling-product-usage-metrics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-product-usage-metrics/SKILL.md",
+      "computedHash": "8a3f057c3ab6c32b8813da8afb90493b3f694a0ff8ebb83eab834827cc4a3ec6"
+    },
+    "modeling-revenue-metrics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-revenue-metrics/SKILL.md",
+      "computedHash": "581d2e3890dbef9c3ddaf8aa11aec7c9ddc46ce627c4adf52ee81e5d54df4858"
+    },
+    "modeling-warehouse-foundations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/modeling-warehouse-foundations/SKILL.md",
+      "computedHash": "fa67da1c9af61f4ec7cb8fc97c0a19d7f1edfd66bf1fe9a2f36c9520a56da56e"
+    },
+    "monthly-to-annual": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/monthly-to-annual/SKILL.md",
+      "computedHash": "3d70756f1f0f3a0728365756f7e078d4322576321c1c87bbdaa752b685a6cfe3"
+    },
+    "nextjs-on-cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/nextjs-on-cloudflare/SKILL.md",
+      "computedHash": "147a520df69289f72b619b0594da288ca659986aade5d8556912cfd3a8b465c0"
+    },
+    "organizing-conversations-code": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/organizing-conversations-code/SKILL.md",
+      "computedHash": "1283f2ce113be56875a7f76350c92cc806db7161c9c5aa10e8d8615a117d6339"
+    },
+    "planning-voice-agent-user-interviews": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/planning-voice-agent-user-interviews/SKILL.md",
+      "computedHash": "50e3f0927c2c8b55fab06547a6e6f921002f0c1d69eb3c7cc69615e46cb98ad2"
+    },
+    "posthog-customer-deep-dive": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/onboarding/posthog-customer-deep-dive/SKILL.md",
+      "computedHash": "e90c739d42ef8b92f19bffc9a671391c6692b6fabad2e22ff5cce34303d48e1a"
+    },
+    "posthog-debugger": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/posthog-debugger/SKILL.md",
+      "computedHash": "cdc1953a781d227e1bf3bdca46938e601650c83173eb3d59be2c475cf995f54a"
+    },
+    "posthog-inbound-leads": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/new-business-sales/inbound-lead/SKILL.md",
+      "computedHash": "9319e910f533b5d275a2f16b4837becf71895806db3f37138a66f339160ce074"
+    },
+    "posthog-instrumentation": {
+      "source": "posthog/posthog-for-claude",
+      "sourceType": "github",
+      "skillPath": "skills/posthog-instrumentation/SKILL.md",
+      "computedHash": "2651cf543b937bec0e08d50486e13ed3176ccd285477738d3edb47c356eeeac9"
+    },
+    "posthog-onboarding": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/posthog-onboarding/SKILL.md",
+      "computedHash": "6c07baf17b94e2adf690c1881a5f10a1e5c9c4f69e2389da6bc09f7edc53a78e"
+    },
+    "posthog-onboarding-lead-research": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/new-business-sales/onboarding-lead/SKILL.md",
+      "computedHash": "c18fc9a5451ee4868e8ebb781fbaa7177f3904de0e66bf0fd5d1b4c20e86d0c4"
+    },
+    "posthog-pls-big-fish": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/new-business-sales/big-fish-lead/SKILL.md",
+      "computedHash": "1302d4830f44c3470782a6e6480117d7b3e84f1c5bf61788983915b07d6c6a8b"
+    },
+    "posthog-pls-transition-leads": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/new-business-sales/transition-leads/SKILL.md",
+      "computedHash": "4789cc8bad72ada9903254c3712b85dd0a1b5c67b7d162e55ff1af6ea0e9ac96"
+    },
+    "posthog-survey-creator": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/posthog-survey-creator/SKILL.md",
+      "computedHash": "a18a90a6e67eeef1bba4533507542d13cfa2bd40c03b5c15ba9b1a826cfa45f7"
+    },
+    "querying-canvas-data": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/querying-canvas-data/SKILL.md",
+      "computedHash": "cc28355178ec31eed05cf9bf594b1184c07d030be508b9912323d835d85217b7"
+    },
+    "querying-posthog-data": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/querying-posthog-data/SKILL.md",
+      "computedHash": "bd4f1af853bfcf364f4e2bd065edbc83a7e16ea9ae35e8879e2e46e50d5165ea"
+    },
+    "resolving-ingestion-warnings": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/resolving-ingestion-warnings/SKILL.md",
+      "computedHash": "1fd2d20a242c66e54a4ef360c673ec38ce9556ea21b964c4e76a776d5abc831c"
+    },
+    "review-hog-authoring": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-authoring/SKILL.md",
+      "computedHash": "6d141767c724a1a55cbf168330173f8d7fe7ba596241f5c899943ec9187d1e30"
+    },
+    "review-hog-blind-spots-general": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-blind-spots-general/SKILL.md",
+      "computedHash": "593bc62ce5f146196181fc29deac0fc5ce2b63cdc5afdbffc4ad8d266058b446"
+    },
+    "review-hog-perspective-contracts-security": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-perspective-contracts-security/SKILL.md",
+      "computedHash": "d0cdb44f0c476d475bacb9765ba4b6a298dc7c721bf4e60e05e56a2e94dc6717"
+    },
+    "review-hog-perspective-logic-correctness": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-perspective-logic-correctness/SKILL.md",
+      "computedHash": "5d3af0793e34701305457523c79732087557dea774cc51a8806fa0eea84c1ffa"
+    },
+    "review-hog-perspective-performance-reliability": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-perspective-performance-reliability/SKILL.md",
+      "computedHash": "17f22c4330e1cbcc190ef7f555b55c99f181f8163b9e83670b0555e96ddfa1eb"
+    },
+    "review-hog-resolution-criteria": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-resolution-criteria/SKILL.md",
+      "computedHash": "84393bc52ad78b21857a4b0cce5ec7ef27a6762fdbe8bbd23006fab978077851"
+    },
+    "review-hog-validation-criteria": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/review-hog-validation-criteria/SKILL.md",
+      "computedHash": "a770c405aa5477f282b76f3f964c90beffd8125ad0014dae921766aa56ef23a2"
+    },
+    "sandbox-migrate-to-next": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sandbox-migrate-to-next/SKILL.md",
+      "computedHash": "4e3e16553521a4c4e421220bcc562f76f3f32a8963c3dd2d042837f01855e572"
+    },
+    "sandbox-next": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sandbox-next/SKILL.md",
+      "computedHash": "f268b1cc44d141176c8dd11a76f3a2dab02f7a7a2098ed0ceabb949c839e5f11"
+    },
+    "sandbox-stable": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/sandbox-stable/SKILL.md",
+      "computedHash": "e63fce16e4a67d796689891263a3083aa34e747573a2787e4cfa5af9a2e85c32"
+    },
+    "scanning-experiments-with-replay-vision": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/scanning-experiments-with-replay-vision/SKILL.md",
+      "computedHash": "f2ba8fcb6f08c4f59384c51a3e231b96770e27d2da1a85d1c1dd6f414c712ad4"
+    },
+    "setting-up-a-custom-rest-source": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/setting-up-a-custom-rest-source/SKILL.md",
+      "computedHash": "13f16b507f15fe997b6dbb799d7e87d06fdf6bd1286c35aa9c6d8fbb42030c2c"
+    },
+    "setting-up-a-data-warehouse-source": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/setting-up-a-data-warehouse-source/SKILL.md",
+      "computedHash": "5268c880c62d274bbd46b6f1ada982c6b5f4155af2670fef55e8a44bb329434b"
+    },
+    "setting-up-data-catalog": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/setting-up-data-catalog/SKILL.md",
+      "computedHash": "069303ded810e3721ca852c7063baf54934dd5f83b056cd037b7b4d80d07646f"
+    },
+    "setting-up-support-slack-locally": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/setting-up-support-slack-locally/SKILL.md",
+      "computedHash": "9377f3fbec7286495da81bea48eecdee1b7eafcd269a9a282ef74e7e7de8dc8e"
+    },
+    "setting-up-warehouse-properties": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/setting-up-warehouse-properties/SKILL.md",
+      "computedHash": "84f736a4740fc1bf40e4ca2a05cc7d73405fe42c9ffc342c655f2d771ad107fa"
+    },
+    "signals": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals/SKILL.md",
+      "computedHash": "dd237652f26a2aab5bd68c5dae8407c7678f0bc075d44fa1a60d5f52a92d55b1"
+    },
+    "signals-scout-ai-observability": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-ai-observability/SKILL.md",
+      "computedHash": "8287aff7cf121c4e814884f38b64bdfd0128c1ceeb35b7f528e71d93ed9eb6d3"
+    },
+    "signals-scout-anomaly-detection": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-anomaly-detection/SKILL.md",
+      "computedHash": "ad9db1dc2fda34f7e9432724c4638913cdd02fe4b1bd60b71a0e18642a06b96c"
+    },
+    "signals-scout-apm": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-apm/SKILL.md",
+      "computedHash": "3b596f37c52d5804ef5d5240becedcb32c9dea1215b425bfcd202f638653d0ae"
+    },
+    "signals-scout-conversations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-conversations/SKILL.md",
+      "computedHash": "f2925fe4f6715761024768fbb558b080ab73cef4d53824c38e73fc55b4d09c3a"
+    },
+    "signals-scout-csp-violations": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-csp-violations/SKILL.md",
+      "computedHash": "768a242601cc9dde22ecdbf6741b185280e5402b5d6e70915490784667242e4c"
+    },
+    "signals-scout-customer-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-customer-analytics/SKILL.md",
+      "computedHash": "100b9fe98983de3d6fabde7f5f4dfcc42a5ffe2829a1c555395842f4fd007182"
+    },
+    "signals-scout-customer-analytics-billing-and-usage": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-customer-analytics-billing-and-usage/SKILL.md",
+      "computedHash": "ce3865d022da97dbf258ffd9e32de5f40e6cff856413abdf16a45d8fb8bc5ee4"
+    },
+    "signals-scout-data-pipelines": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-data-pipelines/SKILL.md",
+      "computedHash": "9d058ec4421588196cf6f9e19616aa03c0a500a0660ea010d5cf02117e497ae4"
+    },
+    "signals-scout-data-warehouse": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-data-warehouse/SKILL.md",
+      "computedHash": "7f1ec8630eb34fa6d3d5cdc6980781edcad9b9a3d5b07895be83896682dd47fe"
+    },
+    "signals-scout-error-tracking": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-error-tracking/SKILL.md",
+      "computedHash": "409853130fffa69fbb2673905d5a0326955d040a2dc597aa7187f2ffabf5168f"
+    },
+    "signals-scout-experiments": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-experiments/SKILL.md",
+      "computedHash": "f9878e74d245b87065be78b62f4facd0b3148a8b4de6ef5d016f070c11a76f3d"
+    },
+    "signals-scout-feature-flags": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-feature-flags/SKILL.md",
+      "computedHash": "ff8496f28648ed292672b122f4a39be235f2f8e035ea39716a660c1b44502c9c"
+    },
+    "signals-scout-general": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-general/SKILL.md",
+      "computedHash": "65c766e81d74e955df0949ce270774113a3c1561ee3dacb0964f4488c96544ff"
+    },
+    "signals-scout-health-checks": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-health-checks/SKILL.md",
+      "computedHash": "8bbfbc7556810d5d2bfd419a4522ee35125a955ab6502ca7b64050965c381461"
+    },
+    "signals-scout-inbox-validation": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-inbox-validation/SKILL.md",
+      "computedHash": "6c14d15eeca80a26a8d2162eecb43e04b1978792fbed63d8bc067c6b050b8c97"
+    },
+    "signals-scout-insight-alerts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-insight-alerts/SKILL.md",
+      "computedHash": "8847354ceb7c6b56775ee4d7586705382bc226b8370319a19d5173c7342f9afb"
+    },
+    "signals-scout-logs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-logs/SKILL.md",
+      "computedHash": "df2ab643cd764651df7e263098c41cfeee4080c45dd8fa374ac0ec69c31c5ebe"
+    },
+    "signals-scout-mcp-tool-calls": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-mcp-tool-calls/SKILL.md",
+      "computedHash": "f8757d1a23b4589768f66af2ef06caac952a5f67da36ed51c5515b3930a8ebe2"
+    },
+    "signals-scout-observability-gaps": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-observability-gaps/SKILL.md",
+      "computedHash": "62ba7292a8211ce7a4aa30e2caa53474c08827e30c6adff4cd4bcceba74bf277"
+    },
+    "signals-scout-product-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-product-analytics/SKILL.md",
+      "computedHash": "f35e5dc3af49261d7a5befbbfcadb30cd10df8a9f9684caef012c99fbf5d5fcc"
+    },
+    "signals-scout-replay-vision": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-replay-vision/SKILL.md",
+      "computedHash": "c510c4167e00477a6a92a9e0aa2701c4d5b45c7254809a3b254da17db42f20c3"
+    },
+    "signals-scout-revenue-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-revenue-analytics/SKILL.md",
+      "computedHash": "8aee7243a728a819194dc7be9ab5fcb613bec18ebe674c4575e9a85df638ada5"
+    },
+    "signals-scout-session-replay": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-session-replay/SKILL.md",
+      "computedHash": "16fdd680b6dbc43e6787199e11e2c233b7f831e2448f0ac5dc907d1a80a80686"
+    },
+    "signals-scout-skills-store": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-skills-store/SKILL.md",
+      "computedHash": "0e6e5bdb853cf5bd9d8f2b26415ca57b1fdddc6458e6da68d26f31f3d49a8160"
+    },
+    "signals-scout-surveys": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-surveys/SKILL.md",
+      "computedHash": "c097af5912696876c71f12e315aedb45d4b8c6aa7a220c9154cdf98d9621efcb"
+    },
+    "signals-scout-tasks": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-tasks/SKILL.md",
+      "computedHash": "a2f27e93a6bb96abfd6ea9a3da04f6f9e3f714355ba574e7adaf72cb20a2745d"
+    },
+    "signals-scout-web-analytics": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-web-analytics/SKILL.md",
+      "computedHash": "6c2fb716a444dd500056849e23a1b36feea0d75ffa81e3c7a7b2982e084cc2b3"
+    },
+    "signals-scout-web-vitals": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/signals-scout-web-vitals/SKILL.md",
+      "computedHash": "592a571493fe15514244f584b72131ad6d632deb122505c3b92b3920ac25b341"
+    },
+    "skills-store": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/skills-store/SKILL.md",
+      "computedHash": "2cc908772e159e4564fa3fcdab1100d0e0fd3ebdfd6850b90c4bdbd508d48e54"
+    },
+    "suggesting-data-imports": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/suggesting-data-imports/SKILL.md",
+      "computedHash": "7e04d5da0c227f0b3543347e0abf928d3037faa424a532ef39b93dbb8281713a"
+    },
+    "suggesting-path-cleaning-rules": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/suggesting-path-cleaning-rules/SKILL.md",
+      "computedHash": "f1a3a5a36ebe8822ee11a87ddddbf6b8254847c7d94daba76a349c56507e5fe6"
+    },
+    "suppressing-noisy-errors": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/suppressing-noisy-errors/SKILL.md",
+      "computedHash": "70c7916209ef171da96ad1e87c1992cbce7b2bd4c61e7e82b6a100d8c4dae6c9"
+    },
+    "testing-mcp-tools-locally": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/testing-mcp-tools-locally/SKILL.md",
+      "computedHash": "a2d226dad7e8c6ccf501c3d317ebb70bd70ac424c19a1f1214523fc0876cb126"
+    },
+    "triaging-error-issues": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/triaging-error-issues/SKILL.md",
+      "computedHash": "98676c770121bf98ae5f090b6b0b42fce9bfb73aa666fa78d316674e4c2b42af"
+    },
+    "triaging-visual-review-runs": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/triaging-visual-review-runs/SKILL.md",
+      "computedHash": "d742129765957a9c5934412768c0e3b5c420f9faf2324d81aa8df982414b8a2b"
+    },
+    "tuning-incremental-sync-config": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/tuning-incremental-sync-config/SKILL.md",
+      "computedHash": "2251488094091caad1d5f097ea655fb11f6591d998b57b532262fa0416d5e5b3"
+    },
+    "turning-engineering-analytics-into-insights": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/turning-engineering-analytics-into-insights/SKILL.md",
+      "computedHash": "4a75d6570b615d5e6bd5b636c7f1dd721fddfed6f50da22ccabfbfa486afc14e"
+    },
+    "turnstile-spin": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/turnstile-spin/SKILL.md",
+      "computedHash": "3fb5f9c7edd4cbe608de00848adfaa35f5dd4b809c98a86c4cda19176de92aa1"
+    },
+    "understanding-billing-usage": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/understanding-billing-usage/SKILL.md",
+      "computedHash": "8edd6a9da2adeb353f45f599f84b1b2562435af03611773e4de7bd88ad7ab110"
+    },
+    "user-deep-dive": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/user-deep-dive/SKILL.md",
+      "computedHash": "7151e0975cd6d7dc043fc8cf8360a542b912e87a177da878f9c1789850e5aed7"
+    },
+    "validating-and-publishing-canvases": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/validating-and-publishing-canvases/SKILL.md",
+      "computedHash": "45513804a59f38315ec3b36b8f687556c63a583b65c7b5d42242da2315d68d20"
+    },
+    "web-perf": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-perf/SKILL.md",
+      "computedHash": "603b94fca24096cc1d3063c3e70eca8d0cc3eb63467bcf7ddc0a95d21133d128"
+    },
+    "workers-best-practices": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/workers-best-practices/SKILL.md",
+      "computedHash": "7764ccc81dca3f9b4289817879464608eb1bd73cd607347d43ab5c1697a4b707"
+    },
+    "working-with-scouts": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/working-with-scouts/SKILL.md",
+      "computedHash": "215c35609d1b669d2497f0b0981e32f7beab47b65e82dfb15a6290ede800f988"
+    },
+    "working-with-skills": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/working-with-skills/SKILL.md",
+      "computedHash": "a0319a83661e73b3b60bdf6ea7593bacc03ea361327fa41c535dd1380e1a4021"
+    },
+    "working-with-task-comments": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/working-with-task-comments/SKILL.md",
+      "computedHash": "011f6a55b15145eb41416ef82cf7b8a113239eaaccfa30f29d6efb696ecc2f3e"
+    },
+    "workload-analysis": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/team/customer-success/workload-analysis/SKILL.md",
+      "computedHash": "a45ef00f08fc4d3e834f6f3652c13389912d226368f4db5b2c11860643c85b12"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "computedHash": "e8941496be15abe536e4d73fa34aed0850a47b743f9a588f33fba7665db11d67"
+    },
+    "writing-simplified-technical-english": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/writing-simplified-technical-english/SKILL.md",
+      "computedHash": "3d40b703dad81222b9e88056ae154172e23336632a0580347a65e24557ee5427"
+    },
+    "writing-streamlit-apps": {
+      "source": "posthog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/writing-streamlit-apps/SKILL.md",
+      "computedHash": "e819681773dbeb5a097001889b94e944f62fce62cd9ae27c7671a1d50646608b"
+    }
+  }
+}
