@@ -1,4 +1,0 @@
-# Cloudflare Pages Redirects & Proxies
-# PostHog First-Party Reverse Proxy (bypasses adblockers and guarantees first-party cookie privacy)
-/ingest/static/*  https://us-assets.i.posthog.com/static/:splat  200
-/ingest/*         https://us.i.posthog.com/:splat                200
