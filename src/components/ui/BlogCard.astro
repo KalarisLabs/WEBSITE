@@ -24,8 +24,8 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 });
 ---
 
-<article class="blog-card group flex flex-col h-full bg-neutral-900/60 border border-neutral-800 rounded-xl overflow-hidden hover:border-neutral-700 transition-all duration-300 hover:shadow-xl hover:shadow-black/50">
-  <a href={`/blogs/${slug}`} class="block overflow-hidden relative aspect-[16/10] bg-neutral-950 border-b border-neutral-800">
+<article class="blog-card group flex flex-col h-full bg-white border border-[#E5E7EB] rounded-xl overflow-hidden hover:border-[#D1D5DB] transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/60">
+  <a href={`/blogs/${slug}`} class="block overflow-hidden relative aspect-[16/10] bg-[#F8F9FA] border-b border-[#E5E7EB]">
     {image ? (
       <img
         src={image}
@@ -35,16 +35,16 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
         decoding="async"
       />
     ) : (
-      <div class="w-full h-full bg-gradient-to-br from-[#061c14] via-[#0b2b20] to-[#12382b] flex items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.03] transition-transform duration-500 ease-out">
+      <div class="w-full h-full bg-gradient-to-br from-[#0B3B2C] via-[#143B30] to-[#1B4D3E] flex items-center justify-center p-6 text-center relative overflow-hidden group-hover:scale-[1.03] transition-transform duration-500 ease-out">
         <div class="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.35)_0%,transparent_70%)] pointer-events-none"></div>
-        <div class="absolute -right-8 -bottom-8 w-32 h-32 border border-emerald-500/20 rounded-full pointer-events-none"></div>
-        <div class="absolute -left-6 -top-6 w-24 h-24 border border-emerald-400/15 rounded-full pointer-events-none"></div>
+        <div class="absolute -right-8 -bottom-8 w-32 h-32 border border-white/20 rounded-full pointer-events-none"></div>
+        <div class="absolute -left-6 -top-6 w-24 h-24 border border-white/15 rounded-full pointer-events-none"></div>
         
-        <div class="relative z-10 px-4 py-2.5 rounded-lg backdrop-blur-sm bg-black/40 border border-white/15 shadow-md max-w-[88%]">
+        <div class="relative z-10 px-4 py-2.5 rounded-lg backdrop-blur-sm bg-black/35 border border-white/15 shadow-md max-w-[88%]">
           <span class="font-sans font-bold text-sm sm:text-base text-white tracking-tight drop-shadow-sm line-clamp-2 leading-snug block">
             {title}
           </span>
-          <span class="font-mono text-[10px] text-emerald-400 uppercase tracking-wider mt-1.5 block font-medium">
+          <span class="font-mono text-[10px] text-emerald-300 uppercase tracking-wider mt-1.5 block font-medium">
             Kalaris Research // {category}
           </span>
         </div>
@@ -54,23 +54,23 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
   <div class="flex flex-col flex-1 p-5">
     <!-- Meta row: Date · Category -->
-    <div class="flex items-center gap-1.5 text-xs font-mono text-neutral-400 mb-2.5">
+    <div class="flex items-center gap-1.5 text-xs font-mono text-[#6B7280] mb-2.5">
       <time datetime={pubDate.toISOString()}>{formattedDate}</time>
-      <span class="text-neutral-600">·</span>
-      <span class="text-emerald-400 font-medium px-2 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/50 text-[11px]">
+      <span class="text-[#D1D5DB]">·</span>
+      <span class="text-[#1B4D3E] font-medium px-2 py-0.5 rounded-full bg-[#EAF2ED] border border-[#C5DBCF] text-[11px]">
         {category}
       </span>
     </div>
 
     <!-- Title -->
-    <h3 class="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors leading-snug line-clamp-2 mb-2.5 m-0">
-      <a href={`/blogs/${slug}`} class="no-underline text-white group-hover:text-emerald-400 transition-colors">
+    <h3 class="text-lg font-bold text-[#111827] group-hover:text-[#1B4D3E] transition-colors leading-snug line-clamp-2 mb-2.5 m-0">
+      <a href={`/blogs/${slug}`} class="no-underline text-[#111827] group-hover:text-[#1B4D3E] transition-colors">
         {title}
       </a>
     </h3>
 
     {description && (
-      <p class="text-sm text-neutral-300 line-clamp-2 leading-relaxed m-0 mt-auto pt-1">
+      <p class="text-sm text-[#4B5563] line-clamp-2 leading-relaxed m-0 mt-auto pt-1">
         {description}
       </p>
     )}

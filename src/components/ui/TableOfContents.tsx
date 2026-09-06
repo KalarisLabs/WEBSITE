@@ -42,10 +42,10 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   return (
     <nav className="flex flex-col gap-3 font-sans" aria-label="Table of contents">
-      <h4 className="text-[11px] font-mono uppercase tracking-wider text-neutral-400 font-semibold m-0">
+      <h4 className="text-[11px] font-mono uppercase tracking-wider text-[#6B7280] font-semibold m-0">
         On this page
       </h4>
-      <div className="flex flex-col gap-1 border-l border-neutral-800/80 pl-3">
+      <div className="flex flex-col gap-1 border-l border-[#E5E7EB] pl-3">
         {headings.map((heading) => {
           const isActive = activeSlug === heading.slug;
           return (
@@ -66,8 +66,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                 heading.depth === 3 ? 'pl-3' : ''
               } ${
                 isActive
-                  ? 'text-white font-medium -ml-[13px] pl-3 border-l-2 border-[#1B4D3E] text-emerald-400'
-                  : 'text-neutral-400 hover:text-neutral-200'
+                  ? 'text-[#1B4D3E] font-semibold -ml-[13px] pl-3 border-l-2 border-[#1B4D3E]'
+                  : 'text-[#4B5563] hover:text-[#111827]'
               }`}
             >
               {heading.text}

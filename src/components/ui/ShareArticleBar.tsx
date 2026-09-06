@@ -62,7 +62,7 @@ export default function ShareArticleBar({ title, url }: ShareArticleBarProps) {
   return (
     <Tooltip.Provider delayDuration={150}>
       <div className="flex flex-col gap-2.5">
-        <span className="text-[10px] tracking-wider uppercase text-neutral-400 font-mono font-semibold">
+        <span className="text-[10px] tracking-wider uppercase text-[#6B7280] font-mono font-semibold">
           Share this article
         </span>
         <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ export default function ShareArticleBar({ title, url }: ShareArticleBarProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`Share on ${link.name}`}
-                  className="w-8 h-8 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 hover:bg-neutral-800 flex items-center justify-center transition-colors"
+                  className="w-8 h-8 rounded-full bg-white border border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] hover:border-[#D1D5DB] hover:bg-[#F9FAFB] flex items-center justify-center transition-colors shadow-xs"
                 >
                   {link.icon}
                 </a>
@@ -83,10 +83,10 @@ export default function ShareArticleBar({ title, url }: ShareArticleBarProps) {
                 <Tooltip.Content
                   side="bottom"
                   sideOffset={6}
-                  className="z-50 px-2 py-1 text-[11px] font-mono text-neutral-200 bg-neutral-950 border border-neutral-800 rounded shadow-md animate-in fade-in-0 zoom-in-95"
+                  className="z-50 px-2 py-1 text-[11px] font-mono text-white bg-[#111827] border border-[#374151] rounded shadow-md animate-in fade-in-0 zoom-in-95"
                 >
                   Share on {link.name}
-                  <Tooltip.Arrow className="fill-neutral-950" />
+                  <Tooltip.Arrow className="fill-[#111827]" />
                 </Tooltip.Content>
               </Tooltip.Portal>
             </Tooltip.Root>
@@ -99,10 +99,10 @@ export default function ShareArticleBar({ title, url }: ShareArticleBarProps) {
                 type="button"
                 onClick={handleCopy}
                 aria-label="Copy link to article"
-                className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+                className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer shadow-xs ${
                   copied
                     ? 'bg-[#1B4D3E] border-[#1B4D3E] text-white'
-                    : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 hover:bg-neutral-800'
+                    : 'bg-white border-[#E5E7EB] text-[#4B5563] hover:text-[#111827] hover:border-[#D1D5DB] hover:bg-[#F9FAFB]'
                 }`}
               >
                 {copied ? (
@@ -121,10 +121,10 @@ export default function ShareArticleBar({ title, url }: ShareArticleBarProps) {
               <Tooltip.Content
                 side="bottom"
                 sideOffset={6}
-                className="z-50 px-2 py-1 text-[11px] font-mono text-neutral-200 bg-neutral-950 border border-neutral-800 rounded shadow-md animate-in fade-in-0 zoom-in-95"
+                className="z-50 px-2 py-1 text-[11px] font-mono text-white bg-[#111827] border border-[#374151] rounded shadow-md animate-in fade-in-0 zoom-in-95"
               >
                 {copied ? 'Link copied!' : 'Copy link'}
-                <Tooltip.Arrow className="fill-neutral-950" />
+                <Tooltip.Arrow className="fill-[#111827]" />
               </Tooltip.Content>
             </Tooltip.Portal>
           </Tooltip.Root>

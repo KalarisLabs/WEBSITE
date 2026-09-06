@@ -383,9 +383,9 @@ blockquote {
   }
 }
 
-/* High-Contrast Scientific Article Markdown Reader */
+/* Scientific Article Markdown Reader - Light Editorial Aesthetic */
 .prose-kalaris {
-  color: #d1d5db; /* neutral-300 */
+  color: #374151; /* gray-700 */
   font-family: var(--font-sans);
   font-size: 1.0625rem;
   line-height: 1.8;
@@ -397,7 +397,7 @@ blockquote {
 .prose-kalaris h4,
 .prose-kalaris h5,
 .prose-kalaris h6 {
-  color: #ffffff !important;
+  color: #111827 !important; /* dark ink */
   font-weight: 700;
   letter-spacing: -0.025em;
   scroll-margin-top: 6rem;
@@ -408,7 +408,7 @@ blockquote {
   margin-top: 2.75rem;
   margin-bottom: 1.25rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .prose-kalaris h3 {
@@ -419,30 +419,31 @@ blockquote {
 
 .prose-kalaris p {
   margin-bottom: 1.5rem;
-  color: #d1d5db;
+  color: #374151;
   line-height: 1.8;
 }
 
 .prose-kalaris strong {
-  color: #ffffff;
+  color: #111827;
   font-weight: 600;
 }
 
 .prose-kalaris a {
-  color: #34d399; /* emerald-400 */
+  color: #1B4D3E; /* kalari-green */
+  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .prose-kalaris a:hover {
-  color: #6ee7b7; /* emerald-300 */
+  color: #143B30;
 }
 
 .prose-kalaris ul,
 .prose-kalaris ol {
   margin-block: 1.25rem;
   padding-left: 1.5rem;
-  color: #d1d5db;
+  color: #374151;
 }
 
 .prose-kalaris li {
@@ -453,21 +454,21 @@ blockquote {
 .prose-kalaris blockquote {
   margin-block: 2rem;
   padding: 1rem 1.25rem;
-  border-left: 3px solid #10b981;
-  background: rgba(16, 185, 129, 0.06);
+  border-left: 3px solid #1B4D3E;
+  background: #F8F9FA;
   border-radius: 0 8px 8px 0;
-  color: #e5e7eb;
+  color: #374151;
   font-style: italic;
 }
 
 .prose-kalaris blockquote strong {
-  color: #34d399;
+  color: #1B4D3E;
   font-style: normal;
 }
 
 .prose-kalaris pre {
-  background-color: #0d1117;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: #0F172A;
+  border: 1px solid #E2E8F0;
   border-radius: 8px;
   padding: 1.25rem;
   margin-block: 1.75rem;
@@ -475,21 +476,22 @@ blockquote {
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.6;
-  color: #34d399;
+  color: #34D399;
 }
 
 .prose-kalaris code:not(pre code) {
-  background: rgba(255, 255, 255, 0.08);
-  color: #6ee7b7;
-  padding: 0.2rem 0.4rem;
+  background: #EAF2ED;
+  color: #1B4D3E;
+  padding: 0.2rem 0.45rem;
   border-radius: 4px;
   font-family: var(--font-mono);
   font-size: 0.875em;
+  font-weight: 500;
 }
 
 .prose-kalaris hr {
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #E5E7EB;
   margin-block: 2.5rem;
 }
 
@@ -501,21 +503,22 @@ blockquote {
 }
 
 .prose-kalaris th {
-  background: rgba(255, 255, 255, 0.04);
-  color: #ffffff;
+  background: #F9FAFB;
+  color: #111827;
   font-weight: 600;
   text-align: left;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 2px solid #E5E7EB;
 }
 
 .prose-kalaris td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  color: #d1d5db;
+  border-bottom: 1px solid #E5E7EB;
+  color: #374151;
 }
 
 .prose-kalaris tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: #F9FAFB;
 }
+
 

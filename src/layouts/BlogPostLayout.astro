@@ -112,14 +112,14 @@ const breadcrumbsSchema = {
 >
   <Header currentPath="/blogs" />
 
-  <main id="main-content" class="min-h-screen bg-black text-neutral-100 pt-8 pb-20 px-4 sm:px-6 lg:px-8">
+  <main id="main-content" class="min-h-screen bg-white text-[#111827] pt-8 pb-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
       
       <!-- Back Link & Breadcrumb Nav -->
       <nav aria-label="Breadcrumb" class="mb-6">
         <a
           href="/blogs"
-          class="inline-flex items-center gap-1 text-xs font-mono text-neutral-400 hover:text-white transition-colors no-underline group"
+          class="inline-flex items-center gap-1 text-xs font-mono text-[#6B7280] hover:text-[#111827] transition-colors no-underline group"
         >
           <span class="group-hover:-translate-x-1 transition-transform">←</span>
           <span>Back to all articles</span>
@@ -129,24 +129,24 @@ const breadcrumbsSchema = {
       <!-- 1. Top Article Header: Large H1 + Publication / Update Timestamps (Reference 2) -->
       <header class="mb-10 max-w-4xl">
         <div class="flex items-center gap-2 mb-3">
-          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-[#1B4D3E]/30 text-emerald-300 border border-[#1B4D3E]/60">
+          <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-[#EAF2ED] text-[#1B4D3E] border border-[#C5DBCF]">
             {category}
           </span>
           {readingTime && (
-            <span class="text-xs font-mono text-neutral-400">· {readingTime}</span>
+            <span class="text-xs font-mono text-[#6B7280]">· {readingTime}</span>
           )}
         </div>
 
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold tracking-tight text-white leading-[1.12] mb-4">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-bold tracking-tight text-[#111827] leading-[1.12] mb-4">
           {title}
         </h1>
 
-        <div class="text-[11px] sm:text-xs font-mono tracking-wider uppercase text-neutral-400 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <div class="text-[11px] sm:text-xs font-mono tracking-wider uppercase text-[#6B7280] flex flex-wrap items-center gap-x-2 gap-y-1">
           <span>PUBLISHED {formattedPubDate}</span>
           {formattedUpdatedDate && (
             <>
-              <span class="text-neutral-600">/</span>
-              <span class="text-neutral-300">UPDATED {formattedUpdatedDate}</span>
+              <span class="text-[#D1D5DB]">/</span>
+              <span class="text-[#4B5563]">UPDATED {formattedUpdatedDate}</span>
             </>
           )}
         </div>
@@ -164,26 +164,26 @@ const breadcrumbsSchema = {
                 <img
                   src={authorAvatar}
                   alt={author}
-                  class="w-11 h-11 rounded-full object-cover border border-neutral-700 bg-neutral-800"
+                  class="w-11 h-11 rounded-full object-cover border border-[#E5E7EB] bg-[#F8F9FA]"
                   loading="lazy"
                 />
               ) : (
-                <div class="w-11 h-11 rounded-full bg-[#1B4D3E] text-white font-mono font-bold text-sm flex items-center justify-center border border-emerald-500/40">
+                <div class="w-11 h-11 rounded-full bg-[#1B4D3E] text-white font-mono font-bold text-sm flex items-center justify-center border border-[#1B4D3E]">
                   {author.slice(0, 2).toUpperCase()}
                 </div>
               )}
               <div class="flex flex-col">
-                <span class="text-sm font-semibold text-neutral-100 leading-snug">
+                <span class="text-sm font-semibold text-[#111827] leading-snug">
                   {author}
                 </span>
-                <span class="text-xs text-neutral-400 leading-tight">
+                <span class="text-xs text-[#6B7280] leading-tight">
                   {authorRole}
                 </span>
               </div>
             </div>
 
             <!-- Social Share Links with Tooltip & Copy Link -->
-            <div class="pt-2 border-t border-neutral-800/80">
+            <div class="pt-2 border-t border-[#E5E7EB]">
               <ShareArticleBar client:load title={title} />
             </div>
           </div>
@@ -193,7 +193,7 @@ const breadcrumbsSchema = {
         <article class="lg:col-span-7 col-span-1 min-w-0">
           
           <!-- Featured Header Banner (Reference 2) -->
-          <div class="rounded-2xl overflow-hidden border border-neutral-800/80 bg-neutral-900/60 mb-8 aspect-[16/9] relative shadow-md">
+          <div class="rounded-2xl overflow-hidden border border-[#E5E7EB] bg-[#F8F9FA] mb-8 aspect-[16/9] relative shadow-sm">
             {image ? (
               <img
                 src={image}
@@ -202,13 +202,13 @@ const breadcrumbsSchema = {
                 loading="eager"
               />
             ) : (
-              <div class="w-full h-full bg-gradient-to-br from-[#0a231b] via-[#10382d] to-[#1a5948] flex items-center justify-center p-8 text-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.25)_0%,transparent_70%)] pointer-events-none"></div>
-                <div class="relative z-10 max-w-lg px-4 py-3 rounded-xl backdrop-blur-md bg-black/40 border border-white/15 shadow-2xl">
+              <div class="w-full h-full bg-gradient-to-br from-[#0B3B2C] via-[#143B30] to-[#1B4D3E] flex items-center justify-center p-8 text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3)_0%,transparent_70%)] pointer-events-none"></div>
+                <div class="relative z-10 max-w-lg px-5 py-3.5 rounded-xl backdrop-blur-sm bg-black/35 border border-white/15 shadow-md">
                   <span class="font-sans font-bold text-xl sm:text-2xl text-white tracking-tight leading-tight block">
                     {title}
                   </span>
-                  <span class="font-mono text-xs text-emerald-300/80 mt-1 block">
+                  <span class="font-mono text-xs text-emerald-300 mt-1.5 block font-medium">
                     KALARIS_LABS // RESEARCH_SPEC
                   </span>
                 </div>
@@ -218,32 +218,32 @@ const breadcrumbsSchema = {
 
           <!-- TL;DR / Executive Summary Callout Box (SEO & E-E-A-T direct answer) -->
           {tldr && (
-            <section class="rounded-xl p-5 sm:p-6 bg-neutral-900/70 border border-neutral-800 mb-9 relative overflow-hidden" aria-label="Executive Summary">
+            <section class="rounded-xl p-5 sm:p-6 bg-[#F8F9FA] border border-[#E5E7EB] mb-9 relative overflow-hidden shadow-2xs" aria-label="Executive Summary">
               <div class="absolute top-0 left-0 w-1 h-full bg-[#1B4D3E]"></div>
               <div class="flex items-center gap-2 mb-2.5">
-                <span class="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                  <span class="text-emerald-400">✦</span> SUMMARY
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-[#1B4D3E] flex items-center gap-1.5">
+                  <span>✦</span> SUMMARY
                 </span>
               </div>
-              <p class="text-sm sm:text-[15px] leading-relaxed text-neutral-200 m-0 font-sans font-normal">
+              <p class="text-sm sm:text-[15px] leading-relaxed text-[#374151] m-0 font-sans font-normal">
                 {tldr}
               </p>
             </section>
           )}
 
-          <!-- Article Markdown Content Slot with Guaranteed High-Contrast Typography -->
-          <div class="prose-kalaris prose prose-invert max-w-none">
+          <!-- Article Markdown Content Slot with High-Contrast Typography -->
+          <div class="prose-kalaris max-w-none">
             <slot />
           </div>
 
           <!-- Mobile Author Profile & Share Bar (Visible only on mobile / tablet) -->
-          <div class="mt-12 pt-6 border-t border-neutral-800 lg:hidden flex flex-col gap-6">
+          <div class="mt-12 pt-6 border-t border-[#E5E7EB] lg:hidden flex flex-col gap-6">
             <div class="flex items-center gap-3">
               {authorAvatar ? (
                 <img
                   src={authorAvatar}
                   alt={author}
-                  class="w-11 h-11 rounded-full object-cover border border-neutral-700 bg-neutral-800"
+                  class="w-11 h-11 rounded-full object-cover border border-[#E5E7EB] bg-[#F8F9FA]"
                 />
               ) : (
                 <div class="w-11 h-11 rounded-full bg-[#1B4D3E] text-white font-mono font-bold text-sm flex items-center justify-center">
@@ -251,8 +251,8 @@ const breadcrumbsSchema = {
                 </div>
               )}
               <div class="flex flex-col">
-                <span class="text-sm font-semibold text-white">{author}</span>
-                <span class="text-xs text-neutral-400">{authorRole}</span>
+                <span class="text-sm font-semibold text-[#111827]">{author}</span>
+                <span class="text-xs text-[#6B7280]">{authorRole}</span>
               </div>
             </div>
 
@@ -261,10 +261,10 @@ const breadcrumbsSchema = {
 
           <!-- Tags List -->
           {tags.length > 0 && (
-            <div class="mt-10 pt-6 border-t border-neutral-800 flex items-center flex-wrap gap-2">
-              <span class="text-xs font-mono uppercase text-neutral-400 mr-2">Tags:</span>
+            <div class="mt-10 pt-6 border-t border-[#E5E7EB] flex items-center flex-wrap gap-2">
+              <span class="text-xs font-mono uppercase text-[#6B7280] mr-2">Tags:</span>
               {tags.map((tag) => (
-                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-neutral-900 border border-neutral-800 text-neutral-300">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono bg-[#F3F4F6] border border-[#E5E7EB] text-[#4B5563]">
                   #{tag}
                 </span>
               ))}
@@ -278,21 +278,21 @@ const breadcrumbsSchema = {
             
             <!-- Sticky Table of Contents -->
             {headings && headings.length > 0 && (
-              <div class="bg-neutral-950/60 border border-neutral-800/80 rounded-xl p-5 shadow-xs">
+              <div class="bg-white border border-[#E5E7EB] rounded-xl p-5 shadow-xs">
                 <TableOfContents client:load headings={headings} />
               </div>
             )}
 
             <!-- Institutional Access / Newsletter Callout Widget -->
-            <div class="bg-neutral-900/60 border border-neutral-800/80 rounded-xl p-5 flex flex-col gap-3.5 shadow-xs">
+            <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-5 flex flex-col gap-3.5 shadow-xs">
               <div class="flex flex-col gap-1">
-                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-[#1B4D3E]">
                   Institutional Access
                 </span>
-                <h4 class="text-sm font-semibold text-white m-0">
+                <h4 class="text-sm font-semibold text-[#111827] m-0">
                   Stay updated on preprints
                 </h4>
-                <p class="text-xs text-neutral-400 m-0 leading-relaxed">
+                <p class="text-xs text-[#4B5563] m-0 leading-relaxed">
                   Direct evaluation logs and benchmark updates for researchers.
                 </p>
               </div>
@@ -307,11 +307,11 @@ const breadcrumbsSchema = {
                   type="email"
                   required
                   placeholder="Enter research email"
-                  class="w-full px-3 py-2 rounded-lg bg-black border border-neutral-800 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-[#1B4D3E] transition-colors"
+                  class="w-full px-3 py-2 rounded-lg bg-white border border-[#E5E7EB] text-xs text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:border-[#1B4D3E] transition-colors"
                 />
                 <button
                   type="submit"
-                  class="w-full py-2 px-3 rounded-lg bg-white text-black font-semibold text-xs hover:bg-neutral-200 transition-colors cursor-pointer"
+                  class="w-full py-2 px-3 rounded-lg bg-[#1B4D3E] text-white font-semibold text-xs hover:bg-[#143B30] transition-colors cursor-pointer"
                 >
                   Join Research Dispatch
                 </button>
@@ -319,7 +319,7 @@ const breadcrumbsSchema = {
 
               <a
                 href="/manifesto"
-                class="text-[11px] font-mono text-neutral-400 hover:text-white transition-colors text-center no-underline"
+                class="text-[11px] font-mono text-[#6B7280] hover:text-[#111827] transition-colors text-center no-underline"
               >
                 Read our thesis & manifesto →
               </a>
