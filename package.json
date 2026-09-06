@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "dev:ssr": "wrangler dev --config dist/server/wrangler.json --ip 127.0.0.1 --port 8787",
     "start": "astro dev",
     "build": "astro check && astro build",
     "deploy": "astro check && astro build && wrangler deploy --config dist/server/wrangler.json --route \"kalarislabs.com/*\" --route \"www.kalarislabs.com/*\"",
