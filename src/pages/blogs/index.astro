@@ -16,130 +16,11 @@ const publishedBlogs = rawBlogs
 // Featured post for the top hero banner
 const featuredPost = publishedBlogs.find((b) => b.data.featured) || publishedBlogs[0];
 
-// Skeleton posts matching Reference 1 layout and visual diversity
-interface SkeletonPost {
-  title: string;
-  slug: string;
-  category: string;
-  date: Date;
-  description: string;
-  headerGradient: string;
-}
-
-const skeletonPosts: SkeletonPost[] = [
-  {
-    title: 'Autonomous Evaluation Loops for Frontier Scientific Reasoning',
-    slug: 'autonomous-evaluation-loops',
-    category: 'Research',
-    date: new Date('2026-08-07'),
-    description: 'Deterministic verification gates and sandboxed replay for multi-step scientific inferences.',
-    headerGradient: 'coral',
-  },
-  {
-    title: 'Hardware-Aware In-House Scientific Kernels on Sovereign Compute',
-    slug: 'hardware-aware-scientific-kernels',
-    category: 'Launch',
-    date: new Date('2026-07-29'),
-    description: 'Custom kernel optimizations for 256k+ context preprints and private institutional weights.',
-    headerGradient: 'orange',
-  },
-  {
-    title: 'Evaluating Multi-Page Biochemical Literature & Complex Tables',
-    slug: 'evaluating-biochemical-literature',
-    category: 'Research',
-    date: new Date('2026-04-02'),
-    description: 'High-fidelity document intelligence preserving tabular ASTs and formula structures.',
-    headerGradient: 'blue',
-  },
-  {
-    title: 'Sovereign Local Lab Runtimes & Air-Gapped Weights Deployment',
-    slug: 'sovereign-local-lab-runtimes',
-    category: 'Research',
-    date: new Date('2026-03-06'),
-    description: 'Zero-leakage inference architecture for institutional universities and pharmaceutical labs.',
-    headerGradient: 'green',
-  },
-  {
-    title: 'Deterministic WASM Gates for Empirical Scientific Reproducibility',
-    slug: 'deterministic-wasm-gates',
-    category: 'Product',
-    date: new Date('2026-02-20'),
-    description: 'Isolated computation harnesses verifying algorithmic proofs before hypothesis synthesis.',
-    headerGradient: 'amber',
-  },
-  {
-    title: 'Citation Graph Traversal and Real-Time Retraction Auditing',
-    slug: 'citation-graph-traversal',
-    category: 'Product',
-    date: new Date('2026-02-15'),
-    description: 'Grounded citation verification cross-referencing live DOI registers and retraction alerts.',
-    headerGradient: 'orange',
-  },
-  {
-    title: 'Agents as Adaptive Co-Investigators in Laboratory Discovery',
-    slug: 'agents-as-co-investigators',
-    category: 'Research',
-    date: new Date('2026-02-14'),
-    description: 'Closed-loop recursive reasoning agents formulating experiments and learning from outcomes.',
-    headerGradient: 'purple',
-  },
-  {
-    title: 'Kalaris Studio: Scientific Workbench for Principal Investigators',
-    slug: 'kalaris-studio-workbench',
-    category: 'Product',
-    date: new Date('2026-02-12'),
-    description: 'An interactive sovereign research workspace designed for empirical scientific discovery.',
-    headerGradient: 'teal',
-  },
-  {
-    title: 'High-Fidelity LaTeX AST Preservation Engine for Preprints',
-    slug: 'latex-ast-preservation-engine',
-    category: 'Research',
-    date: new Date('2026-02-10'),
-    description: 'Preventing formula distortion in mathematical physics and quantum mechanical literature.',
-    headerGradient: 'indigo',
-  },
-  {
-    title: 'Recursive Verification: Moving From Preprints to Verifiable Proofs',
-    slug: 'recursive-verification-proofs',
-    category: 'Research',
-    date: new Date('2026-02-10'),
-    description: 'Automated synthesis pipelines transforming theoretical papers into executable test suites.',
-    headerGradient: 'coral',
-  },
-  {
-    title: 'Announcing Sovereign AI Partnerships with Research Institutions',
-    slug: 'sovereign-ai-partnerships',
-    category: 'Company',
-    date: new Date('2026-02-08'),
-    description: 'Deploying air-gapped laboratory infrastructure across university medical centers.',
-    headerGradient: 'amber',
-  },
-  {
-    title: 'Open-Sourcing the Scientific Evaluation Harness Core (v1.0)',
-    slug: 'open-sourcing-scientific-harness',
-    category: 'Open source',
-    date: new Date('2026-02-05'),
-    description: 'The foundational verification benchmark suite for empirical artificial intelligence.',
-    headerGradient: 'blue',
-  },
-];
-
-// Combine collection blogs with skeleton cards for complete 4-column visual fidelity
-const allGridPosts = [
-  ...publishedBlogs.map((b) => ({
-    title: b.data.title,
-    slug: b.id,
-    category: b.data.category || 'Launch',
-    date: b.data.pubDate,
-    description: b.data.description,
-    headerGradient: b.data.headerGradient || 'green',
-  })),
-  ...skeletonPosts,
-];
+// Grid posts: the remaining curated articles
+const gridPosts = publishedBlogs.filter((b) => b.id !== featuredPost?.id);
 
 // Unique categories for filter pills
-const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open source'];
+const categories = ['All', 'Launch', 'Research', 'Product'];
 ---
 
 <BaseLayout
@@ -164,27 +45,27 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
       <!-- 2. Featured Top Post: 2-Column Hero Card (Reference 1) -->
       {featuredPost && (
         <section class="mb-14 sm:mb-16" aria-label="Featured Story">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-neutral-950/50 border border-neutral-800/80 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden group">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden group">
             
             <!-- Left: Featured Banner / Graphic Canvas -->
             <div class="lg:col-span-7">
               <a
                 href={`/blogs/${featuredPost.id}`}
-                class="block aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden relative border border-neutral-800/80 shadow-md group-hover:border-neutral-700 transition-colors"
+                class="block aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden relative border border-neutral-800 shadow-md group-hover:border-neutral-700 transition-colors"
                 aria-label={`Read featured article: ${featuredPost.data.title}`}
               >
-                <div class="w-full h-full bg-gradient-to-br from-[#0D382B] via-[#1B4D3E] to-[#2E856E] flex items-center justify-center p-8 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ease-out">
+                <div class="w-full h-full bg-gradient-to-br from-[#061c14] via-[#0b2b20] to-[#12382b] flex items-center justify-center p-8 text-center relative overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 ease-out">
                   <!-- Ambient radial glow and decorative geometric arcs -->
                   <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3)_0%,transparent_70%)] pointer-events-none"></div>
-                  <div class="absolute -right-12 -bottom-12 w-48 h-48 border border-white/20 rounded-full pointer-events-none"></div>
-                  <div class="absolute -left-12 -top-12 w-40 h-40 border border-white/15 rounded-full pointer-events-none"></div>
+                  <div class="absolute -right-12 -bottom-12 w-52 h-52 border border-emerald-500/20 rounded-full pointer-events-none"></div>
+                  <div class="absolute -left-12 -top-12 w-44 h-44 border border-emerald-400/15 rounded-full pointer-events-none"></div>
                   
                   <!-- Center Featured Title Graphic Badge -->
-                  <div class="relative z-10 px-5 py-4 rounded-xl backdrop-blur-md bg-black/30 border border-white/15 shadow-2xl max-w-[90%]">
+                  <div class="relative z-10 px-6 py-4 rounded-xl backdrop-blur-md bg-black/40 border border-white/15 shadow-2xl max-w-[90%]">
                     <span class="font-sans font-bold text-xl sm:text-2xl lg:text-3xl text-white tracking-tight leading-tight block drop-shadow-sm">
                       {featuredPost.data.title}
                     </span>
-                    <span class="font-mono text-xs text-emerald-300 tracking-wider uppercase mt-2 block font-medium">
+                    <span class="font-mono text-xs text-emerald-400 tracking-wider uppercase mt-2.5 block font-medium">
                       Featured Research Dispatch
                     </span>
                   </div>
@@ -195,7 +76,7 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
             <!-- Right: Content, Metadata & Read Button -->
             <div class="lg:col-span-5 flex flex-col items-start">
               <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight leading-snug mb-3">
-                <a href={`/blogs/${featuredPost.id}`} class="no-underline text-inherit hover:text-emerald-400 transition-colors">
+                <a href={`/blogs/${featuredPost.id}`} class="no-underline text-white hover:text-emerald-400 transition-colors">
                   {featuredPost.data.title}
                 </a>
               </h2>
@@ -214,7 +95,7 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
                   })}
                 </time>
                 <span class="text-neutral-600">·</span>
-                <span class="text-neutral-300 font-medium">
+                <span class="text-emerald-400 font-medium px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-800/50">
                   {featuredPost.data.category || 'Launch'}
                 </span>
               </div>
@@ -245,7 +126,7 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
                 class={`category-btn px-3.5 py-1.5 rounded-full text-xs font-medium font-sans whitespace-nowrap transition-colors cursor-pointer ${
                   idx === 0
                     ? 'active bg-neutral-100 text-black'
-                    : 'bg-neutral-900/80 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
+                    : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
                 }`}
               >
                 {cat}
@@ -266,42 +147,42 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
                 type="text"
                 id="blog-search-input"
                 placeholder="Search articles..."
-                class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-neutral-900/90 border border-neutral-800 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-[#1B4D3E] transition-colors font-sans"
+                class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-neutral-200 placeholder-neutral-500 focus:outline-none focus:border-[#1B4D3E] transition-colors font-sans"
               />
             </div>
 
-            <!-- View indicators matching Reference 1 icons -->
+            <!-- View indicator icon -->
             <div class="hidden sm:flex items-center gap-1 text-neutral-500 border-l border-neutral-800 pl-3">
-              <button type="button" aria-label="Grid layout view" class="p-1.5 text-neutral-300 hover:text-white transition-colors cursor-default">
+              <span class="p-1.5 text-neutral-400">
                 <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
                   <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
                 </svg>
-              </button>
+              </span>
             </div>
           </div>
 
         </div>
       </section>
 
-      <!-- 4. 4-Column Responsive Blog Grid (Reference 1) -->
+      <!-- 4. Clean Responsive Blog Grid (Curated 2-Column / 3-Column Layout) -->
       <section aria-label="Articles Grid">
         <div
           id="blog-cards-grid"
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 sm:gap-8 max-w-5xl"
         >
-          {allGridPosts.map((post) => (
+          {gridPosts.map((post) => (
             <div
               class="blog-card-item"
-              data-title={post.title.toLowerCase()}
-              data-category={post.category.toLowerCase()}
+              data-title={post.data.title.toLowerCase()}
+              data-category={(post.data.category || 'Research').toLowerCase()}
             >
               <BlogCard
-                title={post.title}
-                slug={post.slug}
-                pubDate={post.date}
-                category={post.category}
-                description={post.description}
-                headerGradient={post.headerGradient}
+                title={post.data.title}
+                slug={post.id}
+                pubDate={post.data.pubDate}
+                category={post.data.category || 'Research'}
+                description={post.data.description}
+                image={post.data.image}
               />
             </div>
           ))}
@@ -320,7 +201,7 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
 </BaseLayout>
 
 <script>
-  // Client-Side Interactive Filtering for Categories & Live Search (Reference 1)
+  // Client-Side Interactive Filtering for Categories & Live Search
   const categoryButtons = document.querySelectorAll<HTMLButtonElement>('.category-btn');
   const searchInput = document.getElementById('blog-search-input') as HTMLInputElement | null;
   const cardItems = document.querySelectorAll<HTMLElement>('.blog-card-item');
@@ -360,11 +241,11 @@ const categories = ['All', 'Launch', 'Product', 'Research', 'Company', 'Open sou
     btn.addEventListener('click', () => {
       categoryButtons.forEach((b) => {
         b.classList.remove('active', 'bg-neutral-100', 'text-black');
-        b.classList.add('bg-neutral-900/80', 'text-neutral-400', 'border', 'border-neutral-800');
+        b.classList.add('bg-neutral-900', 'text-neutral-400', 'border', 'border-neutral-800');
       });
 
       btn.classList.add('active', 'bg-neutral-100', 'text-black');
-      btn.classList.remove('bg-neutral-900/80', 'text-neutral-400', 'border', 'border-neutral-800');
+      btn.classList.remove('bg-neutral-900', 'text-neutral-400', 'border', 'border-neutral-800');
 
       activeCategory = btn.getAttribute('data-category') || 'all';
       filterCards();
