@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "deploy": "astro check && astro build && wrangler deploy --config dist/server/wrangler.json",
+    "deploy": "astro check && astro build && wrangler deploy --config dist/server/wrangler.json --route \"kalarislabs.com/*\" --route \"www.kalarislabs.com/*\"",
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check"
