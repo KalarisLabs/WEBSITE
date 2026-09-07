@@ -25,6 +25,9 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      exclude: ['astro/assets/services/noop'],
+    },
     ssr: {
       noExternal: ['gsap'],
     },

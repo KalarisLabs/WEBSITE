@@ -3,15 +3,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import PublicationCard from '@/components/ui/PublicationCard.astro';
-import AsciiPageCorners from '@/components/ui/AsciiPageCorners.astro';
 import EarlyAccessDialog from '@/components/ui/EarlyAccessDialog';
 import MetricTooltip from '@/components/ui/MetricTooltip';
-
-// Cloudflare SSR Edge Context (dynamic on-demand server rendering)
-const cfCountry = Astro.request?.headers?.get('cf-ipcountry') || 'GLO';
-const cfRay = Astro.request?.headers?.get('cf-ray') || 'LOCAL-DEV';
-const edgeColo = cfRay.includes('-') ? cfRay.split('-')[1] : 'EDGE';
-const serverTime = new Date().toISOString();
 
 interface ResearchTopic {
   title: string;
@@ -84,38 +77,9 @@ const featuredTopics = topics.slice(0, 2);
   <Header currentPath="/" />
 
   <main id="main-content">
-    <!-- Viewport / Extreme Page Frame ASCII Corners -->
-    <AsciiPageCorners />
-
-    <!-- 1-3. Top Monograph Section (Centered in Reading Column with ASCII Framing) -->
-    <div class="monograph-outer-wrapper">
-      <!-- Ambient ASCII Telemetry Flanks (Visible on wide screens with Cloudflare Edge Telemetry) -->
-      <div class="ascii-flank ascii-flank-left" aria-hidden="true">
-        <div class="ascii-flank-box">
-          <span class="ascii-flank-line">+ · · · · · · · · +</span>
-          <span class="ascii-flank-line">| 0x4B 0x41 0x4C 0x41 |</span>
-          <span class="ascii-flank-line">| SCIENTIFIC_MODELS |</span>
-          <span class="ascii-flank-line">| EDGE: {cfCountry.padEnd(2)} [{edgeColo.slice(0, 4)}] |</span>
-          <span class="ascii-flank-line">+ · · · · · · · · +</span>
-        </div>
-      </div>
-      <div class="ascii-flank ascii-flank-right" aria-hidden="true">
-        <div class="ascii-flank-box">
-          <span class="ascii-flank-line">+ · · · · · · · · +</span>
-          <span class="ascii-flank-line">| 0x52 0x49 0x53 0x20 |</span>
-          <span class="ascii-flank-line">| RECURSIVE_HARNESS |</span>
-          <span class="ascii-flank-line">| SSR: {serverTime.slice(11, 19)}Z   |</span>
-          <span class="ascii-flank-line">+ · · · · · · · · +</span>
-        </div>
-      </div>
-
+    <!-- 1-3. Top Monograph Section (Centered in Reading Column) -->
+    <div class="monograph-outer-wrapper relative">
       <div class="reading-column page-article">
-        <!-- Monograph Frame ASCII Corner Crosshairs -->
-        <span class="monograph-corner mc-tl" aria-hidden="true">+ 01</span>
-        <span class="monograph-corner mc-tr" aria-hidden="true">HARN +</span>
-        <span class="monograph-corner mc-bl" aria-hidden="true">+ AGNT</span>
-        <span class="monograph-corner mc-br" aria-hidden="true">MODL +</span>
-
         <!-- 1. The Kalaris Labs logo in the middle of the page (top middle) -->
         <section class="hero-brand" aria-label="Kalaris Labs Logo">
           <img
@@ -148,15 +112,9 @@ const featuredTopics = topics.slice(0, 2);
             While AI capabilities have advanced dramatically, key gaps remain across the sciences. The scientific community's ability to leverage frontier AI is hindered by brittle document parsing, unverified citations, and non-reproducible workflows. Complex scientific literature, dense with mathematical equations, multi-page biomedical tables, and retracted claims, remains difficult for general-purpose conversational models to parse with verified ground truth.
           </p>
 
-          <!-- 3 Core Technical Pillars with ASCII Corner Accents -->
+          <!-- 3 Core Technical Pillars -->
           <div class="thesis-stack" aria-label="Core Technical Capabilities">
-            <span class="ascii-thesis-corner atc-tl" aria-hidden="true">+</span>
-            <span class="ascii-thesis-corner atc-tr" aria-hidden="true">+</span>
-            <span class="ascii-thesis-corner atc-bl" aria-hidden="true">+</span>
-            <span class="ascii-thesis-corner atc-br" aria-hidden="true">+</span>
-
             <div class="thesis-entry">
-              <span class="thesis-ascii-tag" aria-hidden="true">[01/HARNESS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
@@ -168,7 +126,6 @@ const featuredTopics = topics.slice(0, 2);
             </div>
 
             <div class="thesis-entry">
-              <span class="thesis-ascii-tag" aria-hidden="true">[02/AGENTS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
@@ -180,7 +137,6 @@ const featuredTopics = topics.slice(0, 2);
             </div>
 
             <div class="thesis-entry">
-              <span class="thesis-ascii-tag" aria-hidden="true">[03/MODELS]</span>
               <div class="thesis-dot" aria-hidden="true"></div>
               <div class="thesis-content">
                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
@@ -251,13 +207,6 @@ const featuredTopics = topics.slice(0, 2);
     <section class="hiring-callout-section" aria-label="Careers Opportunity">
       <div class="wide-frame-container">
         <a href="/careers" class="hiring-banner-box">
-          <!-- ASCII Corner Accents -->
-          <span class="ascii-hiring-corner ahc-tl" aria-hidden="true">┌</span>
-          <span class="ascii-hiring-corner ahc-tr" aria-hidden="true">┐</span>
-          <span class="ascii-hiring-corner ahc-bl" aria-hidden="true">└</span>
-          <span class="ascii-hiring-corner ahc-br" aria-hidden="true">┘</span>
-          <span class="ascii-hiring-badge" aria-hidden="true">[+/CAREERS_ENGINE]</span>
-
           <div class="hiring-banner-header">
             <span class="hiring-pill-tag">WE ARE HIRING</span>
             <span class="hiring-geo-tag">Bengaluru · Remote friendly</span>

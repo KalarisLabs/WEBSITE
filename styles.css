@@ -22,13 +22,13 @@ nav a { text-decoration:none; }
 .reading-column { width:min(100% - 2.5rem, 43rem); margin-inline:auto; }
 .wide-column { width:min(100% - 2.5rem, 68rem); margin-inline:auto; }
 .intro { padding:1.25rem 0 2.25rem; }
-.intro p { margin:0 0:1rem; }
+.intro p { margin:0 0 1rem; }
 .lede { font-size:clamp(1.55rem, 2.6vw, 2.1rem); line-height:1.28; }
 .chapter { padding:1.65rem 0; }
 .chapter + .chapter { margin-top:1.2rem; }
 .chapter h2, .collaborate h2 { margin:.2rem 0 1rem; font-family:var(--sans); font-size:clamp(1.7rem, 3vw, 2.35rem); font-weight:500; letter-spacing:-.045em; line-height:1.1; }
-.section-kicker { margin:0 0:1.7rem; font-style:italic; font-size:1.12rem; }
-.chapter p { margin:0 0:1.35rem; }
+.section-kicker { margin:0 0 1.7rem; font-style:italic; font-size:1.12rem; }
+.chapter p { margin:0 0 1.35rem; }
 blockquote { margin:2.5rem 0 0; padding:1.1rem 0 1.1rem 1.4rem; border-left:2px solid var(--green); font-size:1.22rem; font-style:italic; line-height:1.45; }
 .loop { display:grid; grid-template-columns:repeat(5, 1fr); gap:.65rem; margin:3rem 0 0; padding:0; list-style:none; font-family:var(--sans); }
 .loop li { min-width:0; padding:.8rem 0; border-top:1px solid var(--ink); }
@@ -55,7 +55,7 @@ blockquote { margin:2.5rem 0 0; padding:1.1rem 0 1.1rem 1.4rem; border-left:2px 
 .quiet { margin-top:1.5rem !important; font-size:.86rem; }
 .site-footer { display:grid; grid-template-columns:2fr 1fr 1fr; gap:2rem; padding:2.5rem clamp(1.25rem, 12vw, 10rem) 1.75rem; font-family:var(--sans); font-size:.78rem; line-height:1.6; }
 .site-footer p { color:var(--muted); }
-.site-footer h2 { margin:0 0:.75rem; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
+.site-footer h2 { margin:0 0 .75rem; font-size:.72rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
 .site-footer div > a:not(.brand) { display:block; margin:.2rem 0; }
 .copyright { grid-column:1 / -1; margin:2.5rem 0 0; }
 @media (max-width:620px) { body { font-size:17px; } .site-header { gap:.6rem; padding-top:1.2rem; } .brand { font-size:.72rem; } .brand img { width:1.15rem; height:1.15rem; } nav { gap:.48rem; font-size:.58rem; white-space:nowrap; } .hero { min-height:0; padding-top:.6rem; padding-bottom:2.5rem; } .hero-wordmark { width:min(92vw, 30rem); } .hero-statement { margin-top:1.35rem; } .intro { padding-bottom:1.65rem; } .chapter { padding:1.3rem 0; } .collaborate { padding:2.75rem 0; } .loop { grid-template-columns:repeat(2, 1fr); } .loop li:last-child { grid-column:span 2; } .site-footer { grid-template-columns:1fr 1fr; padding-top:2.5rem; } .site-footer > div:first-child { grid-column:1 / -1; } }

@@ -7,28 +7,63 @@ import PageLayout from '@/layouts/PageLayout.astro';
   description="Opportunities for research scientists, systems engineers, and builders at Kalaris Labs."
   layoutType="reading"
 >
-  <div class="page-intro">
-    <span class="eyebrow">JOIN KALARIS LABS</span>
-    <h1 class="page-title">Join Us</h1>
+  <div class="mb-12">
+    <span class="block font-sans text-xs font-semibold tracking-[0.14em] uppercase text-gray-500 mb-3">
+      JOIN KALARIS LABS
+    </span>
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-gray-900 mb-4">
+      Join Us
+    </h1>
+    <p class="text-xl md:text-2xl leading-snug text-gray-900 mb-6 max-w-3xl">
+      We are building foundational AI infrastructure for India. Join us to do the best work of your life.
+    </p>
   </div>
 
-  <div class="wireframe-placeholder-canvas">
-    <div class="wireframe-placeholder-inner">
-      <span class="wireframe-tag">Scaffolding Live</span>
-      <p class="wireframe-status">
-        Ready for reference screenshots & design specs to build out the careers and open roles wireframe.
-      </p>
+  <section class="w-full mb-16" aria-label="Open Roles">
+    <div class="mb-8">
+      <h2 class="font-serif italic text-lg text-gray-500 mb-2">Open Roles</h2>
+      <hr class="border-0 h-px bg-gray-300 w-full max-w-[120px] mt-2" />
     </div>
-  </div>
+
+    <div class="flex flex-col gap-6">
+      <!-- Role Card 1 -->
+      <article class="bg-white border border-gray-200 rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:border-[#1B4D3E] group">
+        <div class="flex gap-3 mb-3 font-sans text-xs font-semibold tracking-widest uppercase text-gray-500">
+          <span class="text-[#1B4D3E] bg-[#EAF2ED] px-2.5 py-1 rounded-full">Research</span>
+          <span class="flex items-center">Bengaluru, India</span>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Founding AI Researcher</h3>
+        <p class="text-sm text-gray-500 mb-4">Pushing the boundaries of multilingual models tailored for India.</p>
+        <span class="inline-flex items-center justify-center gap-2 px-4 py-2 font-sans text-sm font-medium rounded-full border border-gray-300 text-gray-500 transition-colors group-hover:bg-[#EAF2ED] group-hover:border-[#1B4D3E] group-hover:text-[#1B4D3E]">
+          View Role &rarr;
+        </span>
+      </article>
+
+      <!-- Role Card 2 -->
+      <article class="bg-white border border-gray-200 rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:border-[#1B4D3E] group">
+        <div class="flex gap-3 mb-3 font-sans text-xs font-semibold tracking-widest uppercase text-gray-500">
+          <span class="text-[#1B4D3E] bg-[#EAF2ED] px-2.5 py-1 rounded-full">Engineering</span>
+          <span class="flex items-center">Bengaluru, India</span>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Systems Engineer (Training)</h3>
+        <p class="text-sm text-gray-500 mb-4">Building scalable distributed systems for foundational model training.</p>
+        <span class="inline-flex items-center justify-center gap-2 px-4 py-2 font-sans text-sm font-medium rounded-full border border-gray-300 text-gray-500 transition-colors group-hover:bg-[#EAF2ED] group-hover:border-[#1B4D3E] group-hover:text-[#1B4D3E]">
+          View Role &rarr;
+        </span>
+      </article>
+
+      <!-- Role Card 3 -->
+      <article class="bg-white border border-gray-200 rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:border-[#1B4D3E] group">
+        <div class="flex gap-3 mb-3 font-sans text-xs font-semibold tracking-widest uppercase text-gray-500">
+          <span class="text-[#1B4D3E] bg-[#EAF2ED] px-2.5 py-1 rounded-full">Design</span>
+          <span class="flex items-center">Remote / India</span>
+        </div>
+        <h3 class="text-xl font-semibold text-gray-900 mb-2">Lead Product Designer</h3>
+        <p class="text-sm text-gray-500 mb-4">Crafting elegant, intuitive interfaces for complex AI capabilities.</p>
+        <span class="inline-flex items-center justify-center gap-2 px-4 py-2 font-sans text-sm font-medium rounded-full border border-gray-300 text-gray-500 transition-colors group-hover:bg-[#EAF2ED] group-hover:border-[#1B4D3E] group-hover:text-[#1B4D3E]">
+          View Role &rarr;
+        </span>
+      </article>
+    </div>
+  </section>
 </PageLayout>
-
-<style>
-  .page-intro {
-    margin-bottom: var(--space-6);
-  }
-
-  .page-title {
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    margin-bottom: var(--space-2);
-  }
-</style>
