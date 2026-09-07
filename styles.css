@@ -11,14 +11,17 @@ a:focus-visible, summary:focus-visible { outline:2px solid var(--green); outline
 .brand { display:inline-flex; align-items:center; gap:.45rem; font-family:var(--sans); font-size:.86rem; font-weight:700; letter-spacing:.12em; text-decoration:none; }
 .brand img { width:1.35rem; height:1.35rem; border-radius:50%; object-fit:cover; }
 nav { display:flex; gap:clamp(.75rem, 2vw, 1.75rem); }
-nav a { text-decoration:none; }
-.hero { display:flex; flex-direction:column; align-items:center; padding:.6rem 1.25rem 3rem; text-align:center; }
+main { padding-bottom:5rem; }
+.hero { display:flex; flex-direction:column; align-items:center; padding:3.5rem 1.25rem 3rem; text-align:center; }
 .eyebrow, .chapter-number { margin:0 0 1.5rem; color:var(--muted); font-family:var(--sans); font-size:.7rem; font-weight:700; letter-spacing:.1em; line-height:1.3; }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .hero-wordmark { display:block; width:min(76vw, 46rem); height:auto; }
 .hero-statement { max-width:40rem; margin:1.3rem 0 1rem; font-size:clamp(1.35rem, 2.1vw, 1.8rem); line-height:1.25; }
-.announcement { display:inline-flex; gap:.65rem; align-items:center; padding:.5rem .8rem; background:var(--soft-green); border-radius:99px; font-family:var(--sans); font-size:.78rem; text-decoration:none; }
-.announcement span:first-child { font-size:.62rem; font-weight:700; letter-spacing:.08em; }
+.announcement { display:inline-flex; gap:.65rem; align-items:center; padding:.32rem .95rem .32rem .35rem; background:#ffffff; border:1px solid #d7d7ce; border-radius:99px; font-family:var(--sans); font-size:.82rem; font-weight:600; text-decoration:none !important; color:var(--ink) !important; box-shadow:0 1px 3px rgba(0,0,0,0.04); transition:all .2s cubic-bezier(0.16, 1, 0.3, 1); }
+.announcement:hover { background:#ffffff; border-color:var(--green); color:var(--green) !important; transform:translateY(-1px); box-shadow:0 4px 14px rgba(46,92,73,0.14); text-decoration:none !important; }
+.announcement span:first-child { display:inline-block; padding:.22rem .65rem; background:var(--green); color:#ffffff; border-radius:99px; font-size:.65rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; line-height:1; }
+.announcement span:last-child { display:inline-block; transition:transform .2s ease; }
+.announcement:hover span:last-child { transform:translateX(3px); }
 .reading-column { width:min(100% - 2.5rem, 43rem); margin-inline:auto; }
 .wide-column { width:min(100% - 2.5rem, 68rem); margin-inline:auto; }
 .intro { padding:1.25rem 0 2.25rem; }

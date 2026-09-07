@@ -1,855 +1,279 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Header from '@/components/layout/Header.astro';
-import Footer from '@/components/layout/Footer.astro';
-import PublicationCard from '@/components/ui/PublicationCard.astro';
-import EarlyAccessDialog from '@/components/ui/EarlyAccessDialog';
-import MetricTooltip from '@/components/ui/MetricTooltip';
-
-interface ResearchTopic {
-  title: string;
-  category: string;
-  date: string;
-  abstract: string;
-  href: string;
-  actionText: string;
-}
-
-const topics: ResearchTopic[] = [
-  {
-    title: 'Recursive Evaluation Harnesses for Scientific Discovery Agents',
-    category: 'Preprint',
-    date: 'Aug 2026',
-    abstract: 'An auditable closed-loop evaluation harness evaluating multi-step hypothesis generation, literature grounding, and error correction in computational biology.',
-    href: '/research/recursive-scientific-loops',
-    actionText: 'Read Preprint',
-  },
-  {
-    title: 'High-Fidelity Document Parsing for Complex Biochemical Corpora',
-    category: 'Research',
-    date: 'Sep 2026',
-    abstract: 'Deep multimodal parsing preserving inline LaTeX semantic ASTs, multi-page chemical tables, and figure sub-panels with grounded citation anchoring.',
-    href: '/research',
-    actionText: 'Explore Architecture',
-  },
-  {
-    title: 'Citation Topology & Contradiction Detection in Scientific Literature',
-    category: 'Whitepaper',
-    date: 'Oct 2026',
-    abstract: 'Ingestion graphs combining dense vector semantics with sparse exact match to identify retracted claims, conflicting findings, and grounded citation chains.',
-    href: '/research',
-    actionText: 'View Methodology',
-  },
-  {
-    title: 'Hardware-Aware Inference & Sovereign Local Lab Runtimes',
-    category: 'Systems',
-    date: 'Nov 2026',
-    abstract: 'Custom kernel optimizations for 256k+ context scientific preprints, air-gapped on-premise execution, and private institutional weights.',
-    href: '/support',
-    actionText: 'Read Systems Spec',
-  },
-  {
-    title: 'Announcing Kalaris Labs: Research Infrastructure for Scientific Discovery',
-    category: 'Essay',
-    date: 'Sep 2026',
-    abstract: 'Why we are building sovereign, reproducible AI systems designed for empirical science rather than another conversational wrapper.',
-    href: '/blogs/welcome-to-kalaris-labs',
-    actionText: 'Read Essay',
-  },
-  {
-    title: 'Institutional Sovereignty and Auditable Scientific Traceability',
-    category: 'Manifesto',
-    date: 'Aug 2026',
-    abstract: 'The foundational thesis on data ownership, reproducible compute harnesses, and transparent agent provenance in university and pharmaceutical research.',
-    href: '/manifesto',
-    actionText: 'Read Manifesto',
-  },
-];
-
-// Showcase ONLY 2 featured papers / notes per user instruction
-const featuredTopics = topics.slice(0, 2);
 ---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalaris Labs: AI for Science</title>
+    <meta name="description" content="Kalaris Labs builds recursive, self-improving agentic AI infrastructure for scientific discovery." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <main class="document">
+      <header class="doc-header">
+        <h1>The Lab</h1>
+      </header>
 
-<BaseLayout
-  title="Kalaris Labs: AI Infrastructure for Scientific Discovery"
-  description="Kalaris Labs builds autonomous, reproducible AI infrastructure for scientific discovery."
->
-  <Header currentPath="/" />
+      <section class="lead">
+        <p>Kalaris Labs is a full-stack agentic AI research infrastructure company, built from India for global science. We are not a wrapper lab. We own the model, the harness, the loop, the inference, and the data. This is the living document of what we stand for, what we are building, and who we are.</p>
+      </section>
 
-  <main id="main-content">
-    <!-- 1-3. Top Monograph Section (Centered in Reading Column) -->
-    <div class="monograph-outer-wrapper relative">
-      <div class="reading-column page-article">
-        <!-- 1. The Kalaris Labs logo in the middle of the page (top middle) -->
-        <section class="hero-brand" aria-label="Kalaris Labs Logo">
-          <img
-            src="/kalaris-wordmark.png"
-            alt="Kalaris Labs"
-            class="hero-wordmark"
-            width="380"
-            height="95"
-            loading="eager"
-            decoding="async"
-          />
-        </section>
-
-        <!-- 2. The CTA centered directly below the logo -->
-        <section class="hero-cta-wrap" aria-label="Announcement">
-          <a href="/manifesto" class="announcement-pill">
-            <span class="pill-tag">NEW</span>
-            <span class="pill-text">AI for Science and Good</span>
-            <span class="pill-arrow" aria-hidden="true">→</span>
-          </a>
-        </section>
-
-        <!-- 3. Editorial Prose with Balanced Rhythm & Pillars -->
-        <section class="editorial-body" aria-label="About Kalaris Labs">
-          <p class="mission-lead">
-            <strong>Kalaris Labs</strong> is an artificial intelligence research and infrastructure company. We are building a future where scientists, principal investigators, and institutions have access to autonomous, reproducible AI systems that eliminate operational friction, so researchers can spend their time on discovery.
-          </p>
-
-          <p>
-            While AI capabilities have advanced dramatically, key gaps remain across the sciences. The scientific community's ability to leverage frontier AI is hindered by brittle document parsing, unverified citations, and non-reproducible workflows. Complex scientific literature, dense with mathematical equations, multi-page biomedical tables, and retracted claims, remains difficult for general-purpose conversational models to parse with verified ground truth.
-          </p>
-
-          <!-- 3 Core Technical Pillars -->
-          <div class="thesis-stack" aria-label="Core Technical Capabilities">
-            <div class="thesis-entry">
-              <div class="thesis-dot" aria-hidden="true"></div>
-              <div class="thesis-content">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-                  <h3 class="thesis-heading m-0">Stronger Scientific Harness</h3>
-                  <MetricTooltip client:load label="Sandboxed Gates" code="WASM" tooltipText="Continuous deterministic verification gates with isolated sandboxed execution for reproducible experiments." />
-                </div>
-                <p class="thesis-desc">Rigorous, auditable evaluation frameworks with deterministic verification gates, sandboxed computation, and reproducible benchmarking built specifically for scientific discovery.</p>
-              </div>
-            </div>
-
-            <div class="thesis-entry">
-              <div class="thesis-dot" aria-hidden="true"></div>
-              <div class="thesis-content">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-                  <h3 class="thesis-heading m-0">Agents as Co-Scientists (Self-Learning)</h3>
-                  <MetricTooltip client:load label="Active Grounding" code="TOPOLOGY" tooltipText="Autonomous co-investigators that cross-reference citation graphs and retracted claims before forming conclusions." />
-                </div>
-                <p class="thesis-desc">Autonomous research agents operating as adaptive co-investigators: formulating hypotheses, analyzing complex datasets, evaluating outcomes against ground truth, and recursively learning through closed loops.</p>
-              </div>
-            </div>
-
-            <div class="thesis-entry">
-              <div class="thesis-dot" aria-hidden="true"></div>
-              <div class="thesis-content">
-                <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
-                  <h3 class="thesis-heading m-0">In-House Scientific Models</h3>
-                  <MetricTooltip client:load label="Domain Adapted" code="256K" tooltipText="Scientific foundation models preserving LaTeX ASTs, complex biochemical tables, and formula structures." />
-                </div>
-                <p class="thesis-desc">Domain-adapted scientific foundation models trained on empirical literature, physical systems, and biochemical data, prioritizing grounded mathematical reasoning over conversational chit-chat.</p>
-              </div>
-            </div>
-          </div>
-
-          <p class="mission-closing">
-            We are an AI research team to solve this problem for better science, as AI truly cannot help in scientific discovery unless the infrastructure is ready for it.
-          </p>
-        </section>
-
-        <!-- Quick Action Pills Row with Radix UI EarlyAccessDialog -->
-        <nav class="quick-links-row" aria-label="Quick links">
-          <EarlyAccessDialog
-            client:load
-            triggerText="Request Protocol Access"
-            triggerClass="quick-link-pill bg-[#1B4D3E] text-white hover:bg-[#143B30] border-[#1B4D3E] cursor-pointer shadow-sm"
-          />
-          <a href="/careers" class="quick-link-pill">
-            <span>Join us</span>
-            <span class="pill-arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="/research" class="quick-link-pill">
-            <span>Research</span>
-            <span class="pill-arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="/manifesto" class="quick-link-pill">
-            <span>Manifesto</span>
-            <span class="pill-arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="/blogs" class="quick-link-pill">
-            <span>Writing</span>
-            <span class="pill-arrow" aria-hidden="true">→</span>
-          </a>
-        </nav>
-      </div>
-
-    </div>
-
-    <!-- 4. Recent Publications & Notes (Boxed Cards - Only 2 Showcased) -->
-    <section class="publications-fullwidth-section" aria-labelledby="publications-heading">
-      <div class="wide-frame-container">
-        <div class="section-top-header">
-          <div class="section-title-group">
-            <h2 id="publications-heading" class="section-title">Recent Publications & Notes</h2>
-            <p class="section-desc">Auditable research preprints and infrastructure architecture specifications.</p>
-          </div>
-          <a href="/research" class="view-all-header-link">
-            <span>View All Research</span>
-            <span class="action-arrow" aria-hidden="true">→</span>
-          </a>
+      <aside class="callout">
+        <span class="icon">🌱</span>
+        <div class="callout-content">
+          <p><strong>Simple explanation:</strong> Kalaris Labs is building AI systems that help scientists do research faster, better, and more reliably. Today, researchers spend too much time reading papers, cleaning documents, setting up tools, repeating experiments, and managing research workflows. We are building the AI infrastructure that can handle much of that work, learn from every loop, and become a stronger scientific collaborator over time.</p>
         </div>
+      </aside>
 
-        <div class="publications-boxes-grid">
-          {featuredTopics.map((item) => (
-            <PublicationCard {...item} />
-          ))}
+      <p>In plain words: <strong>we are not just making another chatbot for scientists. We are building the foundation for AI scientists</strong>: systems that can read, reason, plan, test, improve, and support discovery. For employees, this means the work here is not ordinary software work. It is paradigm-shaping infrastructure for the future of science.</p>
+
+      <hr />
+
+      <h2>What Does "Kalaris" Mean?</h2>
+      <p><strong>Kalaris = Kalari + Kalki.</strong></p>
+      <p><strong>Kalari</strong> is the ancient Indian martial arts training ground. A place of disciplined practice, repetition, and skill-building. You do not become a master through inspiration. You become one through the loop.</p>
+      <p><strong>Kalki</strong> is the future avatar of transformation. The force that ends a broken cycle and begins a new one.</p>
+      <p><strong>Kalaris Labs = a disciplined training ground for transformative intelligence.</strong></p>
+      <p>This is not a metaphor. It is the architecture:</p>
+      <ul>
+        <li>Recursive self-improvement is the <strong>Kalari</strong>. Agents practice, evaluate, and improve every loop. The loop is not a feature. It is the discipline.</li>
+        <li>Transforming science from broken infrastructure to autonomous discovery is the <strong>Kalki</strong>. The end of the old research system, and the beginning of a new one.</li>
+      </ul>
+      <p>The name carries the whole thesis. The practice and the transformation. The loop and the leap.</p>
+
+      <hr />
+
+      <h2>Mission</h2>
+      <p>AI for Science and Good. Build the infrastructure that lets agents absorb the work that is not the science, so researchers spend their time on discovery instead.</p>
+
+      <hr />
+
+      <h2>Vision</h2>
+      <p>We are reshaping the future of research and development. A recursive, self-improving research system backed by in-house scientific models that becomes a trusted collaborator across the full scientific method, not just a faster literature-review tool. Long-term ambition: AGI for science through recursive self-improvement.</p>
+
+      <hr />
+
+      <h2>Company One-Liner</h2>
+      <p class="highlight-text"><strong>Kalaris Labs builds recursive, self-improving agentic AI infrastructure for scientific discovery.</strong></p>
+
+      <hr />
+
+      <h2>The Manifesto</h2>
+
+      <aside class="callout manifesto-callout">
+        <span class="icon">📜</span>
+        <div class="callout-content">
+          <p><strong>This is what we believe. This is what we are building toward. Read it before you read anything else.</strong></p>
         </div>
-      </div>
-    </section>
+      </aside>
 
-    <!-- 5. Section Box: We Are Hiring (Takes them to Careers) -->
-    <section class="hiring-callout-section" aria-label="Careers Opportunity">
-      <div class="wide-frame-container">
-        <a href="/careers" class="hiring-banner-box">
-          <div class="hiring-banner-header">
-            <span class="hiring-pill-tag">WE ARE HIRING</span>
-            <span class="hiring-geo-tag">Bengaluru · Remote friendly</span>
-          </div>
-          <h3 class="hiring-banner-title">Build sovereign AI infrastructure for empirical scientific discovery</h3>
-          <p class="hiring-banner-text">
-            We are actively seeking research scientists, compiler engineers, and systems builders to join our laboratory in eliminating operational friction across scientific literature and autonomous discovery.
-          </p>
-          <div class="hiring-banner-action">
-            <span>Explore Open Positions</span>
-            <span class="action-arrow" aria-hidden="true">→</span>
-          </div>
-        </a>
-      </div>
-    </section>
-  </main>
+      <h3>On the state of the field:</h3>
+      <p>Asterlab will help you read faster. Recursive AI will help your agent loop. Synthetic Sciences will design your experiment. All of them will do it on someone else's model, running on someone else's inference stack, trained on someone else's signal.</p>
+      <p>That is a better shovel. We are building the mine.</p>
 
-  <Footer />
-</BaseLayout>
+      <h3>On what science actually needs:</h3>
+      <p>The bottleneck in scientific discovery is not reading speed. It is not literature access. It is not even compute. It is the absence of an AI system that was built, from the ground up, to <em>do science</em>, own the loop, and get measurably better at it every time a researcher uses it.</p>
+      <p>Every copilot on the market today is a productivity layer. We are building the infrastructure underneath productivity layers. When the copilot era ends and the infrastructure era begins, Kalaris is already there.</p>
+
+      <h3>What we actually believe:</h3>
+      <ul class="spaced-list">
+        <li>Scientists should spend 80% of their time on science, not infrastructure. The other 20% should be handled by a system that improves every time it handles it.</li>
+        <li>Agents should not just assist. They should recursively improve themselves. An agent that does not get better is a tool. We are not building a tool.</li>
+        <li>A real AI research lab owns the model, the harness, the loop, the inference, and the data. Owning one layer is a feature. Owning all four is a moat.</li>
+        <li>Reproducibility is infrastructure. If your AI cannot reproduce its own reasoning, it is not doing science. It is performing science.</li>
+        <li>Scientific discovery is a compute and learning problem. The labs that treat it that way will define the next century of research.</li>
+        <li>Model-agnostic is a business model, not a vision. When you build skills on any model, you optimize for portability. We optimize for performance. Our skill files co-evolve with our model. That is not possible if you do not own the model.</li>
+        <li>We are building the AI scientist that builds better AI scientists. That is not a tagline. It is the architectural decision embedded in every layer of the stack.</li>
+        <li>From India, for global science. AI for science and good. India-hosted, sovereign, cost-efficient, and globally ambitious. That is not a constraint. It is a structural advantage.</li>
+      </ul>
+
+      <hr />
+
+      <h2>The Problem We Are Solving</h2>
+
+      <h3>Problem Statement</h3>
+      <p>Every AI-for-science product built in the last year is an agent orchestrating someone else's model. Their ceiling is whatever the frontier labs decide to ship this quarter. Their margin is whatever is left after paying per-token to OpenAI or Anthropic.</p>
+      <p><strong>We are not building on top of the stack. We are building the stack.</strong></p>
+
+      <h3>Who Has This Problem?</h3>
+      <ul class="spaced-list">
+        <li>Research institutions and universities, especially those with data sovereignty requirements</li>
+        <li>Pharma companies and government-funded labs that cannot send data to a US-based provider</li>
+        <li>Individual researchers spending most of their time on work that is not the science</li>
+        <li>Any institution that needs reproducible, auditable, infrastructure-grade AI for scientific workflows</li>
+      </ul>
+
+      <h3>Why Has It Not Been Solved Yet?</h3>
+      <p>Building the base layer costs more capital and time than wrapping an existing model. Competitors like K-Dense and Enjamb are explicitly model-agnostic by design. That is also their ceiling. The recursive flywheel only works if you own the model.</p>
+
+      <hr />
+
+      <h2>What We Are Building</h2>
+      <p>Kalaris Labs is an infrastructure company with multiple independently monetizable layers. Every layer feeds the same flywheel: usage data that makes the next version of the model better at science.</p>
+
+    </main>
+  </body>
+</html>
 
 <style>
-  /* 1. Monograph outer wrapper & ASCII corners */
-  .monograph-outer-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* Premium White Page Aesthetic */
+  :root {
+    --bg-color: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+    --accent-bg: #f9fafb;
+    --callout-bg: #f3f4f6;
   }
 
-  /* Ambient ASCII Telemetry Flanks (Wide Screens) */
-  .ascii-flank {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: none;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  @media (min-width: 1240px) {
-    .ascii-flank {
-      display: block;
-    }
-  }
-
-  .ascii-flank-left {
-    left: clamp(1rem, 3.5vw, 4.5rem);
-  }
-
-  .ascii-flank-right {
-    right: clamp(1rem, 3.5vw, 4.5rem);
-  }
-
-  .ascii-flank-box {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.65rem;
-    line-height: 1.35;
-    color: #9CA3AF;
-    opacity: 0.55;
-    user-select: none;
-    pointer-events: auto;
-    cursor: default;
-    transition: opacity var(--duration-fast) ease, color var(--duration-fast) ease;
-  }
-
-  .ascii-flank-box:hover {
-    color: var(--kalari-green);
-    opacity: 1;
-  }
-
-  .ascii-flank-line {
-    letter-spacing: 0.08em;
-  }
-
-  /* Monograph Frame Corner Crosshairs */
-  .monograph-corner {
-    position: absolute;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.625rem;
-    font-weight: 600;
-    line-height: 1;
-    color: #D1D5DB;
-    user-select: none;
-    pointer-events: none;
-    letter-spacing: 0.06em;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .mono-corner-tl {
-    top: 0.75rem;
-    left: clamp(1.25rem, 4vw, 2.5rem);
-  }
-
-  .mono-corner-tr {
-    top: 0.75rem;
-    right: clamp(1.25rem, 4vw, 2.5rem);
-  }
-
-  .mono-corner-bl {
-    bottom: 0.75rem;
-    left: clamp(1.25rem, 4vw, 2.5rem);
-  }
-
-  .mono-corner-br {
-    bottom: 0.75rem;
-    right: clamp(1.25rem, 4vw, 2.5rem);
-  }
-
-  .page-article:hover .monograph-corner {
-    color: var(--kalari-green);
-  }
-
-  /* 1. Central reading column for top monograph */
-  .reading-column {
-    width: 100%;
-    max-width: var(--max-reading-width);
-    margin-inline: auto;
-    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  * {
     box-sizing: border-box;
-  }
-
-  .page-article {
-    position: relative;
-    padding-top: clamp(2rem, 4.5vh, 3.5rem);
-    padding-bottom: clamp(2.5rem, 5vh, 3.75rem);
-  }
-
-  /* Logo in middle of the page */
-  .hero-brand {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 1.25rem;
-    text-align: center;
-  }
-
-  .hero-wordmark {
-    max-width: 360px;
-    width: 80%;
-    height: auto;
-    object-fit: contain;
-    user-select: none;
-    margin-inline: auto;
-    display: block;
-  }
-
-  /* Centered CTA */
-  .hero-cta-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
-  .announcement-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.4rem 1rem;
-    background-color: #F3F4F6;
-    border: 1px solid #E5E7EB;
-    border-radius: 9999px;
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    text-decoration: none;
-    color: var(--ink);
-    transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, transform var(--duration-fast) ease;
-  }
-
-  .announcement-pill:hover {
-    background-color: #E5E7EB;
-    border-color: #D1D5DB;
-    transform: translateY(-1px);
-    color: var(--ink);
-  }
-
-  .pill-tag {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background-color: #111827;
-    color: #FFFFFF;
-    padding: 0.15rem 0.45rem;
-    border-radius: 9999px;
-  }
-
-  .pill-text {
-    font-weight: 500;
-  }
-
-  .pill-arrow {
-    font-size: 0.8rem;
-    color: #4B5563;
-    transition: transform var(--duration-fast) ease;
-  }
-
-  .announcement-pill:hover .pill-arrow {
-    transform: translateX(2px);
-  }
-
-  /* Editorial Body */
-  .editorial-body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .editorial-body p {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    line-height: 1.7;
-    color: #1F2937;
-    margin-bottom: 1.25rem;
-  }
-
-  .editorial-body p strong {
-    color: #111827;
-    font-weight: 600;
-  }
-
-  .mission-lead {
-    font-size: 1.15rem !important;
-    line-height: 1.65 !important;
-    color: var(--ink) !important;
-  }
-
-  /* Thesis Stack: 3 Structured Capabilities */
-  .thesis-stack {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 1.15rem;
-    margin: 1.5rem 0 1.75rem 0;
-    padding: 1.25rem 1.4rem;
-    background-color: #FBFBFB;
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    box-sizing: border-box;
-    transition: border-color var(--duration-fast) ease;
-  }
-
-  .thesis-stack:hover {
-    border-color: #9CA3AF;
-  }
-
-  .ascii-thesis-corner {
-    position: absolute;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #D1D5DB;
-    pointer-events: none;
-    user-select: none;
-    transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
-  }
-
-  .atc-tl {
-    top: 6px;
-    left: 8px;
-  }
-
-  .atc-tr {
-    top: 6px;
-    right: 8px;
-  }
-
-  .atc-bl {
-    bottom: 6px;
-    left: 8px;
-  }
-
-  .atc-br {
-    bottom: 6px;
-    right: 8px;
-  }
-
-  .thesis-stack:hover .ascii-thesis-corner {
-    color: var(--kalari-green);
-  }
-
-  .thesis-ascii-tag {
-    font-family: var(--font-mono, monospace);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #9CA3AF;
-    letter-spacing: 0.05em;
-    margin-top: 0.1rem;
-    flex-shrink: 0;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .thesis-entry:hover .thesis-ascii-tag {
-    color: var(--kalari-green);
-  }
-
-  .thesis-entry {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
-  }
-
-  .thesis-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--kalari-green);
-    margin-top: 0.45rem;
-    flex-shrink: 0;
-  }
-
-  .thesis-content {
-    flex: 1;
-  }
-
-  .thesis-heading {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    font-weight: 700;
-    color: var(--ink);
-    margin: 0 0 0.2rem 0;
-    line-height: 1.35;
-  }
-
-  .thesis-desc {
-    font-family: var(--font-sans);
-    font-size: 0.85rem !important;
-    line-height: 1.55 !important;
-    color: var(--muted-ink) !important;
-    margin: 0 !important;
-  }
-
-  .mission-closing {
-    margin-top: 0.25rem;
-  }
-
-  /* Quick Action Pills */
-  .quick-links-row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    margin-top: 1.5rem;
-  }
-
-  .quick-link-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.95rem;
-    background-color: #FFFFFF;
-    border: 1px solid var(--rule);
-    border-radius: 9999px;
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-    transition: all var(--duration-fast) ease;
-  }
-
-  .quick-link-pill:hover {
-    border-color: #9CA3AF;
-    background-color: #F9FAFB;
-    color: var(--kalari-green);
-    transform: translateY(-1px);
-  }
-
-  .quick-link-pill:hover .pill-arrow {
-    transform: translateX(2px);
-  }
-
-  /* 2. Wide frame container for full-width sections */
-  .wide-frame-container {
-    width: 100%;
-    max-width: 1360px;
-    margin-inline: auto;
-    padding-inline: clamp(1.25rem, 3.5vw, 3.5rem);
-    box-sizing: border-box;
-  }
-
-
-  .section-top-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1.5rem;
-    margin-bottom: clamp(1.75rem, 3vh, 2.5rem);
-  }
-
-  .section-title {
-    font-family: var(--font-sans);
-    font-size: clamp(1.4rem, 2vw, 1.75rem);
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-    margin: 0 0 0.35rem 0;
-  }
-
-  .section-desc {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: var(--muted-ink);
-    line-height: 1.55;
     margin: 0;
+    padding: 0;
   }
 
-  /* 4. Recent Publications & Notes (Boxed Cards) */
-  .publications-fullwidth-section {
-    width: 100%;
-    padding-top: clamp(3.5rem, 6vh, 5rem);
-    padding-bottom: clamp(2.5rem, 5vh, 3.5rem);
-    border-top: 1px solid var(--rule);
-    background-color: #FFFFFF;
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    font-size: 1.125rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .publications-boxes-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1.25rem, 2vw, 2rem);
-    width: 100%;
+  .document {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 6rem 2rem 8rem;
   }
 
-  .view-all-header-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--muted-ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: #E5E7EB;
-    flex-shrink: 0;
-    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+  .doc-header h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    line-height: 1.1;
+    color: #000000;
   }
 
-  .view-all-header-link:hover {
-    color: var(--kalari-green);
-    text-decoration-color: var(--kalari-green);
-  }
-
-  /* 6. Section Box: We Are Hiring */
-  .hiring-callout-section {
-    width: 100%;
-    padding-bottom: clamp(3.5rem, 7vh, 5.5rem);
-    background-color: #FFFFFF;
-  }
-
-  .hiring-banner-box {
-    position: relative;
-    display: block;
-    padding: clamp(1.75rem, 3.5vw, 2.75rem);
-    background-color: #FAFAFA;
-    border: 1px solid var(--rule);
-    border-radius: 8px;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color var(--duration-fast) ease, background-color var(--duration-fast) ease, transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
-  }
-
-  .ascii-hiring-corner {
-    position: absolute;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.85rem;
-    font-weight: 700;
-    line-height: 1;
-    color: #D1D5DB;
-    pointer-events: none;
-    user-select: none;
-    transition: color var(--duration-fast) ease, transform var(--duration-fast) ease;
-  }
-
-  .ahc-tl {
-    top: 8px;
-    left: 10px;
-  }
-
-  .ahc-tr {
-    top: 8px;
-    right: 10px;
-  }
-
-  .ahc-bl {
-    bottom: 8px;
-    left: 10px;
-  }
-
-  .ahc-br {
-    bottom: 8px;
-    right: 10px;
-  }
-
-  .hiring-banner-box:hover .ascii-hiring-corner {
-    color: var(--kalari-green);
-  }
-
-  .hiring-banner-box:hover .ahc-tl {
-    transform: translate(-1px, -1px);
-  }
-
-  .hiring-banner-box:hover .ahc-tr {
-    transform: translate(1px, -1px);
-  }
-
-  .hiring-banner-box:hover .ahc-bl {
-    transform: translate(-1px, 1px);
-  }
-
-  .hiring-banner-box:hover .ahc-br {
-    transform: translate(1px, 1px);
-  }
-
-  .ascii-hiring-badge {
-    position: absolute;
-    bottom: 10px;
-    right: 28px;
-    font-family: var(--font-mono, monospace);
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: #9CA3AF;
-    letter-spacing: 0.06em;
-    user-select: none;
-    pointer-events: none;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .hiring-banner-box:hover .ascii-hiring-badge {
-    color: var(--kalari-green);
-  }
-
-  .hiring-banner-box:hover {
-    border-color: #9CA3AF;
-    background-color: #FFFFFF;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  }
-
-  .hiring-banner-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .hiring-pill-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    background-color: var(--soft-green);
-    color: var(--kalari-green);
-    padding: 0.2rem 0.55rem;
-    border-radius: 4px;
-  }
-
-  .hiring-geo-tag {
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
-    color: var(--muted-ink);
-    font-weight: 500;
-  }
-
-  .hiring-banner-title {
-    font-family: var(--font-sans);
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.35;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .hiring-banner-text {
-    font-family: var(--font-sans);
-    font-size: var(--text-sm);
-    color: #4B5563;
+  .lead p {
+    font-size: 1.5rem;
     line-height: 1.6;
-    margin: 0 0 1.25rem 0;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
 
-  .hiring-banner-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-sans);
-    font-size: var(--text-xs);
+  h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 400;
+    margin: 3.5rem 0 1.5rem;
+    letter-spacing: -0.01em;
+    color: #000000;
+  }
+
+  h3 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.25rem;
     font-weight: 600;
-    color: var(--ink);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: #D1D5DB;
-    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
+    margin: 2.5rem 0 1rem;
+    color: var(--text-primary);
   }
 
-  .hiring-banner-box:hover .hiring-banner-action {
-    color: var(--kalari-green);
-    text-decoration-color: var(--kalari-green);
+  p {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
   }
 
-  .action-arrow {
-    font-size: 0.85rem;
-    transition: transform var(--duration-fast) ease;
+  strong {
+    font-weight: 600;
+    color: var(--text-primary);
   }
 
-  .hiring-banner-box:hover .action-arrow,
-  .view-all-header-link:hover .action-arrow {
-    transform: translateX(4px);
+  em {
+    font-style: italic;
   }
 
-  /* Responsive Breakpoints */
-  @media (max-width: 1080px) {
-    .founders-horizontal-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  hr {
+    border: 0;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 4rem 0;
   }
 
+  ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    color: var(--text-secondary);
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  .spaced-list li {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Callouts */
+  .callout {
+    display: flex;
+    gap: 1.25rem;
+    background-color: var(--callout-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+  }
+
+  .callout p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+  }
+
+  .callout .icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .manifesto-callout {
+    background-color: #111827;
+  }
+
+  .manifesto-callout p, .manifesto-callout strong {
+    color: #ffffff;
+  }
+
+  .highlight-text {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .publications-boxes-grid {
-      grid-template-columns: 1fr;
+    .document {
+      padding: 4rem 1.5rem 6rem;
     }
-
-    .section-top-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
+    
+    .doc-header h1 {
+      font-size: 2.75rem;
+    }
+    
+    .lead p {
+      font-size: 1.25rem;
+    }
+    
+    h2 {
+      font-size: 1.75rem;
     }
   }
-
-  @media (max-width: 640px) {
-    .founders-horizontal-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
 </style>
