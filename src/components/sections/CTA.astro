@@ -1,0 +1,173 @@
+---
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<section id="contact" class="py-20">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="mb-6 text-4xl font-bold">Ready to Get Started?</h2>
+    <p class="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
+      Join us in building the future. Contact us today to learn more about our
+      solutions.
+    </p>
+    <form data-contact-form class="mx-auto max-w-xl space-y-4 text-left">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <label class="space-y-2 text-sm font-medium"
+          >Name
+          <input
+            name="name"
+            autocomplete="name"
+            maxlength="100"
+            class="border-input bg-background w-full rounded-lg border px-4 py-3"
+            required
+          />
+        </label>
+        <label class="space-y-2 text-sm font-medium"
+          >Email
+          <input
+            name="email"
+            type="email"
+            autocomplete="email"
+            maxlength="254"
+            class="border-input bg-background w-full rounded-lg border px-4 py-3"
+            required
+          />
+        </label>
+      </div>
+      <label class="block space-y-2 text-sm font-medium"
+        >Company <span class="text-muted-foreground">(optional)</span>
+        <input
+          name="company"
+          autocomplete="organization"
+          maxlength="120"
+          class="border-input bg-background w-full rounded-lg border px-4 py-3"
+        />
+      </label>
+      <label class="block space-y-2 text-sm font-medium"
+        >How can we help?
+        <textarea
+          name="message"
+          minlength="10"
+          maxlength="5000"
+          rows="5"
+          class="border-input bg-background w-full rounded-lg border px-4 py-3"
+          required></textarea>
+      </label>
+      <div data-turnstile-container data-site-key={turnstileSiteKey}></div>
+      {
+        !turnstileSiteKey && (
+          <p class="text-muted-foreground text-sm">
+            Set PUBLIC_TURNSTILE_SITE_KEY to enable secure submissions.
+          </p>
+        )
+      }
+      <button
+        type="submit"
+        disabled={!turnstileSiteKey}
+        class="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-lg px-8 py-3 transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        Get in Touch
+      </button>
+      <p
+        data-contact-status
+        class="min-h-6 text-center text-sm"
+        aria-live="polite"
+      >
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  interface TurnstileApi {
+    render(container: HTMLElement, options: Record<string, unknown>): string;
+    reset(widgetId: string): void;
+  }
+
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const container = document.querySelector<HTMLElement>(
+    '[data-turnstile-container]',
+  );
+  const status = document.querySelector<HTMLElement>('[data-contact-status]');
+  const button = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+  let token = '';
+  let widgetId = '';
+
+  if (form && container?.dataset.siteKey) {
+    const script = document.createElement('script');
+    script.src =
+      'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', () => {
+      const turnstile = (window as Window & { turnstile?: TurnstileApi })
+        .turnstile;
+      if (!turnstile) return;
+      widgetId = turnstile.render(container, {
+        sitekey: container.dataset.siteKey,
+        action: 'contact',
+        callback: (value: string) => {
+          token = value;
+        },
+        'expired-callback': () => {
+          token = '';
+        },
+        'error-callback': () => {
+          token = '';
+        },
+      });
+    });
+    document.head.appendChild(script);
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!status || !button) return;
+    if (!token) {
+      status.textContent = 'Complete the security check first.';
+      return;
+    }
+
+    const data = new FormData(form);
+    button.disabled = true;
+    status.textContent = 'Sending…';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          company: data.get('company'),
+          message: data.get('message'),
+          turnstileToken: token,
+        }),
+      });
+      const result = (await response.json()) as {
+        ok: boolean;
+        message?: string;
+      };
+      if (!response.ok || !result.ok)
+        throw new Error(result.message ?? 'Unable to send your message.');
+
+      form.reset();
+      status.textContent = 'Thanks — your message is on its way.';
+      window.dispatchEvent(
+        new CustomEvent('kalaris:track', {
+          detail: { name: 'contact form submitted' },
+        }),
+      );
+    } catch (error) {
+      status.textContent =
+        error instanceof Error ? error.message : 'Unable to send your message.';
+    } finally {
+      token = '';
+      const turnstile = (window as Window & { turnstile?: TurnstileApi })
+        .turnstile;
+      if (widgetId && turnstile) turnstile.reset(widgetId);
+      button.disabled = false;
+    }
+  });
+</script>

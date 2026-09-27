@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import Hero from '../components/sections/Hero.astro';
+import Features from '../components/sections/Features.astro';
+import CTA from '../components/sections/CTA.astro';
+
+export const prerender = true;
+---
+
+<Layout title="Kalaris Labs - Building the Future of Technology">
+  <Header />
+  <main>
+    <Hero />
+    <Features />
+    <CTA />
+  </main>
+  <Footer />
+</Layout>

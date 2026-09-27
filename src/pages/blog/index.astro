@@ -1,0 +1,26 @@
+---
+import ContentIndex from '../../components/content/ContentIndex.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getPublishedEntries } from '../../lib/content';
+
+export const prerender = true;
+const entries = await getPublishedEntries('blog');
+---
+
+<Layout
+  title="Blog"
+  description="Engineering notes and company updates from Kalaris Labs."
+>
+  <Header />
+  <main>
+    <ContentIndex
+      title="Blog"
+      description="Engineering notes and company updates from Kalaris Labs."
+      collection="blog"
+      entries={entries}
+    />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Kalaris Labs</title>
+  <desc id="description">Building the future of technology.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <circle cx="1040" cy="80" r="320" fill="#60a5fa" opacity=".18"/>
+  <circle cx="150" cy="610" r="280" fill="#818cf8" opacity=".14"/>
+  <text x="96" y="290" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="92" font-weight="700">Kalaris Labs</text>
+  <text x="100" y="380" fill="#bfdbfe" font-family="Inter,Arial,sans-serif" font-size="42">Building the future of technology.</text>
+</svg>

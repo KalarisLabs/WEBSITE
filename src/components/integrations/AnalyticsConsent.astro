@@ -1,0 +1,75 @@
+<aside
+  data-consent-banner
+  class="border-border bg-background fixed right-4 bottom-4 z-[100] hidden max-w-md rounded-xl border p-5 shadow-2xl"
+  aria-labelledby="analytics-consent-title"
+>
+  <h2 id="analytics-consent-title" class="text-lg font-semibold">
+    Analytics preferences
+  </h2>
+  <p class="text-muted-foreground mt-2 text-sm">
+    Help us improve Kalaris Labs with privacy-conscious product analytics.
+    Nothing is loaded until you choose Allow.
+  </p>
+  <div class="mt-4 flex gap-3">
+    <button
+      type="button"
+      data-consent="allow"
+      class="bg-primary text-primary-foreground rounded-lg px-4 py-2 text-sm font-medium"
+    >
+      Allow
+    </button>
+    <button
+      type="button"
+      data-consent="deny"
+      class="border-border rounded-lg border px-4 py-2 text-sm font-medium"
+    >
+      Decline
+    </button>
+  </div>
+</aside>
+
+<script>
+  import {
+    getAnalyticsConsent,
+    initializePostHog,
+    setAnalyticsConsent,
+    trackEvent,
+  } from '../../lib/integrations/posthog';
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+
+  function showPreferences() {
+    banner?.classList.remove('hidden');
+  }
+
+  const consent = getAnalyticsConsent();
+  if (consent === 'allow') initializePostHog();
+  if (consent === null) showPreferences();
+
+  document
+    .querySelectorAll<HTMLElement>('[data-analytics-preferences]')
+    .forEach((button) => {
+      button.addEventListener('click', showPreferences);
+    });
+
+  banner
+    ?.querySelectorAll<HTMLButtonElement>('[data-consent]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const choice = button.dataset.consent;
+        if (choice !== 'allow' && choice !== 'deny') return;
+        setAnalyticsConsent(choice);
+        banner.classList.add('hidden');
+        if (choice === 'allow') trackEvent('analytics consent granted');
+      });
+    });
+
+  window.addEventListener('kalaris:track', (event) => {
+    if (
+      !(event instanceof CustomEvent) ||
+      typeof event.detail?.name !== 'string'
+    )
+      return;
+    trackEvent(event.detail.name, event.detail.properties);
+  });
+</script>

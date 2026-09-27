@@ -1,0 +1,13 @@
+---
+title: Edge delivery without architectural fragmentation
+description: A short research note on combining static delivery and request-time behavior in one deployment boundary.
+publishDate: 2026-09-27
+tags:
+  - edge
+  - architecture
+draft: false
+---
+
+Static and dynamic behavior do not need separate operational surfaces. A single Worker can serve immutable assets efficiently and reserve request-time execution for the small set of routes that require it.
+
+The useful boundary is not static versus dynamic. It is whether a request needs computation now.

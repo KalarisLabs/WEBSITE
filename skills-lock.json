@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "skills": {
+    "astro": {
+      "source": "joabgonzalez/ai-agents-framework",
+      "sourceType": "github",
+      "skillPath": "skills/astro/SKILL.md",
+      "computedHash": "e59254c7c0d54f204795d41e33e42f168297dd295cd13dd3cc1951d627067be7"
+    },
+    "cinematic-gsap-lenis-motion-system": {
+      "source": "mengto/skills",
+      "sourceType": "github",
+      "skillPath": "agent-skills/web-design/cinematic-gsap-lenis-motion-system/SKILL.md",
+      "computedHash": "909ca61ea5c11dae974a222aeb3bc55e1aaa88158abe002b5d7080908cc012af"
+    },
+    "cloudflare": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloudflare/SKILL.md",
+      "computedHash": "0f8ee2a0c5de3cce6cd610bad1c3ea1666d85425ac8cf44d6bf18eb1e93fa974"
+    },
+    "code-review": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/code-review/SKILL.md",
+      "computedHash": "b4f17857c85ca60af1df7d0b623dd03c2a48419f6123e714f3d9748ca744a1bf"
+    },
+    "codebase-design": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/codebase-design/SKILL.md",
+      "computedHash": "caea3cb8a8281ff829fd1a2b985044e77601b62f301adf43f689ccfc74c15f6f"
+    },
+    "diagnosing-bugs": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/diagnosing-bugs/SKILL.md",
+      "computedHash": "dcaaa3eb81195329f65f27574d9a67dc776160dd2e4d7798d1afb1e4a5f3695a"
+    },
+    "diagnosing-sdk-health": {
+      "source": "PostHog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/diagnosing-sdk-health/SKILL.md",
+      "computedHash": "2d659054b19260f838b67adcf84733744632fb9b010673a8f1c888c585019e58"
+    },
+    "email-best-practices": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "skillPath": "skills/email-best-practices/SKILL.md",
+      "computedHash": "cf53e0d7ad72c440818c64a104ab220f527f26f10c7d8163fa99e066bf747eed"
+    },
+    "emil-design-eng": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "77853cec799207f80868c611374c6ed5fdf34a55355c5ab544b59e791c63ad98"
+    },
+    "gsap-scrolltrigger": {
+      "source": "freshtechbro/claudedesignskills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/gsap-scrolltrigger/SKILL.md",
+      "computedHash": "b2af007055d557ae3be7112ff413dac1223ad56c7c3ad6bd06f2089fd0f18ee2"
+    },
+    "improve-codebase-architecture": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
+      "computedHash": "016f12709bff30a27419e8add978a9be70f5ca1fb6738b3be6793038e0aba631"
+    },
+    "instrument-product-analytics": {
+      "source": "PostHog/skills",
+      "sourceType": "github",
+      "skillPath": "skills/omnibus/instrument-product-analytics/SKILL.md",
+      "computedHash": "62d3dc7e58a8c5c2ad5b1f34b200f84a94e426fc149f3015f4ac571b7cabd37a"
+    },
+    "mintlify-docs": {
+      "source": "mintlify.com",
+      "sourceUrl": "https://mintlify.com/docs",
+      "sourceType": "well-known",
+      "computedHash": "b710a8432c3e62bdc85da76b4396e1d4907e6a444f6ac3f825bb2c5ef9114f9a",
+      "wellKnownDigest": "sha256:9268f7316b6677ea0398ad51f0ff7ccdf1645067212a9881132b5f0e06c5482a"
+    },
+    "motion-framer": {
+      "source": "freshtechbro/claudedesignskills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/motion-framer/SKILL.md",
+      "computedHash": "b18cf4fbfd179942f73d770f3f1d4597ea512fbdf67b2aa03f01cfd726558b6e"
+    },
+    "react": {
+      "source": "Pythoughts-labs/react-frontend-skills",
+      "sourceType": "github",
+      "skillPath": "skills/react/SKILL.md",
+      "computedHash": "9a8fe87b883c215de3d48376fe9937a32ab89754b05ff749ba586de01d24394f"
+    },
+    "resend": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "skillPath": "skills/resend/SKILL.md",
+      "computedHash": "defa937f46ea248ce2a48a364d15c8a2e32153526b51ea8fdeeaad0e8e295b97"
+    },
+    "review-animations": {
+      "source": "emilkowalski/skills",
+      "sourceType": "github",
+      "skillPath": "skills/review-animations/SKILL.md",
+      "computedHash": "8c2befeb28bb484bf2de7b2fc228774857e266d32a65d76895e78651a536d8cf"
+    },
+    "rive-interactive": {
+      "source": "freshtechbro/claudedesignskills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/rive-interactive/SKILL.md",
+      "computedHash": "119415d1e3cc9b71e93c28d62b3b9e0f90aa55f8d5020a195163c2c65b7ab0eb"
+    },
+    "sentry-cloudflare-sdk": {
+      "source": "getsentry/sentry-for-ai",
+      "sourceType": "github",
+      "skillPath": "skills-legacy/sentry-cloudflare-sdk/SKILL.md",
+      "computedHash": "dc8ba575eba474bb0a82100e5b5f99f06d7774640bc0c86f4c1fd2dd71465b85"
+    },
+    "sentry-sdk-setup": {
+      "source": "getsentry/sentry-for-ai",
+      "sourceType": "github",
+      "skillPath": "skills-legacy/sentry-sdk-setup/SKILL.md",
+      "computedHash": "ede5c7373ad124385df1f94394ebf821a2801ce21ab31271879e4eb884347763"
+    },
+    "shadcn": {
+      "source": "bobmatnyc/claude-mpm-skills",
+      "sourceType": "github",
+      "skillPath": "toolchains/ui/components/shadcn/SKILL.md",
+      "computedHash": "cfc627760e5222db0c7e594305f37b3875a092ff22f6e22b14dda3052462aa05"
+    },
+    "spline-interactive": {
+      "source": "freshtechbro/claudedesignskills",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/spline-interactive/SKILL.md",
+      "computedHash": "73c61d312b731d3e491cd635d19427767c80c4a1f4a9cc1cd18a3a530efa8aa6"
+    },
+    "tailwind-css-patterns": {
+      "source": "giuseppe-trisciuoglio/developer-kit",
+      "sourceType": "github",
+      "skillPath": "plugins/developer-kit-typescript/skills/tailwind-css-patterns/SKILL.md",
+      "computedHash": "2fa1b2d4e0bc020dcbaa1e65af6f7ba75715116686e0fd663a4b268c8ace22d4"
+    },
+    "tdd": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/tdd/SKILL.md",
+      "computedHash": "c1ed8cd854c64d4d226097255d3fa662dae4a758a1462fadd63cc10e413d88d7"
+    },
+    "turnstile-spin": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/turnstile-spin/SKILL.md",
+      "computedHash": "3fb5f9c7edd4cbe608de00848adfaa35f5dd4b809c98a86c4cda19176de92aa1"
+    },
+    "typescript": {
+      "source": "Pythoughts-labs/react-frontend-skills",
+      "sourceType": "github",
+      "skillPath": "skills/typescript/SKILL.md",
+      "computedHash": "32d3a2f2ea53f29b16b96d76b5a9733fbf06d7d7b78fc129c00394eefe269e69"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "b0f52ab109c122ee4de15f4880cba51a70a14fc6dca9ab63f1027b09120da0ef"
+    },
+    "web-perf": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-perf/SKILL.md",
+      "computedHash": "603b94fca24096cc1d3063c3e70eca8d0cc3eb63467bcf7ddc0a95d21133d128"
+    },
+    "workers-best-practices": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/workers-best-practices/SKILL.md",
+      "computedHash": "7764ccc81dca3f9b4289817879464608eb1bd73cd607347d43ab5c1697a4b707"
+    },
+    "wrangler": {
+      "source": "cloudflare/skills",
+      "sourceType": "github",
+      "skillPath": "skills/wrangler/SKILL.md",
+      "computedHash": "ad58885bd4e7e146e67eacc9fba35ff3a8d6ee3ee1ea46ea8603b81caa2a9c0a"
+    }
+  }
+}

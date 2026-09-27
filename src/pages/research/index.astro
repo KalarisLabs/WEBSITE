@@ -1,0 +1,26 @@
+---
+import ContentIndex from '../../components/content/ContentIndex.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import { getPublishedEntries } from '../../lib/content';
+
+export const prerender = true;
+const entries = await getPublishedEntries('research');
+---
+
+<Layout
+  title="Research"
+  description="Research notes on software, systems, and emerging technology."
+>
+  <Header />
+  <main>
+    <ContentIndex
+      title="Research"
+      description="Research notes on software, systems, and emerging technology."
+      collection="research"
+      entries={entries}
+    />
+  </main>
+  <Footer />
+</Layout>

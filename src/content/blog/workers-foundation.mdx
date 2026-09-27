@@ -1,0 +1,13 @@
+---
+title: A Workers-first foundation for Kalaris Labs
+description: Why the Kalaris Labs website ships as one Cloudflare Worker with prerendered content and server endpoints.
+publishDate: 2026-09-27
+tags:
+  - engineering
+  - cloudflare
+draft: false
+---
+
+The Kalaris Labs website uses Astro's islands architecture and Cloudflare Workers Static Assets. Most pages are prerendered, while server routes such as the contact endpoint execute in the same Worker deployment.
+
+This keeps the public surface small, preserves fast static delivery, and gives server features a clear path to grow without introducing a second hosting platform.

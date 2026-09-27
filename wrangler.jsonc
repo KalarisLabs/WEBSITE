@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kalaris-labs-website",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-09-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": true },
+  },
+  "vars": {
+    "APP_ENV": "development",
+    "CONTACT_TO_EMAIL": "contact@kalarislabs.com",
+    "CONTACT_FROM_EMAIL": "Kalaris Labs <contact@kalarislabs.com>",
+  },
+  "env": {
+    "staging": {
+      "name": "kalaris-labs-website-staging",
+      "workers_dev": true,
+      "vars": {
+        "APP_ENV": "staging",
+        "CONTACT_TO_EMAIL": "contact@kalarislabs.com",
+        "CONTACT_FROM_EMAIL": "Kalaris Labs <contact@kalarislabs.com>",
+      },
+    },
+    "production": {
+      "name": "kalaris-labs-website",
+      "workers_dev": false,
+      "routes": [
+        { "pattern": "kalarislabs.com", "custom_domain": true },
+        { "pattern": "www.kalarislabs.com", "custom_domain": true },
+      ],
+      "vars": {
+        "APP_ENV": "production",
+        "CONTACT_TO_EMAIL": "contact@kalarislabs.com",
+        "CONTACT_FROM_EMAIL": "Kalaris Labs <contact@kalarislabs.com>",
+      },
+    },
+  },
+}

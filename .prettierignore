@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.agents
+coverage
+worker-configuration.d.ts
+skills-lock.json
+package-lock.json
+.env.example
+.dev.vars.example
