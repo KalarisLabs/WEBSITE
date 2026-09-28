@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  entries: CollectionEntry<'blog'>[];
+  entries: CollectionEntry<'research'>[];
 }
 
 const { entries } = Astro.props;
@@ -35,10 +35,10 @@ function estimateReadingTime(text: string) {
 ---
 
 <div class="blog-catalog-container">
-  {/* 1. Featured Post Hero Card (Inspired by Reference 2) */}
+  {/* 1. Featured Research Hero Card (Inspired by Reference 2) */}
   {featured && (
-    <section class="blog-featured-section" aria-label="Featured publication">
-      <a href={`/blog/${featured.id}`} class="blog-featured-card group">
+    <section class="blog-featured-section" aria-label="Featured research publication">
+      <a href={`/research/${featured.id}`} class="blog-featured-card group">
         <div class="featured-content-col">
           <div class="featured-meta-line">
             <time datetime={featured.data.publishDate.toISOString()}>
@@ -96,7 +96,7 @@ function estimateReadingTime(text: string) {
   )}
 
   {/* 2. Category Filter Tabs Bar (Inspired by Reference 2) */}
-  <nav class="blog-filter-bar" aria-label="Article categories">
+  <nav class="blog-filter-bar" aria-label="Research categories">
     <div class="filter-pills-row" role="tablist">
       <button
         type="button"
@@ -105,7 +105,7 @@ function estimateReadingTime(text: string) {
         role="tab"
         aria-selected="true"
       >
-        All articles
+        All research
       </button>
       {allTags.map((tag) => (
         <button
@@ -144,8 +144,8 @@ function estimateReadingTime(text: string) {
     </a>
   </nav>
 
-  {/* 3. 3-Column Article Grid (Inspired by Reference 2) */}
-  <div class="blog-posts-grid" id="blog-grid" role="region" aria-label="Articles list">
+  {/* 3. 3-Column Research Grid (Inspired by Reference 2) */}
+  <div class="blog-posts-grid" id="research-grid" role="region" aria-label="Research publications list">
     {gridPosts.map((post) => {
       const primaryTag = post.data.tags[0] ?? 'research';
       const readMinutes = estimateReadingTime(post.body ?? '');
@@ -154,7 +154,7 @@ function estimateReadingTime(text: string) {
           class="blog-card group"
           data-tags={post.data.tags.join(' ')}
         >
-          <a href={`/blog/${post.id}`} class="blog-card-link">
+          <a href={`/research/${post.id}`} class="blog-card-link">
             <div class="card-thumb-frame">
               {post.data.socialImage ? (
                 <img
