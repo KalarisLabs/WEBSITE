@@ -1,0 +1,58 @@
+---
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+export const prerender = true;
+---
+
+<Layout
+  title="Careers"
+  description="Join Kalaris Labs and help build self-improving infrastructure for scientific research."
+>
+  <Header />
+  <main id="main-content">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Company / Careers</p><div>
+          <h1>Do the work that pulls you forward.</h1><p class="page-lede">
+            We are looking for people who are curious across disciplines,
+            generous with knowledge, and capable of turning an unclear problem
+            into forward motion.
+          </p>
+        </div>
+      </div>
+    </header>
+    <section class="editorial-section section-rule">
+      <div class="site-container editorial-grid">
+        <p class="eyebrow">Open roles / 00</p><div class="prose-large">
+          <h2>
+            No listed roles right now. Exceptional people can still write.
+          </h2><p>
+            Tell us what you investigate when nobody assigns it, what you have
+            built, and why scientific infrastructure matters to you. We care
+            more about evidence of agency than a conventional résumé.
+          </p><div class="hero-actions">
+            <a
+              class="button button-primary"
+              href="mailto:careers@kalarislabs.com?subject=Working%20with%20Kalaris%20Labs"
+              >Introduce yourself →</a
+            ><a class="button button-ghost" href="/team">Read how we work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="editorial-section dark-band">
+      <div class="site-container editorial-grid">
+        <p class="eyebrow">What matters / 01</p><div class="prose-large">
+          <h2>Curiosity. Agency. Collective ownership.</h2><p>
+            We value people who teach what they learn, care about the
+            consequence of the work, and can balance intensity with sustainable
+            habits. The work should be serious. The culture should still feel
+            alive.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

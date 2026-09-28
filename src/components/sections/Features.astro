@@ -1,92 +1,59 @@
 ---
-// Features section
+import { company } from '../../data/company';
 ---
 
-<section id="features" class="bg-muted/50 py-20">
-  <div class="container mx-auto px-4">
-    <h2 class="mb-12 text-center text-4xl font-bold">
-      Why Choose Kalaris Labs?
-    </h2>
+<section class="reading-section" id="problem">
+  <div class="content-column">
+    <p class="section-code">What we do / 002</p><h2>
+      Research time is being spent on everything around the research.
+    </h2><p class="lead-copy">
+      Environments, disconnected tools, citations, repositories, and lost
+      context slow discovery before the real work can begin.
+    </p><p>
+      Kalaris Labs is building an agent-powered infrastructure layer to take on
+      that repetitive technical work while keeping the researcher in control of
+      the questions, experiments, and conclusions.
+    </p>
+  </div>
+</section>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
-      <div class="bg-card border-border rounded-lg border p-6">
-        <div
-          class="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-primary"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-            <path d="M2 17l10 5 10-5"></path>
-            <path d="M2 12l10 5 10-5"></path>
-          </svg>
-        </div>
-        <h3 class="mb-2 text-xl font-semibold">Cutting-Edge Technology</h3>
-        <p class="text-muted-foreground">
-          We leverage the latest technologies to build scalable and efficient
-          solutions.
-        </p>
-      </div>
-
-      <div class="bg-card border-border rounded-lg border p-6">
-        <div
-          class="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-primary"
-          >
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          </svg>
-        </div>
-        <h3 class="mb-2 text-xl font-semibold">Security First</h3>
-        <p class="text-muted-foreground">
-          Security is built into every layer of our applications from the ground
-          up.
-        </p>
-      </div>
-
-      <div class="bg-card border-border rounded-lg border p-6">
-        <div
-          class="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-lg"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-primary"
-          >
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
-          </svg>
-        </div>
-        <h3 class="mb-2 text-xl font-semibold">Lightning Fast</h3>
-        <p class="text-muted-foreground">
-          Optimized performance that delivers exceptional user experiences.
-        </p>
-      </div>
+<section class="reading-section" id="system">
+  <div class="content-column">
+    <p class="section-code">The system / 003</p><h2>
+      Infrastructure that improves with the work.
+    </h2><p class="lead-copy">
+      The premise is recursive self-improvement: learn from workflows,
+      repositories, papers, and each iteration—then carry that context into the
+      next cycle.
+    </p><div class="principle-list">
+      {
+        company.principles.map((principle) => (
+          <article>
+            <>
+              <span>{principle.number}</span>
+              <div>
+                <>
+                  <h3>{principle.title}</h3>
+                  <p>{principle.body}</p>
+                </>
+              </div>
+            </>
+          </article>
+        ))
+      }
     </div>
+  </div>
+</section>
+
+<section class="reading-section" id="culture">
+  <div class="content-column">
+    <p class="section-code">Culture / 004</p><blockquote>
+      “We are societal delinquents. Not because we break laws, but because we
+      break expectations.”
+    </blockquote><p>
+      We are a small, high-agency team. We share what we learn, pursue strange
+      questions, and measure the work by lives impacted—not performative
+      busyness.
+    </p><a class="text-link" href="/team">Read how we work ↗</a>
   </div>
 </section>

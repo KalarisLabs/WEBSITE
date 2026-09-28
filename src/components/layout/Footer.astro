@@ -4,84 +4,25 @@ const docsUrl =
 const year = new Date().getUTCFullYear();
 ---
 
-<footer class="bg-muted text-muted-foreground py-12">
-  <div class="container mx-auto px-4">
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
-      <div>
-        <h3 class="mb-4 text-lg font-semibold">Kalaris Labs</h3>
-        <p class="text-sm">
-          Building the future of technology with innovative solutions.
-        </p>
-      </div>
-
-      <div>
-        <h4 class="mb-4 font-semibold">Product</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="#features" class="hover:text-foreground transition-colors"
-              >Features</a
-            >
-          </li>
-          <li>
-            <a href="#pricing" class="hover:text-foreground transition-colors"
-              >Pricing</a
-            >
-          </li>
-          <li>
-            <a href={docsUrl} class="hover:text-foreground transition-colors"
-              >Documentation</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="mb-4 font-semibold">Company</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="#about" class="hover:text-foreground transition-colors"
-              >About</a
-            >
-          </li>
-          <li>
-            <a href="#careers" class="hover:text-foreground transition-colors"
-              >Careers</a
-            >
-          </li>
-          <li>
-            <a href="#contact" class="hover:text-foreground transition-colors"
-              >Contact</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="mb-4 font-semibold">Legal</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="/privacy" class="hover:text-foreground transition-colors"
-              >Privacy Policy</a
-            >
-          </li>
-          <li>
-            <a href="/terms" class="hover:text-foreground transition-colors"
-              >Terms of Service</a
-            >
-          </li>
-        </ul>
-      </div>
+<footer class="site-footer">
+  <div class="content-column">
+    <div class="footer-mark">
+      <img src="/kalaris-logo-geometric.png" alt="" width="42" height="42" /><p>
+        Because the next breakthrough can come from anywhere.
+      </p>
     </div>
-
-    <div class="border-border mt-8 border-t pt-8 text-center text-sm">
-      <p>&copy; {year} Kalaris Labs. All rights reserved.</p>
-      <button
-        type="button"
-        data-analytics-preferences
-        class="hover:text-foreground mt-3 underline underline-offset-4"
+    <div class="footer-links">
+      <a href="/research">Research</a><a href="/blog">Blog</a><a
+        href="/company/careers">Careers</a
+      ><a href={docsUrl}>Docs ↗</a><a href="mailto:contact@kalarislabs.com"
+        >Email ↗</a
+      ><button type="button" data-analytics-preferences
+        >Analytics preferences</button
       >
-        Analytics preferences
-      </button>
     </div>
+    <p class="footer-meta">
+      © {year} Kalaris Labs · Recursive self-improving infrastructure for scientific
+      research.
+    </p>
   </div>
 </footer>

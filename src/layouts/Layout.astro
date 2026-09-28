@@ -64,7 +64,7 @@ if (type === 'article' && publishDate && section) {
       content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
     <meta name="author" content={SITE.name} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
@@ -101,7 +101,7 @@ if (type === 'article' && publishDate && section) {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     {
@@ -127,6 +127,7 @@ if (type === 'article' && publishDate && section) {
     <title>{pageTitle}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <slot />
     <AnalyticsConsent />
   </body>

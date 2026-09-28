@@ -1,31 +1,42 @@
 ---
-// Hero section with animations
+import { company } from '../../data/company';
 ---
 
-<section id="hero" class="flex min-h-screen items-center justify-center pt-20">
-  <div class="container mx-auto px-4 text-center">
-    <h1
-      class="from-primary to-primary/60 mb-6 bg-gradient-to-r bg-clip-text text-5xl font-bold text-transparent md:text-7xl"
+<section class="hero-section" id="mission">
+  <div class="content-column">
+    <a class="announcement" href="/manifesto"
+      ><span></span> Introducing Kalaris Labs <b>Read the manifesto ↗</b></a
     >
-      Building the Future of Technology
-    </h1>
-    <p class="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl md:text-2xl">
-      Kalaris Labs creates innovative solutions that push the boundaries of
-      what's possible.
-    </p>
-    <div class="flex flex-col justify-center gap-4 sm:flex-row">
-      <a
-        href="#contact"
-        class="bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg px-8 py-3 text-lg transition-colors"
+    <p class="section-code">Mission / 001</p>
+    <h1>{company.oneLiner}</h1>
+    <p class="hero-lede">{company.description}</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/research"
+        >Explore the research <span aria-hidden="true">→</span></a
+      ><a class="button button-secondary" href="mailto:contact@kalarislabs.com"
+        >Talk to us ↗</a
       >
-        Get Started
-      </a>
-      <a
-        href="#features"
-        class="bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-lg px-8 py-3 text-lg transition-colors"
+    </div>
+
+    <div
+      class="system-visual"
+      aria-label="A diagram showing research knowledge compounding through recursive cycles"
+    >
+      <div class="visual-grid"></div>
+      <div class="visual-node node-a">Question</div><div
+        class="visual-node node-b"
       >
-        Learn More
-      </a>
+        Context
+      </div><div class="visual-node node-c">Experiment</div><div
+        class="visual-node node-d"
+      >
+        Evidence
+      </div><div class="visual-node node-e">Learning</div>
+      <svg viewBox="0 0 800 340" role="presentation"
+        ><path d="M92 170 C210 32 350 48 406 156 S610 290 716 160"></path><path
+          d="M92 170 C240 300 316 284 406 156 S598 24 716 160"></path></svg
+      >
+      <p>Every research cycle should leave the next one stronger.</p>
     </div>
   </div>
 </section>

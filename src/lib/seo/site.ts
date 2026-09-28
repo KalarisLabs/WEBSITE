@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Kalaris Labs',
   url: 'https://kalarislabs.com',
   description:
-    'Kalaris Labs builds thoughtful technology through software engineering and applied research.',
+    'Kalaris Labs builds recursive, self-improving infrastructure for scientific research.',
   email: 'contact@kalarislabs.com',
   language: 'en',
   logoPath: '/kalaris-logo-geometric.png',

@@ -1,0 +1,55 @@
+---
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import { company } from '../../data/company';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Company"
+  description="About Kalaris Labs and its mission to make scientific research infrastructure available to everyone."
+>
+  <Header />
+  <main id="main-content">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Company / Kalaris Labs</p><div>
+          <h1>Infrastructure for discovery.</h1><p class="page-lede">
+            {company.description}
+          </p>
+        </div>
+      </div>
+    </header>
+    <section class="editorial-section section-rule">
+      <div class="site-container editorial-grid">
+        <p class="eyebrow">Our measure / 01</p><div class="prose-large">
+          <h2>We chase numbers, not money.</h2><p>
+            The number that matters is lives impacted. Revenue can make the work
+            durable, but impact is the point.
+          </p><p>
+            Our mission is to build the infrastructure for scientific discovery,
+            for everyone, everywhere.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="editorial-section section-rule">
+      <div class="site-container">
+        <p class="eyebrow">Inside Kalaris / 02</p><div class="subpage-links">
+          <a class="subpage-card" href="/company/news"
+            ><p class="mono-number">01 / Updates</p><h2>News</h2><p>
+              Company announcements, milestones, and notes from the lab.
+            </p></a
+          ><a class="subpage-card" href="/company/careers"
+            ><p class="mono-number">02 / Join</p><h2>Careers</h2><p>
+              Build research infrastructure with a curious, high-agency team.
+            </p></a
+          >
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

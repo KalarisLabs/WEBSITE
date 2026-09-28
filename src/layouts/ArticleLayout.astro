@@ -23,8 +23,11 @@ const { entry, collection } = Astro.props;
   section={collection === 'blog' ? 'Blog' : 'Research'}
 >
   <Header />
-  <main class="container mx-auto min-h-[70vh] max-w-3xl px-4 pt-32 pb-20">
-    <a class="text-primary text-sm hover:underline" href={`/${collection}`}
+  <main
+    id="main-content"
+    class="site-container min-h-[70vh] max-w-3xl pt-32 pb-20"
+  >
+    <a class="text-sm hover:underline" href={`/${collection}`}
       >&larr; Back to {collection}</a
     >
     <article class="mt-8">

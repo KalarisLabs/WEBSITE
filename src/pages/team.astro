@@ -1,0 +1,98 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+const principles = [
+  [
+    '01',
+    'Break expectations',
+    'We do not treat youth, difference, or impatience as disqualifications. High agency matters more than conformity.',
+  ],
+  [
+    '02',
+    'Share the knowledge',
+    'Information hoarding is cowardice. Ideas, lessons, and useful context should move through the whole team.',
+  ],
+  [
+    '03',
+    'Stay curious',
+    'Research, code, art, and strange side experiments are part of the job. Curiosity creates the surface area for discovery.',
+  ],
+  [
+    '04',
+    'Measure the impact',
+    'We chase lives improved, not performative activity. Revenue sustains the work; impact gives it meaning.',
+  ],
+  [
+    '05',
+    'Work sustainably',
+    'We take focus, rest, celebration, and repair seriously. Ambition is a long game, not a burnout ritual.',
+  ],
+];
+---
+
+<Layout
+  title="Our Team"
+  description="The people, principles, and high-agency culture behind Kalaris Labs."
+>
+  <Header />
+  <main id="main-content">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Our team / Culture</p><div>
+          <h1>Small team. Unreasonable curiosity.</h1><p class="page-lede">
+            We are researchers, engineers, artists, and builders who believe
+            difficult work gets better when knowledge moves freely.
+          </p>
+        </div>
+      </div>
+    </header>
+    <section class="editorial-section section-rule">
+      <div class="site-container">
+        <div class="editorial-grid">
+          <p class="eyebrow">How we operate / 01</p><div class="prose-large">
+            <h2>Societal delinquents, in the most constructive sense.</h2><p>
+              We break expectations, not laws. We were told we were too young,
+              too different, or too impatient. We kept building.
+            </p>
+          </div>
+        </div>
+        <div class="statement-list">
+          {
+            principles.map(([number, title, body]) => (
+              <article class="statement-item">
+                <>
+                  <span>{number}</span>
+                  <div>
+                    <>
+                      <h2>{title}</h2>
+                      <p>{body}</p>
+                    </>
+                  </div>
+                </>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section class="editorial-section dark-band">
+      <div class="site-container editorial-grid">
+        <p class="eyebrow">Join the work / 02</p><div class="prose-large">
+          <h2>Profiles are coming. The work has already started.</h2><p>
+            We will publish individual team profiles as the company grows. For
+            now, our operating principles are the most honest description of who
+            belongs here.
+          </p><div class="hero-actions">
+            <a class="button button-primary" href="/company/careers"
+              >View careers →</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
