@@ -12,6 +12,14 @@ export interface ArticleSchemaInput {
   tags?: string[];
   section: 'Blog' | 'Research';
   authorName?: string;
+  wordCount?: number;
+}
+
+export interface CollectionSchemaItem {
+  title: string;
+  description: string;
+  url: string;
+  publishDate: Date;
 }
 
 export interface BreadcrumbItem {
@@ -138,7 +146,7 @@ export function buildArticleSchema(input: ArticleSchemaInput): JsonLd {
 
   return {
     '@context': 'https://schema.org',
-    '@type': isResearch ? 'TechArticle' : 'Article',
+    '@type': isResearch ? 'TechArticle' : 'BlogPosting',
     additionalType: isResearch
       ? 'https://schema.org/ScholarlyArticle'
       : undefined,
@@ -152,16 +160,56 @@ export function buildArticleSchema(input: ArticleSchemaInput): JsonLd {
     dateModified: (input.updatedDate ?? input.publishDate).toISOString(),
     articleSection: input.section,
     keywords: input.tags?.join(', '),
+    wordCount: input.wordCount,
+    about: input.tags?.map((tag) => ({
+      '@type': 'Thing',
+      name: tag.replaceAll('-', ' '),
+    })),
     inLanguage: SITE.language,
     isAccessibleForFree: true,
     author: input.authorName
       ? {
           '@type': 'Person',
           name: input.authorName,
+          url: absoluteSiteUrl('/team'),
+          sameAs: [SITE.founderLinkedin],
           worksFor: { '@id': `${SITE.url}/#organization` },
         }
       : { '@id': `${SITE.url}/#founder` },
     publisher: { '@id': `${SITE.url}/#organization` },
+    isPartOf: { '@id': `${SITE.url}/#website` },
+  };
+}
+
+export function buildCollectionPageSchema(
+  name: string,
+  description: string,
+  url: string,
+  items: CollectionSchemaItem[],
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name,
+    description,
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: item.url,
+        item: {
+          '@type': 'Article',
+          headline: item.title,
+          description: item.description,
+          datePublished: item.publishDate.toISOString(),
+          url: item.url,
+        },
+      })),
+    },
   };
 }
 

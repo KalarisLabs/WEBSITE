@@ -4,14 +4,30 @@ import Footer from '../../components/layout/Footer.astro';
 import Header from '../../components/layout/Header.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getPublishedEntries } from '../../lib/content';
+import { buildCollectionPageSchema } from '../../lib/seo/schema';
+import { absoluteSiteUrl } from '../../lib/seo/site';
 
 export const prerender = true;
 const entries = await getPublishedEntries('research');
+const description =
+  'Kalaris Labs research notes on deterministic agent evaluation, recursive context, tool diagnostics, context routing, and scientific infrastructure.';
+const collectionSchema = buildCollectionPageSchema(
+  'Kalaris Labs Research Notes',
+  description,
+  absoluteSiteUrl('/research'),
+  entries.map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    url: absoluteSiteUrl(`/research/${entry.id}`),
+    publishDate: entry.data.publishDate,
+  })),
+);
 ---
 
 <Layout
   title="Research · Kalaris Labs"
-  description="System notes, capability diagnostics, and empirical architectures for compounding scientific discovery."
+  description={description}
+  extraSchemas={[collectionSchema]}
   breadcrumbs={[
     { name: 'Home', url: '/' },
     { name: 'Research', url: '/research' },

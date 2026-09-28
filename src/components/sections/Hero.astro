@@ -1,5 +1,6 @@
 ---
-
+import { FogTextReveal } from '../sora-ui/texts/fog-text-reveal';
+import { SoraCtaButton } from '../sora-ui/SoraCtaButton';
 ---
 
 <section class="hero-section" id="mission">
@@ -7,7 +8,17 @@
     {/* 1. Supermemory-style Headline & One-liner */}
     <div class="hero-header-super">
       <h1 class="hero-title">
-        Recursive, self-improving infrastructure for scientific research.
+        Recursive, self-improving infrastructure for{' '}
+        <FogTextReveal
+          client:load
+          className="hero-fog-reveal"
+          holdDuration={1500}
+          text={[
+            'scientific research.',
+            'autonomous labs.',
+            'discovery at scale.',
+          ]}
+        />
       </h1>
     </div>
 
@@ -77,9 +88,9 @@
       </p>
 
       <div class="hero-actions">
-        <a class="button button-primary" href="/manifesto">
-          Read the manifesto <span aria-hidden="true">→</span>
-        </a>
+        <SoraCtaButton client:load href="/manifesto">
+          Read the manifesto →
+        </SoraCtaButton>
         <a class="button button-secondary" href="/research">
           Explore research <span aria-hidden="true">↗</span>
         </a>

@@ -1,0 +1,126 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Terms & Conditions"
+  description="Terms and conditions for using the Kalaris Labs website."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Terms & Conditions', url: '/terms' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="legal-page">
+    <article class="legal-shell">
+      <header class="legal-header">
+        <p class="eyebrow">Legal / 01</p>
+        <h1>Terms & Conditions</h1>
+        <p class="legal-meta">Effective 28 September 2026</p>
+        <p class="page-lede">
+          These terms govern your use of the Kalaris Labs website and its
+          published materials.
+        </p>
+      </header>
+
+      <div class="legal-copy">
+        <section>
+          <h2>1. Using this website</h2>
+          <p>
+            By accessing this website, you agree to these terms. If you do not
+            agree, please do not use the website. You may use the site for
+            lawful personal, academic, and professional purposes.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Research and editorial material</h2>
+          <p>
+            Our research notes, essays, technical material, and other
+            publications are provided for general information. They are not
+            medical, legal, financial, or other professional advice, and they
+            should not be treated as a substitute for independent review or
+            validation.
+          </p>
+        </section>
+
+        <section>
+          <h2>3. Intellectual property</h2>
+          <p>
+            Unless a page or repository states otherwise, Kalaris Labs owns or
+            licenses the website design, branding, text, graphics, and other
+            site materials. You may link to our public pages and quote brief
+            passages with clear attribution. Other reproduction, publication, or
+            commercial use requires prior written permission.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. Acceptable use</h2>
+          <p>You must not use the website to:</p>
+          <ul>
+            <li>break applicable law or infringe another person's rights;</li>
+            <li>
+              interfere with the site's security, availability, or operation;
+            </li>
+            <li>introduce malicious code or attempt unauthorized access; or</li>
+            <li>misrepresent an affiliation with Kalaris Labs.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>5. External services and links</h2>
+          <p>
+            The site may link to third-party websites or use third-party
+            services. Their availability, content, and privacy practices are
+            controlled by their respective operators, not Kalaris Labs.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Availability and warranties</h2>
+          <p>
+            We work to keep the site accurate and available, but it is provided
+            on an “as is” and “as available” basis. To the extent permitted by
+            law, we do not guarantee that every page will be complete,
+            error-free, secure, or continuously available.
+          </p>
+        </section>
+
+        <section>
+          <h2>7. Liability</h2>
+          <p>
+            To the extent permitted by applicable law, Kalaris Labs is not
+            liable for indirect, incidental, special, or consequential loss
+            arising from use of, or reliance on, this website. Nothing in these
+            terms excludes liability that cannot lawfully be excluded.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. Changes and governing law</h2>
+          <p>
+            We may update these terms as the site and our work change. The date
+            above identifies the current version. These terms are governed by
+            the laws of India, subject to any mandatory rights that apply where
+            you live.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Contact</h2>
+          <p>
+            Questions about these terms can be sent to
+            <a href="mailto:contact@kalarislabs.com">contact@kalarislabs.com</a
+            >.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

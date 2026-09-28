@@ -63,7 +63,13 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    sitemap(),
+    sitemap({
+      filter(page) {
+        const pathname = new URL(page).pathname;
+        return !/^\/(?:blog|research)\/[^/]+$/.test(pathname);
+      },
+      customSitemaps: [new URL('/content-sitemap.xml', site).toString()],
+    }),
     sentry({
       org: process.env.SENTRY_ORG ?? 'kalaris-labs',
       project: process.env.SENTRY_PROJECT ?? 'kalaris-labs-website',

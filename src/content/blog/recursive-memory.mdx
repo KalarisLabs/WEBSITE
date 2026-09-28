@@ -1,24 +1,79 @@
 ---
 title: In-context recursive synthesis and the limits of stateless agents
-description: Accumulating verified experimental context across generations rather than resetting state on every research cycle.
+description: A design for carrying verified claims, failed experiments, and unresolved questions across research runs without turning agent memory into an untrusted transcript.
 publishDate: 2026-09-25
+updatedDate: 2026-09-28
 tags:
   - architecture
   - systems
+  - memory
 draft: false
 socialImage: /images/content/recursive-context.jpg
 ---
 
 ## Why stateless agent prompting fails in complex science
 
-Standard agent architectures treat each execution as an isolated session: a context window loaded with prompts and system instructions, followed by a series of tool calls, culminating in a response. Once the turn completes, the working context evaporates.
+Most agent sessions begin by loading instructions and a bundle of documents into a context window. The agent calls tools, produces an answer, and the working context disappears. This pattern is convenient for short tasks. It becomes wasteful when a research program spans many hypotheses, code revisions, datasets, and failed runs.
 
-In scientific domains, this stateless model breaks down rapidly:
+The missing state is not only the final answer. It includes why a candidate was rejected, which environment produced a result, where two sources disagreed, and which questions remain open. If those details are reduced to a conversational summary, later agents may repeat failed work or treat an old assumption as evidence.
 
-- Negative results are lost, forcing successive agent loops to repeat identical failed experiments.
-- Contextual calibration is omitted, leading models to misinterpret subtle assay anomalies.
-- Evidence lineage is disconnected from the final reported claims.
+## Memory should store evidence, not chat
 
-## Building recursive compounding memory
+A persistent transcript is easy to build and difficult to trust. It mixes observations, guesses, tool errors, and conclusions without a stable boundary between them.
 
-Recursive synthesis structures scientific inquiry as a persistent, evolving graph. Each experimental cycle updates confidence weights, links experimental evidence to claims, and primes subsequent agent sessions with hardened context.
+We instead model research memory as typed records:
+
+```typescript
+interface ResearchRecord {
+  id: string;
+  kind: 'claim' | 'observation' | 'artifact' | 'decision' | 'open_question';
+  statement: string;
+  sources: string[];
+  runIds: string[];
+  confidence: 'unverified' | 'supported' | 'contested';
+  supersedes?: string[];
+  createdAt: string;
+}
+```
+
+A claim without a source remains unverified. A measurement points to the run and artifact that produced it. A decision records the alternatives and the criterion used to choose among them. Contradictory claims can coexist until new evidence resolves them.
+
+## The write path is more important than retrieval
+
+Memory systems are often designed around search. The larger risk sits earlier: deciding what deserves to enter memory.
+
+After each run, a synthesis stage reads the execution record and proposes additions. Deterministic checks confirm that referenced artifacts exist, citations resolve, and measurements match the stored output. A policy then decides whether to append a record, update an existing one, or create a contested branch.
+
+Raw logs remain available, but they are not promoted automatically. This prevents a confident model statement from becoming durable context only because it appeared near the end of a run.
+
+## Retrieval is a projection, not a dump
+
+Giving every agent the entire memory graph recreates the original problem at a larger scale. Each task should receive a projection selected by purpose, provenance, recency, and relationship to the current entities.
+
+A synthesis agent may need claims and their supporting papers. An environment agent needs dependency decisions and prior build failures. A safety reviewer needs hazard records and the source behind each threshold. Each projection should include record identifiers so an agent can request the underlying evidence when needed.
+
+The retrieval process should also expose omissions. If a claim depends on a source outside the current context budget, the prompt should say so rather than presenting the claim as self-contained.
+
+## Negative results require structure
+
+“This did not work” is not enough to prevent repetition. A useful negative result contains the tested hypothesis, environment and input versions, stopping rule, observed failure, and the conditions under which the result may no longer apply.
+
+This matters because a later code change or dataset revision can invalidate the negative result. Memory should preserve it without turning it into a permanent prohibition.
+
+## Contradictions and supersession
+
+Scientific context changes. The memory model needs an explicit way to represent that a newer record challenges or supersedes an older one. Deleting the old record removes the audit trail; keeping both without a relationship confuses retrieval.
+
+We use directed links such as `supports`, `contradicts`, `derived_from`, and `supersedes`. A retrieval policy can prefer the latest supported record while still exposing the path that led there.
+
+## Controlled forgetting
+
+Compounding memory does not mean infinite prompt growth. Old operational details can be archived after the relevant environment is retired. Duplicate observations can be grouped behind a summary node. Low-confidence notes can expire unless later evidence supports them.
+
+Forgetting must be a recorded action with a reason and a reversible archive. Otherwise, the system quietly loses the very context it was built to preserve.
+
+## A practical evaluation
+
+To test recursive memory, run the same multi-stage task with and without persisted records. Measure repeated failed actions, unsupported claims, retrieval precision, context size, and the ability to reproduce cited evidence. The useful comparison is whether later runs make fewer avoidable mistakes while preserving traceability.
+
+The [recursive context research note](/research/recursive-context) describes this architecture at the system level. [Topological routing](/research/topological-routing) covers how to project only the relevant part of the graph to each specialist agent.

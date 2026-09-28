@@ -1,15 +1,102 @@
 ---
 title: Recursive context accumulation in autonomous scientific environments
-description: How agents learn from experimental iterations, codebases, and literature to compound operational leverage.
+description: A research architecture for converting papers, repositories, execution traces, and failed experiments into versioned evidence that later agent runs can retrieve and verify.
 publishDate: 2026-09-28
+updatedDate: 2026-09-28
 tags:
   - agents
-  - rsi
+  - memory
   - systems
 draft: false
 socialImage: /images/content/recursive-context.jpg
 ---
 
-Traditional research tooling resets context at the beginning of every experimental cycle. Hypotheses, environment configurations, and failed runs vanish into local terminal logs.
+> **Research status:** Architecture and evaluation proposal. The design is intended for controlled implementation and has not yet been presented as a completed empirical study.
 
-Recursive self-improving infrastructure treats each experiment not as a standalone task, but as a training signal. By accumulating structured context across repositories, papers, and execution traces, subsequent research cycles begin with higher initial velocity.
+Scientific agent systems often reset at the beginning of each run. The next agent receives the repository and a summary, but not the sequence of failed commands, disputed claims, environment decisions, and negative results that shaped the current state.
+
+Recursive context accumulation treats those outputs as versioned research evidence. Each run reads a task-specific projection of prior context, produces new artifacts, and proposes structured updates. Verification gates decide which updates become durable.
+
+## Context sources
+
+The system ingests four classes of evidence:
+
+1. **Literature:** cited claims, methods, datasets, limitations, and publication metadata.
+2. **Repositories:** source revisions, dependency manifests, tests, issue history, and generated artifacts.
+3. **Execution traces:** tool calls, environment digests, logs, resource use, and validation results.
+4. **Research decisions:** hypotheses, alternatives, stopping rules, approvals, and unresolved questions.
+
+These sources should not be flattened into interchangeable text chunks. A published claim and an agent observation have different authority and expiry conditions.
+
+## Evidence graph
+
+We represent context as a graph of typed nodes and relationships.
+
+```typescript
+type EvidenceNode = {
+  id: string;
+  kind: 'source' | 'claim' | 'run' | 'artifact' | 'decision' | 'question';
+  version: number;
+  content: string;
+  createdAt: string;
+  validUntil?: string;
+  confidence: 'unverified' | 'supported' | 'contested';
+};
+
+type EvidenceEdge = {
+  from: string;
+  to: string;
+  relation: 'supports' | 'contradicts' | 'derived_from' | 'used_in' | 'supersedes';
+};
+```
+
+The graph preserves lineage. A conclusion can resolve to the run that generated an artifact, the source revision used by that run, and the papers that informed the hypothesis.
+
+## The recursive cycle
+
+### 1. Project context
+
+Before a run, the retrieval layer selects nodes related to the task, entities, and permitted evidence horizon. It favors supported records and includes contested alternatives when they may affect the result. The projection carries identifiers so the agent can request deeper evidence.
+
+### 2. Execute in a recorded environment
+
+The agent works inside a versioned runtime and receives scoped tools. Every tool call and output joins the run record. The environment digest separates a change in reasoning from a change in dependencies.
+
+### 3. Extract candidate updates
+
+A synthesis stage proposes claims, observations, decisions, artifacts, and open questions. It does not write directly to durable context.
+
+### 4. Verify and merge
+
+Deterministic checks confirm that artifacts and citations exist. Domain-specific checks validate units, schemas, or other invariants. Unsupported statements remain unverified. Conflicting evidence creates a contested branch instead of overwriting the previous record.
+
+### 5. Re-index
+
+Approved nodes and relationships become available to later tasks. Summaries may be generated for retrieval efficiency, but they remain linked to the underlying records.
+
+## Guarding against recursive error
+
+Any persistent memory can compound mistakes. A false claim that enters durable context may influence every later run. The architecture needs several controls:
+
+- keep model-generated statements unverified by default;
+- require source or run references for promoted claims;
+- expire observations tied to mutable tools or databases;
+- store contradictions rather than forcing premature consensus;
+- separate raw evidence from synthesized summaries; and
+- allow reviewers to trace and revoke every derived record.
+
+Memory quality depends more on this write policy than on the embedding model used for retrieval.
+
+## Context budgets and compression
+
+The graph can grow without fitting into a model context window. Retrieval should operate in layers. A compact record supplies the claim, status, and identifiers. The agent expands only the nodes needed for the current decision. Repeated observations can be grouped, while the original records remain available for audit.
+
+Compression is permitted only when the summary preserves material disagreement, boundary conditions, and links to source evidence. A shorter context that hides exceptions is not an improvement.
+
+## Evaluation plan
+
+We propose comparing a stateless baseline with a recursive system on multi-run tasks. The task set should require agents to reuse prior failures, update a conclusion after conflicting evidence, reproduce an earlier artifact, and avoid a tool version known to be broken.
+
+Measures should include repeated actions, citation resolution, retrieval precision, unsupported claim rate, context size, successful reproduction, and reviewer time required to trace a conclusion. Results should be reported across repeated trials and versioned task packages.
+
+The implementation details for memory records appear in [recursive synthesis and stateless agents](/blog/recursive-memory). The complementary [evaluation protocol](/research/deterministic-evals) describes how to compare system revisions without mixing model and infrastructure changes.

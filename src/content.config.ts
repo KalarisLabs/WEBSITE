@@ -4,6 +4,7 @@ import { z } from 'astro/zod';
 
 const contentSchema = z.object({
   title: z.string().min(1),
+  seoTitle: z.string().min(1).max(65).optional(),
   description: z.string().min(1),
   publishDate: z.coerce.date(),
   updatedDate: z.coerce.date().optional(),

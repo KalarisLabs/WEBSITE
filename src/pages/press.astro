@@ -1,0 +1,128 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+
+const facts = [
+  ['Base', 'India'],
+  ['Field', 'Applied AI research'],
+  ['Focus', 'Scientific discovery'],
+  ['Principle', 'AI for good'],
+];
+---
+
+<Layout
+  title="Press"
+  description="Company facts, approved descriptions, media assets, and press contact for Kalaris Labs."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Press', url: '/press' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="press-page">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Company / Press</p>
+        <div>
+          <h1>Kalaris Labs in brief.</h1>
+          <p class="page-lede">
+            Company facts, approved language, visual assets, and a direct line
+            to the team.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="press-section section-rule">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Boilerplate / 01</p>
+          <div>
+            <h2>An applied AI research team from India.</h2>
+            <p>
+              Kalaris Labs builds agent-powered, self-improving infrastructure
+              for scientific discovery. Its systems learn from research
+              workflows, repositories, papers, and experimental iterations so
+              more scientists can spend their time on hypotheses, experiments,
+              and results.
+            </p>
+          </div>
+        </div>
+
+        <dl class="press-facts">
+          {
+            facts.map(([term, description]) => (
+              <div class="press-fact">
+                <dt>{term}</dt>
+                <dd>{description}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="press-section dark-band">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Focus / 02</p>
+          <div>
+            <h2>What we are working toward.</h2>
+            <ul class="press-focus-list">
+              <li>AI systems designed around real scientific workflows.</li>
+              <li>Infrastructure that carries context across experiments.</li>
+              <li>Broader access to capable research tools.</li>
+              <li>Scientific work measured by evidence and lives improved.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section section-rule">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Assets / 03</p>
+          <div>
+            <h2>Marks and media.</h2>
+            <p>
+              Please preserve the proportions and clear space of each mark. Do
+              not recolour, distort, or place the logo over a low-contrast
+              background.
+            </p>
+            <div class="press-assets">
+              <a href="/kalaris-wordmark.png" download>Download wordmark →</a>
+              <a href="/kalaris-logo-geometric.png" download
+                >Download symbol →</a
+              >
+              <a href="/images/kalaris-hero-banner.png" download
+                >Download banner →</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-contact-section">
+      <div class="site-container press-contact-card">
+        <p class="eyebrow">Press contact / 04</p>
+        <h2>Working on a story?</h2>
+        <p>
+          Send the publication, topic, and deadline. We will route it to the
+          right person on the team.
+        </p>
+        <a
+          class="button button-primary"
+          href="mailto:contact@kalarislabs.com?subject=Press%20inquiry"
+        >
+          Contact Kalaris Labs →
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,136 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Privacy Policy"
+  description="How Kalaris Labs handles information when you use its website."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Privacy Policy', url: '/privacy' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="legal-page">
+    <article class="legal-shell">
+      <header class="legal-header">
+        <p class="eyebrow">Legal / 02</p>
+        <h1>Privacy Policy</h1>
+        <p class="legal-meta">Effective 28 September 2026</p>
+        <p class="page-lede">
+          This policy explains what information this website handles, why we use
+          it, and the choices available to you.
+        </p>
+      </header>
+
+      <div class="legal-copy">
+        <section>
+          <h2>1. Information you send us</h2>
+          <p>
+            If you email us, apply to work with us, or submit a contact form, we
+            receive the information you provide. This may include your name,
+            email address, organisation, message, résumé, portfolio, and any
+            other material you choose to send.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Website analytics</h2>
+          <p>
+            We use PostHog to understand how the website is used only after you
+            consent to analytics. When enabled, it may collect page views,
+            interactions, device and browser details, approximate location, and
+            session information. Sensitive form fields are masked. You can
+            change your choice at any time through “Analytics preferences” in
+            the footer.
+          </p>
+        </section>
+
+        <section>
+          <h2>3. Security and technical data</h2>
+          <p>
+            Our hosting and security providers may process IP addresses, request
+            metadata, device information, and security signals to deliver the
+            site, prevent abuse, and diagnose failures. The site uses Cloudflare
+            infrastructure and Turnstile on protected forms. We may use Sentry
+            to receive technical error and performance reports.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. How we use information</h2>
+          <ul>
+            <li>to respond to questions, applications, and press enquiries;</li>
+            <li>to operate, secure, and improve the website;</li>
+            <li>
+              to understand site use when analytics consent is active; and
+            </li>
+            <li>to comply with law and protect our rights.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>5. Service providers</h2>
+          <p>
+            We share information only as needed with providers that help us run
+            the site and communicate, including Cloudflare, PostHog, Sentry, and
+            Resend. They process information under their own terms and privacy
+            commitments. We do not sell personal information.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Retention</h2>
+          <p>
+            We keep information only for as long as reasonably necessary for the
+            purpose for which it was collected, including communication,
+            security, record-keeping, and legal obligations. Retention periods
+            vary by the type of information and service involved.
+          </p>
+        </section>
+
+        <section>
+          <h2>7. Your choices</h2>
+          <p>
+            You may decline or withdraw optional analytics. You may also ask us
+            to access, correct, or delete personal information we hold about
+            you, subject to applicable law and necessary exceptions. We may need
+            to verify your identity before completing a request.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. International processing</h2>
+          <p>
+            Our service providers may process information in countries other
+            than your own. Where required, we use the safeguards made available
+            by those providers and applicable law.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Children</h2>
+          <p>
+            This website is not directed to children under 13, and we do not
+            knowingly collect their personal information through the site.
+          </p>
+        </section>
+
+        <section>
+          <h2>10. Changes and contact</h2>
+          <p>
+            We may update this policy as the site and our services change. For
+            privacy questions or requests, email
+            <a href="mailto:contact@kalarislabs.com">contact@kalarislabs.com</a
+            >.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

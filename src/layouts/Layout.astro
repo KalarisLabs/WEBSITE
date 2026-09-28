@@ -15,6 +15,7 @@ import { SITE } from '../lib/seo/site';
 
 interface Props {
   title: string;
+  seoTitle?: string;
   description?: string;
   image?: string | undefined;
   type?: 'website' | 'article';
@@ -23,6 +24,7 @@ interface Props {
   tags?: string[];
   section?: 'Blog' | 'Research';
   authorName?: string;
+  wordCount?: number;
   breadcrumbs?: BreadcrumbItem[];
   extraSchemas?: JsonLd[];
   noindex?: boolean;
@@ -30,6 +32,7 @@ interface Props {
 
 const {
   title,
+  seoTitle,
   description = SITE.description,
   image = SITE.socialImagePath,
   type = 'website',
@@ -38,15 +41,17 @@ const {
   tags = [],
   section,
   authorName,
+  wordCount,
   breadcrumbs = [],
   extraSchemas = [],
   noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const pageTitle = title.includes('Kalaris Labs')
-  ? title
-  : `${title} | Kalaris Labs`;
+const titleForSearch = seoTitle ?? title;
+const pageTitle = titleForSearch.includes('Kalaris Labs')
+  ? titleForSearch
+  : `${titleForSearch} | Kalaris Labs`;
 const schemas: JsonLd[] = [buildOrganizationSchema(), buildWebsiteSchema()];
 
 if (breadcrumbs.length > 0) {
@@ -69,6 +74,7 @@ if (type === 'article' && publishDate && section) {
       tags,
       section,
       ...(authorName ? { authorName } : {}),
+      ...(wordCount ? { wordCount } : {}),
     }),
   );
 }
@@ -177,6 +183,10 @@ if (type === 'article' && publishDate && section) {
             content="Kalaris Labs Research Notes"
           />
           <meta name="citation_language" content="en" />
+          <meta name="citation_abstract" content={description} />
+          {tags.length > 0 && (
+            <meta name="citation_keywords" content={tags.join('; ')} />
+          )}
         </>
       )
     }

@@ -1,5 +1,10 @@
 ---
-import type { PublishingCollection, PublishingEntry } from '../lib/content';
+import {
+  entryPath,
+  getPublishedEntries,
+  type PublishingCollection,
+  type PublishingEntry,
+} from '../lib/content';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from './Layout.astro';
@@ -36,9 +41,27 @@ const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const wordCount = entry.body ? entry.body.trim().split(/\s+/).length : 500;
 const readingTimeMinutes = Math.max(3, Math.ceil(wordCount / 180));
 
-const canonicalUrl = `https://kalarislabs.com/${collection}/${entry.id}`;
+const canonicalUrl = new URL(
+  `/${collection}/${entry.id}`,
+  Astro.site,
+).toString();
 const encodedUrl = encodeURIComponent(canonicalUrl);
 const encodedTitle = encodeURIComponent(entry.data.title);
+const relatedEntries = (await getPublishedEntries(collection))
+  .filter((candidate) => candidate.id !== entry.id)
+  .sort((a, b) => {
+    const aMatches = a.data.tags.filter((tag) =>
+      entry.data.tags.includes(tag),
+    ).length;
+    const bMatches = b.data.tags.filter((tag) =>
+      entry.data.tags.includes(tag),
+    ).length;
+    return (
+      bMatches - aMatches ||
+      b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+    );
+  })
+  .slice(0, 3);
 
 const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${entry.id.replace(/[^a-zA-Z0-9]/g, '_')},
   title = {${entry.data.title}},
@@ -51,6 +74,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
 
 <Layout
   title={entry.data.title}
+  seoTitle={entry.data.seoTitle}
   description={entry.data.description}
   image={entry.data.socialImage}
   type="article"
@@ -59,6 +83,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
   tags={entry.data.tags}
   section={sectionName}
   authorName="Sayan Chowdhury"
+  wordCount={wordCount}
   breadcrumbs={[
     { name: 'Home', url: '/' },
     { name: sectionName, url: `/${collection}` },
@@ -88,8 +113,24 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
           {entry.data.title}
         </h1>
 
+        <p class="article-deck">{entry.data.description}</p>
+
         <div class="article-read-badge">
           <span>{readingTimeMinutes} MINUTES READ</span>
+          {
+            entry.data.updatedDate && (
+              <span>
+                UPDATED{' '}
+                <time datetime={entry.data.updatedDate.toISOString()}>
+                  {entry.data.updatedDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </time>
+              </span>
+            )
+          }
         </div>
       </header>
 
@@ -100,7 +141,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
       <div class="article-layout-grid">
         {/* Left Column: Author Bio & Social Sharing (Sticky) */}
         <aside class="article-left-sidebar">
-          <div class="author-block">
+          <a class="author-block" href="/team" rel="author">
             <img
               src="/founders/sayan-chowdhury.jpg"
               alt="Sayan Chowdhury"
@@ -113,7 +154,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
               <span class="author-display-name">Sayan Chowdhury</span>
               <span class="author-display-role">Founder & Research Lead</span>
             </div>
-          </div>
+          </a>
 
           <div class="social-share-widget">
             <span class="share-heading">SHARE THIS ARTICLE</span>
@@ -248,6 +289,34 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
                 <pre class="citation-pre">
                   <code>{bibtex}</code>
                 </pre>
+              </section>
+            )
+          }
+
+          {
+            relatedEntries.length > 0 && (
+              <section
+                class="article-related-section"
+                aria-labelledby="related-heading"
+              >
+                <p class="eyebrow">Continue reading</p>
+                <h2 id="related-heading">
+                  Related {sectionName.toLowerCase()}
+                </h2>
+                <div class="article-related-grid">
+                  {relatedEntries.map((related) => (
+                    <a
+                      class="article-related-card"
+                      href={entryPath(collection, related)}
+                    >
+                      <span>
+                        {related.data.tags[0]?.replaceAll('-', ' ')}
+                      </span>
+                      <h3>{related.data.title}</h3>
+                      <p>{related.data.description}</p>
+                    </a>
+                  ))}
+                </div>
               </section>
             )
           }

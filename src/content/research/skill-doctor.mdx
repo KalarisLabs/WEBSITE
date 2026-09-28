@@ -1,7 +1,8 @@
 ---
-title: 'Skill Doctor: Autonomous Diagnostics for Model Tooling & Observability'
-description: System architecture and empirical benchmarks for automated capability audits, drift detection, and deterministic diagnostics in agentic execution.
+title: 'Skill Doctor: Autonomous diagnostics for model tooling and observability'
+description: A proposed diagnostic system for checking agent tool contracts, permissions, dependencies, and live availability before failures spread through long-running workflows.
 publishDate: 2026-09-28
+updatedDate: 2026-09-28
 tags:
   - observability
   - diagnostics
@@ -11,38 +12,121 @@ draft: false
 socialImage: /skill-doctor-banner.webp
 ---
 
-Autonomous systems fail when the boundary between model reasoning and underlying execution tooling drifts out of sync. When SDK contracts evolve, parameters change silently, or environment contexts shift, conventional test harnesses only capture breakage after execution failure occurs.
+> **Research status:** System design and benchmark proposal. Any performance or reliability results will be published separately with task definitions, fixtures, and reproducible traces.
 
-Skill Doctor introduces in-context capability audits: a deterministic diagnostic pipeline that inspects, health-checks, and validates agentic tools against active infrastructure before and during runtime execution.
+An agent can form a valid plan and still fail because the tool boundary changed. An SDK renames a field, an API removes an endpoint, a credential loses scope, or the local runtime no longer matches the documentation in context. The model often sees only the final error and may spend several turns changing a correct plan.
 
-## The Tooling Health Trilemma
+Skill Doctor is a diagnostic layer for that boundary. It checks what a tool claims to support, what the active environment can reach, and what happened during execution. The output is structured evidence that a planner can act on without granting the diagnostic system broad repair permissions.
 
-Modern autonomous agents require three competing guarantees from their tool ecosystem:
+## Tool health is a versioned contract
 
-1. **Deterministic interface fidelity**: Every tool invocation must conform to verified schema contracts without hallucinations or stale parameter assumptions.
-2. **Real-time telemetry and state observability**: Diagnostics must observe execution outcomes, error rates, and latency profiles without introducing human-in-the-loop bottlenecks.
-3. **Autonomous self-healing**: When an SDK version or API contract changes, the diagnostic layer must autonomously identify the delta and update the agent runtime context.
+Each tool registration should include more than a name and prose description. We define a contract with:
 
-Skill Doctor solves this by pairing runtime contract verification with continuous observability feeds, allowing agents to diagnose their own integration health and self-correct during long-horizon tasks.
+- input and output schemas;
+- authentication and permission requirements;
+- side-effect classification;
+- timeout, retry, and rate-limit behavior;
+- runtime and dependency versions;
+- safe probe operations;
+- known error categories; and
+- the time and environment of the last successful check.
 
-## Architectural Overview
+```typescript
+interface ToolHealthRecord {
+  toolId: string;
+  contractVersion: string;
+  environmentDigest: string;
+  checkedAt: string;
+  checks: Array<{
+    id: string;
+    status: 'pass' | 'fail' | 'unknown';
+    evidence: string[];
+    safeToRetry: boolean;
+  }>;
+}
+```
 
-The diagnostic architecture consists of three interlocking stages:
+The record is evidence for one version in one environment. It should expire when the tool, credential scope, or runtime changes.
+
+## Diagnostic pipeline
+
+The proposed architecture has four stages.
 
 ```
-[Agent Runtime] <---> [Skill Doctor Diagnostic Proxy] <---> [Production Infrastructure]
-                               |
-                        [Telemetry & Drift Bus]
-                               |
-                        [Self-Healing Adapter]
+[Agent Planner] -> [Contract Gate] -> [Scoped Probe Runner] -> [Tool]
+                         |                    |
+                         v                    v
+                  [Contract Diff]       [Trace Store]
+                         \                    /
+                          -> [Health Record] ->
 ```
 
-- **Static Contract Auditor**: Scans registered skills, schemas, and API definitions to detect schema divergence, deprecated endpoints, and missing credentials before execution initiates.
-- **Dynamic Probing Engine**: Runs synthetic, non-destructive probe calls through isolated sandboxes to verify active availability and rate limits.
-- **Context Synthesis & Healing**: Formulates structured diagnostics that allow the agent planner to either select an alternative execution pathway or generate an updated tool adapter dynamically.
+### 1. Static contract audit
 
-## Empirical Results
+Before execution, the auditor compares the registered schema with the active client and available documentation. It checks required parameters, enum values, response shapes, dependency versions, credentials declared by name, and missing configuration.
 
-Across a testbed of 1,200 agentic workflows spanning Cloudflare Workers, vector indices, and relational state engines, Skill Doctor reduced tool-related task terminations by 74.2% while adding less than 12ms of latency overhead per transaction.
+Static analysis can identify a stale function signature without making a network request. It cannot confirm that the service or credential is active.
 
-By transforming tooling health from a brittle external dependency into an active, self-observing research primitive, we enable autonomous agents to maintain long-horizon stability across continuously changing production systems.
+### 2. Scoped dynamic probes
+
+The probe runner executes only operations marked non-destructive. Examples include reading service metadata, listing a bounded resource, validating a token without mutation, or running a fixture through a local adapter.
+
+The runner uses dedicated low-privilege credentials, strict timeouts, and a separate rate budget. A diagnostic system should never convert “check whether deletion works” into a real deletion.
+
+### 3. Runtime trace analysis
+
+During a workflow, the diagnostic proxy records tool name, contract version, sanitized inputs, latency, retry count, response shape, error category, and correlation identifiers. Sensitive values are removed before storage.
+
+The trace lets the system separate several failures that may produce similar model-visible text:
+
+- invalid arguments generated by the planner;
+- a stale adapter that serialized valid arguments incorrectly;
+- authentication or permission failure;
+- rate limiting or temporary unavailability;
+- a response that violates the registered schema; and
+- a downstream scientific or business rule rejecting the request.
+
+### 4. Recovery recommendation
+
+Skill Doctor returns a bounded recommendation, not an unrestricted code change. The planner may correct an argument, select a compatible tool version, wait under the retry policy, use an approved fallback, or ask for human intervention.
+
+Changes to code, schemas, credentials, or external state remain subject to the normal review boundary. Automatic repair is appropriate only when the allowed transformation is narrow, reversible, and tested against fixtures.
+
+## Observability that agents can consume
+
+Traditional dashboards are designed for operators. Agents need a compact health view that can enter planning context without replacing the underlying evidence.
+
+A useful view answers:
+
+- Is the tool available in this environment?
+- Does the active interface match the registered contract?
+- Which operations are permitted with the current credential?
+- What failed most recently, and is a retry safe?
+- Which fallback is approved for this operation?
+- Which evidence supports the health status?
+
+The status should include `unknown`. Absence of a recent failure is not proof that a tool works.
+
+## Benchmark design
+
+We propose a fixture-based benchmark with controlled faults. Each task package starts from a working tool integration, then introduces one change at a time:
+
+1. renamed or removed parameter;
+2. incompatible response field;
+3. expired or under-scoped credential;
+4. missing runtime dependency;
+5. deterministic rate-limit response;
+6. temporary network failure; or
+7. unsafe operation that must not be probed.
+
+The benchmark measures fault classification accuracy, unnecessary tool calls, unsafe actions attempted, recovery success, time and tokens spent, and false positives against healthy integrations. Results should be reported per fault class; a single aggregate score would hide the failures that matter most.
+
+## Security boundary
+
+Diagnostics increase access to schemas, logs, and service state. The system must redact secrets, restrict probe credentials, cap response storage, and prevent untrusted tool output from rewriting its own contract. Health records should be signed or stored in an append-only audit stream when they influence high-impact automation.
+
+## Relationship to the research stack
+
+Skill Doctor covers operational evidence at the tool boundary. [Deterministic evaluations](/research/deterministic-evals) define how to compare agent versions under controlled tools. [Recursive context](/research/recursive-context) defines how verified failures and repairs can inform later runs without becoming permanent folklore.
+
+The next publishable result is not a claim that the system self-heals. It is a reproducible benchmark showing which tool failures it detects, which recoveries it performs, and where it stops for review.

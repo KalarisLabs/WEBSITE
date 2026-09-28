@@ -1,7 +1,8 @@
 ---
 title: Deterministic evaluation benchmarks for autonomous multi-model scientific harnesses
-description: Empirical validation methodologies, regression isolation, and reproducibility criteria for complex agentic discovery workflows.
+description: A benchmark protocol for separating model regressions from changing tools, environments, and datasets in long-horizon scientific agent workflows.
 publishDate: 2026-09-27
+updatedDate: 2026-09-28
 tags:
   - evaluations
   - benchmarks
@@ -10,34 +11,108 @@ draft: false
 socialImage: /images/content/research-agents-report.jpg
 ---
 
-Evaluating stochastic autonomous agents against open-ended scientific benchmarks requires fundamentally different validation architectures than standard unit tests or heuristic scoring. When agents generate hypotheses, write synthesis code, and query heterogeneous biological databases, traditional assertions cannot verify reasoning soundness.
+> **Research status:** Protocol note. This document defines an evaluation architecture and reporting standard. It does not report completed benchmark results.
 
-This research note introduces deterministic evaluation harnesses designed to isolate regression boundaries across multi-model agent ensembles.
+Evaluating a scientific agent is difficult because the system is larger than the model. A run may depend on a prompt, a model release, a planner, retrieval, external databases, generated code, a container image, and an evaluator. If several of those change between runs, a score cannot identify the source of improvement or regression.
 
-## The Reproducibility Frontier in AI Science
+This note defines a deterministic harness for isolating those variables. Deterministic does not mean forcing a language model to return identical text. It means holding the evaluation boundary stable enough that differences can be attributed and inspected.
 
-Agentic science introduces three primary reproducibility challenges:
+## Evaluation unit
 
-1. **Non-deterministic tool outputs**: External REST APIs, biological databases, and dynamic web endpoints frequently alter schemas or update entries, contaminating benchmark history.
-2. **Context window drift**: Long-horizon research runs accumulate intermediate token sequences that subtly bias downstream reasoning.
-3. **Execution environment divergence**: Code executed inside arbitrary containers produces varying floating-point outputs or dependencies.
+The basic unit is a versioned task package. Each package contains:
+
+- a scientific question or computational objective;
+- immutable or versioned input artifacts;
+- the allowed tools and their recorded contracts;
+- resource, token, and wall-clock budgets;
+- expected output schemas;
+- deterministic checks and domain invariants; and
+- a scoring rubric for judgments that cannot be reduced to exact assertions.
+
+The package also identifies what it does not test. A literature-synthesis benchmark cannot establish whether a proposed wet-lab procedure is safe or experimentally valid.
+
+## Sources of variance
+
+We separate four sources before comparing systems.
+
+### Model variance
+
+Sampling, model revisions, and hidden provider changes can alter an output. The harness records the model identifier, available revision metadata, sampling controls, system instructions, and full message history. Repeated trials estimate the distribution rather than relying on a single run.
+
+### Tool variance
+
+External APIs and scientific databases change schemas and records. Evaluation runs should use captured fixtures when the task permits it. When live data is essential, the harness stores request parameters, response hashes, timestamps, and database release identifiers.
+
+### Environment variance
+
+Dependencies, compilers, numerical libraries, and accelerator kernels can affect execution. Every run references an environment digest and source revision. Exact hardware details should be recorded when the evaluated property depends on them.
+
+### Evaluator variance
+
+Model graders can be as unstable as the systems they judge. Prefer executable assertions and domain invariants where possible. For rubric-based grading, freeze the grader configuration, randomize answer order, conceal system identity, and measure agreement across graders or human reviewers.
+
+## Harness configuration
 
 ```typescript
 interface DeterministicHarnessConfig {
-  seed: number;
+  taskVersion: string;
+  trials: number;
+  seed?: number;
   environmentDigest: string;
-  mockToolFixtures: Record<string, ToolFixture>;
-  maxSynthesizedIterations: number;
-  verificationStrictness: 'exact' | 'semantic' | 'invariant-preserving';
+  toolFixtures: Record<string, { version: string; digest: string }>;
+  model: { provider: string; id: string; revision?: string };
+  budgets: { tokens: number; toolCalls: number; wallTimeMs: number };
+  verification: Array<
+    | { kind: 'exact'; expectedArtifact: string }
+    | { kind: 'schema'; schemaId: string }
+    | { kind: 'invariant'; checkId: string }
+    | { kind: 'rubric'; rubricVersion: string }
+  >;
 }
 ```
 
-## Immutable Sandbox Isolation
+The configuration travels with the result. A dashboard score without this record is insufficient for regression analysis.
 
-To guarantee reproducibility, our harness wraps every agent interaction within an ephemeral cloud sandbox running deterministic kernel configurations. All external database queries are captured through immutable snapshot caches, ensuring identical input feeds across repeated benchmark executions.
+## Evaluate traces as well as answers
 
-By verifying invariants rather than raw string outputs, the evaluation framework assesses whether the agent successfully deduced the correct metabolic pathway or identified the target protein mutation regardless of slight lexical variance.
+Two systems can produce similar final reports through very different behavior. One may cite and inspect primary evidence; another may guess successfully. Long-horizon evaluation should therefore score the trace.
 
-## Empirical Results
+Trace-level measures can include:
 
-When evaluated across 1,200 autonomous literature synthesis trials, the deterministic harness detected 94.2% of silent reasoning regressions that escaped standard unit test suites.
+- valid versus invalid tool calls;
+- repeated calls with unchanged inputs;
+- unsupported claims introduced during synthesis;
+- use of evidence that was later superseded;
+- recovery after an execution failure;
+- budget consumed before reaching a valid artifact; and
+- whether the final claim resolves to the source and run that support it.
+
+The trace also lets a maintainer distinguish reasoning failure from infrastructure failure.
+
+## Exact checks, invariants, and rubrics
+
+Use the strongest check the task supports.
+
+An exact check works for a file hash, a parsed identifier, or a known fixture response. A schema check verifies that an artifact is complete and typed. An invariant checks properties that should survive harmless variation, such as unit consistency, graph connectivity, conservation constraints, or the presence of required controls. A rubric is reserved for qualities such as explanatory adequacy that require judgment.
+
+Mixing these checks is often necessary. The harness should report each result separately instead of collapsing everything into one opaque score.
+
+## Regression isolation
+
+When a system changes, evaluate one layer at a time:
+
+1. replay the previous system against the frozen task package;
+2. run the new system against the same package;
+3. compare failures by task, check, and trace event;
+4. change live tools or datasets only in a separate experiment; and
+5. document interactions when two changes cannot be isolated.
+
+This process does not remove stochastic variance. It makes the variance visible and prevents an API update from being reported as a model improvement.
+
+## Reporting standard
+
+A benchmark report should include task definitions, exclusions, system versions, trial count, budgets, environment digests, fixture dates, per-check results, failure categories, and representative traces. It should publish negative findings and unresolved evaluator disagreement.
+
+Future work will apply this protocol to bounded repository and literature tasks. Until those runs and artifacts are published, this note should be cited as an evaluation design rather than empirical validation.
+
+The runtime assumptions behind the protocol are described in [deterministic cloud runtimes](/blog/ephemeral-sandboxes). The memory layer required for multi-run tasks appears in [recursive context accumulation](/research/recursive-context).

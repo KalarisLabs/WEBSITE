@@ -1,7 +1,8 @@
 ---
 title: Deterministic cloud runtimes for multi-model scientific harnesses
-description: Decoupling execution sandboxes from fragile scripts to eliminate dependency collisions across biology and computation.
+description: How ephemeral sandboxes isolate dependencies, preserve execution evidence, and let scientific agents compare runs without inheriting machine-specific state.
 publishDate: 2026-09-26
+updatedDate: 2026-09-28
 tags:
   - engineering
   - pipelines
@@ -10,16 +11,72 @@ draft: false
 socialImage: /images/content/edge-delivery.jpg
 ---
 
-## The reproducibility crisis in computational pipelines
+## Scientific code carries hidden state
 
-Scientific codebases frequently suffer from severe bit-rot. A pipeline published only eighteen months ago may rely on outdated CUDA drivers, unpinned Python libraries, or deprecated API endpoints. When autonomous agents attempt to execute or benchmark these pipelines, they waste countless cycles debugging environment failures rather than evaluating hypotheses.
+A computational pipeline can appear reproducible while depending on a developer's machine. The hidden state may be a cached model, an untracked configuration file, a system library installed months earlier, or a notebook cell executed out of order. An autonomous agent inherits those conditions without knowing which ones matter.
 
-## Ephemeral sandboxes as a first-class primitive
+Ephemeral sandboxes give each run a declared boundary. The runtime starts from a known image, mounts only named inputs, applies an explicit network policy, captures outputs, and is destroyed after the evidence has been persisted.
 
-To resolve this, Kalaris Labs structures every execution around deterministic, ephemeral sandboxes. Each runtime instance is:
+The goal is to compare two experimental runs without asking what happened to be installed on the machine.
 
-- **Sealed**: Immutable base images with pinned system dependencies.
-- **Observable**: Full capture of stdout, stderr, process trees, and memory consumption.
-- **Fast**: Provisioned in sub-second intervals directly at the edge.
+## The lifecycle of a sandboxed run
 
-By standardizing runtime provisioning, researchers and autonomous agents can test hypotheses across thousands of variations without environment drift.
+We model a run as five stages.
+
+### 1. Resolve
+
+The harness converts repository metadata into an environment plan. It records the source revision, dependency lockfiles, runtime version, system packages, accelerator requirements, data mounts, and entry command. Conflicts remain visible for review.
+
+### 2. Provision
+
+The platform creates a clean runtime from content-addressed layers. Mutable tags are resolved to immutable digests before the run starts. Writable storage is scoped to the run; reference data is mounted read-only where possible.
+
+### 3. Execute
+
+The agent invokes one declared entrypoint under fixed resource limits. Standard output, standard error, process exit codes, resource use, and generated files stream into an execution record. Tool calls outside the sandbox receive the same run identifier.
+
+### 4. Validate
+
+Completion is not the same as success. The harness checks expected files, schemas, numerical ranges, and domain-specific invariants. A training script that exits successfully but writes an empty checkpoint fails validation.
+
+### 5. Preserve and destroy
+
+The system stores the plan, environment digest, input references, logs, validation results, and selected artifacts. It then destroys the writable runtime. Future runs can replay the evidence without preserving an opaque long-lived machine.
+
+## Determinism has layers
+
+An immutable image alone does not make a scientific computation deterministic. Repeated runs can still diverge because of random seeds, parallel scheduling, hardware-specific kernels, nondeterministic accelerator operations, updated remote APIs, or mutable datasets.
+
+The execution record should identify which layer is controlled:
+
+- **Environment determinism:** identical runtime and dependency digests.
+- **Input determinism:** immutable data, prompt, and tool fixtures.
+- **Control determinism:** fixed seeds, budgets, timeouts, and retry rules.
+- **Evaluation determinism:** the same checks applied to every output.
+
+When exact replay is impossible, the harness should test invariants. Two numerical runs may differ at the last decimal place while preserving the same ranking, conservation rule, or biological conclusion.
+
+## Isolation and network policy
+
+Scientific agents frequently execute code they did not author. Sandboxes should assume that code is untrusted until reviewed. A practical default includes a non-root user, constrained CPU and memory, a read-only base filesystem, scoped secrets, and no outbound network access.
+
+Network access can be opened through an allowlist when a run needs a package registry or scientific database. The proxy records the destination and response digest. This creates a trace of external state rather than allowing invisible changes during evaluation.
+
+## Observability belongs in the result
+
+Logs are not only debugging material. They are part of the evidence for how a result was produced. The harness should preserve:
+
+- command and process trees;
+- timestamps and resource use;
+- package and system inventories;
+- tool requests and response digests;
+- validation checks and their outcomes; and
+- artifact names, types, sizes, and hashes.
+
+These records let an evaluator distinguish an agent that formed a poor hypothesis from an agent that never received its input file.
+
+## Where ephemeral runtimes help
+
+The pattern works well for repository evaluation, parameter sweeps, model comparisons, literature-derived code reproduction, and tests of agent tool use. It is less suitable for stateful instruments or long-running services unless the external state is represented explicitly.
+
+Our [environment-planning architecture](/blog/agent-tooling) covers how a repository becomes a sandbox plan. The [evaluation note](/research/deterministic-evals) covers how controlled runs become comparable evidence. Together, they move reproducibility from a README promise into the execution system.

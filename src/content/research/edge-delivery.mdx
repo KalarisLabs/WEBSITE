@@ -1,14 +1,66 @@
 ---
 title: Edge delivery without architectural fragmentation
-description: A short research note on combining static delivery and request-time behavior in one deployment boundary.
+description: An architecture note on serving prerendered research content and a small number of request-time operations through one observable deployment boundary.
 publishDate: 2026-09-27
+updatedDate: 2026-09-28
 tags:
   - edge
   - architecture
+  - web-performance
 draft: false
 socialImage: /images/content/edge-delivery.jpg
 ---
 
-Static and dynamic behavior do not need separate operational surfaces. A single Worker can serve immutable assets efficiently and reserve request-time execution for the small set of routes that require it.
+> **Research status:** Architecture note based on the Kalaris Labs website deployment. It describes a system boundary, not a latency benchmark.
 
-The useful boundary is not static versus dynamic. It is whether a request needs computation now.
+Static and dynamic behavior do not require separate operational surfaces. A content site can prerender every public article while reserving request-time execution for forms, authenticated operations, or data that must be current at request time.
+
+The useful boundary is whether a request needs computation now.
+
+## Classify routes by computation
+
+We divide routes into three groups.
+
+### Immutable content
+
+Blog posts, research notes, company pages, images, styles, and versioned scripts are generated during the build. They can be cached for long periods because a new deployment produces a new asset or document version.
+
+### Revalidated documents
+
+HTML routes may use short cache policies or deployment-time invalidation when the canonical URL remains stable. The content still arrives as complete HTML; revalidation controls freshness without introducing browser rendering as a dependency.
+
+### Request-time operations
+
+Contact forms, security challenges, previews, and future authenticated endpoints need server execution. These routes should remain explicit and small. They validate input, access scoped secrets, and return narrow responses.
+
+This classification prevents a single interactive feature from turning every article request into a server-rendered operation.
+
+## One deployable system, separate cache rules
+
+A unified deployment does not imply one cache policy. Static assets can be content-addressed and immutable. Public HTML can revalidate. API responses can disable shared caching or define their own keys.
+
+The important property is that route code, generated assets, redirects, and headers are released together. A deployment can be rolled back as one version, and a request identifier can cross the static and dynamic boundary when diagnostics are needed.
+
+## Canonical URLs at the edge
+
+Multiple hostnames and trailing-slash variants can expose the same content at different URLs. The request boundary should redirect alternate hosts and URL forms before content is served. Each HTML document then declares the same canonical URL that appears in the sitemap and internal links.
+
+These signals do not force a search engine to choose a URL, but consistency removes avoidable ambiguity. Redirects, canonicals, and sitemap entries should agree.
+
+## Failure isolation
+
+Static content should remain available when a request-time integration fails. A mail provider outage can disable a contact submission without affecting research articles. The UI should surface the failure at the action boundary instead of making the full page dependent on the provider.
+
+Observability follows the same split. Build failures belong to the deployment pipeline. Asset and document delivery can be measured through response status and cache behavior. API routes receive structured application logs with sensitive values removed.
+
+## Security properties
+
+The smaller the request-time surface, the fewer routes can access secrets or mutate external state. Public pages need no credentials. Form endpoints receive only the bindings they use, enforce body-size and field limits, and apply abuse controls before contacting downstream services.
+
+Static assets still need correct response headers, but they do not need a general application session. Keeping that distinction visible makes security review easier.
+
+## What this architecture does not solve
+
+A shared deployment boundary cannot make every workload suitable for edge execution. Long-running computation, stateful coordination, large uploads, and specialized accelerators may belong in separate services. The content layer should link to those services through explicit APIs rather than hiding their lifecycle inside a page request.
+
+The Kalaris Labs implementation is described in [our Workers-first engineering note](/blog/workers-foundation). This page records the architectural reasoning: prerender what can be known at build time, compute only what the current request requires, and keep both paths observable.

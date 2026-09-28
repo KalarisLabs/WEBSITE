@@ -4,14 +4,30 @@ import Footer from '../../components/layout/Footer.astro';
 import Header from '../../components/layout/Header.astro';
 import Layout from '../../layouts/Layout.astro';
 import { getPublishedEntries } from '../../lib/content';
+import { buildCollectionPageSchema } from '../../lib/seo/schema';
+import { absoluteSiteUrl } from '../../lib/seo/site';
 
 export const prerender = true;
 const entries = await getPublishedEntries('blog');
+const description =
+  'Engineering notes on scientific agents, reproducible runtimes, recursive memory, tool reliability, and the systems behind Kalaris Labs.';
+const collectionSchema = buildCollectionPageSchema(
+  'Kalaris Labs Engineering Blog',
+  description,
+  absoluteSiteUrl('/blog'),
+  entries.map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    url: absoluteSiteUrl(`/blog/${entry.id}`),
+    publishDate: entry.data.publishDate,
+  })),
+);
 ---
 
 <Layout
   title="Blog · Kalaris Labs"
-  description="Engineering notes and technical updates on recursive context and autonomous research systems from Kalaris Labs."
+  description={description}
+  extraSchemas={[collectionSchema]}
   breadcrumbs={[
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },

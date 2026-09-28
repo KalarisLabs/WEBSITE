@@ -1,7 +1,8 @@
 ---
 title: Eliminating environment friction for autonomous scientific pipelines
-description: Packaging automated execution sandboxes that adapt dynamically to arbitrary biological and machine learning codebases.
+description: A practical architecture for turning an unfamiliar scientific repository into a reproducible execution environment with inspectable dependencies, data, and outputs.
 publishDate: 2026-09-28
+updatedDate: 2026-09-28
 tags:
   - tooling
   - pipelines
@@ -10,6 +11,77 @@ draft: false
 socialImage: /images/content/agent-tooling.jpg
 ---
 
-When non-computer-scientists attempt to reproduce recent computational biology or machine learning papers, more than seventy percent of total hours are consumed by dependency collisions, CUDA drivers, and container incompatibilities.
+Scientific software rarely arrives as a clean package. A repository may contain a partial environment file, a notebook that assumes a local directory, and a README written against an older CUDA release. A person can reconstruct the missing assumptions by reading issues and trying commands. An autonomous agent needs the same work represented as an explicit, reviewable process.
 
-Our agent runtime abstracts this friction into declarative environments that synthesize ephemeral sandboxes directly from repository dependencies.
+Environment setup is therefore part of the research system, not a prelude to it. If the runtime cannot explain how it constructed an environment, later results are difficult to reproduce or trust.
+
+## What the runtime must infer
+
+A useful environment builder starts by collecting evidence instead of immediately installing packages. It inspects:
+
+- language and package manifests, including lockfiles;
+- container definitions and continuous-integration workflows;
+- imports that are absent from declared dependencies;
+- system libraries referenced by build scripts;
+- accelerator requirements and supported driver ranges;
+- expected data paths, environment variables, and network access; and
+- the commands used for tests, training, evaluation, or analysis.
+
+These sources can disagree. A lockfile may pin one library while a notebook imports an API introduced several releases later. The builder should preserve that conflict in its plan rather than silently choosing a version.
+
+## Compile evidence into an execution plan
+
+The output of discovery should be a typed plan that a person or another agent can inspect before execution.
+
+```typescript
+interface EnvironmentPlan {
+  sourceRevision: string;
+  runtime: { language: string; version: string };
+  systemPackages: string[];
+  dependencyFiles: Array<{ path: string; digest: string }>;
+  accelerator?: { kind: 'cuda'; versionRange: string };
+  mounts: Array<{ target: string; access: 'read' | 'write' }>;
+  networkPolicy: 'closed' | 'allowlisted';
+  entrypoints: string[];
+  unresolvedAssumptions: string[];
+}
+```
+
+The unresolved assumptions field is deliberate. A pipeline that needs a private dataset or undocumented credential should stop at a clear boundary. Guessing a path or substituting data may make a command run while invalidating the experiment.
+
+## Build once, record every input
+
+The runtime converts the approved plan into an immutable image or equivalent environment snapshot. Every input receives a digest: the source revision, base image, dependency files, system packages, and runtime configuration. The resulting environment digest becomes part of every execution record.
+
+That record should also contain the invoked command, mounted dataset versions, environment variables with secret values redacted, exit status, resource limits, and captured output. Replaying the same record will not eliminate every source of nondeterminism, but it makes differences observable.
+
+## Separate setup failures from scientific failures
+
+An autonomous pipeline needs a failure taxonomy. Treating every non-zero exit as the same event causes agents to rewrite scientific code when the real problem is a missing shared library.
+
+We separate failures into four groups:
+
+1. **Resolution failures** occur before the image is built, such as incompatible dependency constraints.
+2. **Provisioning failures** occur while constructing the runtime or mounting data.
+3. **Execution failures** come from the target program and include its logs and stack trace.
+4. **Validation failures** occur when a command completes but expected artifacts or invariants are absent.
+
+This classification determines the next action. Resolution and provisioning failures return to the environment planner. Execution failures return to the code or experiment agent. Validation failures require checking the scientific contract rather than rerunning blindly.
+
+## Cache the stable layers
+
+Reproducibility does not require rebuilding everything for every run. Base operating-system layers, language runtimes, and resolved dependency layers can be cached by content digest. Source code and experiment inputs remain separate, so a small code change does not invalidate a costly accelerator image.
+
+The cache key must describe the real dependency boundary. Using a branch name or mutable image tag creates a fast cache that cannot explain itself later.
+
+## The standard for a usable sandbox
+
+An environment is ready for autonomous work when it can answer five questions:
+
+- Which source and data produced this run?
+- How was the runtime assembled?
+- Which assumptions remain unresolved?
+- Can the same plan be rebuilt in a clean account?
+- Did the failure come from infrastructure, code, or an experimental check?
+
+This is the operational contract behind our [deterministic sandbox work](/blog/ephemeral-sandboxes) and the evaluation protocol described in [deterministic evaluation benchmarks](/research/deterministic-evals). The agent becomes more useful when setup decisions stop disappearing into a terminal history.
