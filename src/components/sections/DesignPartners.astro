@@ -73,52 +73,55 @@ const companies = [
     height: 22,
   },
 ];
+
+// Duplicate items for a smooth, seamless infinite horizontal loop
+const marqueeItems = [...companies, ...companies, ...companies];
 ---
 
-<section class="trusted-section" id="partners">
+<section class="trusted-section" id="partners" aria-label="Trusted by">
   <div class="content-column">
-    <div class="section-lead-compact">
-      <span class="mono-eyebrow">INTEGRATIONS & ECOSYSTEM</span>
-      <h2>Trusted by teams building with frontier research infrastructure.</h2>
-      <p>
-        The research execution layer connects directly with modern AI platforms, runtime sandboxes, observability stacks, and model providers.
-      </p>
+    <div class="trusted-header">
+      <h2 class="trusted-simple-heading">Trusted by</h2>
     </div>
+  </div>
 
-    {/* Architectural 3x3 Logo Grid inspired by reference */}
-    <div
-      class="trusted-logo-grid"
-      role="region"
-      aria-label="Supported platforms and ecosystem partners"
-    >
+  {/* Infinite horizontal looping marquee */}
+  <div
+    class="trusted-marquee-container"
+    role="region"
+    aria-label="Trusted companies"
+  >
+    <div class="trusted-marquee-track">
       {
-        companies.map((company) => (
-          <div class="trusted-cell" data-company={company.id}>
-            <div class="trusted-lockup">
-              {company.isWordmark ? (
+        marqueeItems.map((company, index) => (
+          <div
+            class="trusted-marquee-item"
+            data-company={company.id}
+            aria-hidden={index >= companies.length ? 'true' : undefined}
+          >
+            {company.isWordmark ? (
+              <img
+                src={company.logo}
+                alt={company.name}
+                class={`trusted-wordmark brand-${company.id}`}
+                loading="lazy"
+                width={company.width}
+                height={company.height}
+              />
+            ) : (
+              <div class="trusted-combo">
                 <img
                   src={company.logo}
-                  alt={company.name}
-                  class={`trusted-wordmark brand-${company.id}`}
+                  alt=""
+                  class={`trusted-icon brand-${company.id}`}
                   loading="lazy"
                   width={company.width}
                   height={company.height}
+                  aria-hidden="true"
                 />
-              ) : (
-                <div class="trusted-combo">
-                  <img
-                    src={company.logo}
-                    alt=""
-                    class={`trusted-icon brand-${company.id}`}
-                    loading="lazy"
-                    width={company.width}
-                    height={company.height}
-                    aria-hidden="true"
-                  />
-                  <span class="trusted-label">{company.name}</span>
-                </div>
-              )}
-            </div>
+                <span class="trusted-label">{company.name}</span>
+              </div>
+            )}
           </div>
         ))
       }
