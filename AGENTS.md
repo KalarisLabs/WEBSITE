@@ -105,6 +105,9 @@ npm install
 # Start development server
 npm run dev
 
+# Verify Astro dev serves public assets and Vite client modules
+npm run verify:dev-assets
+
 # Build and run in the local Cloudflare Workers runtime
 npm run dev:worker
 
@@ -164,6 +167,8 @@ The site is configured as one Cloudflare Workers deployment; Cloudflare Pages is
 - `kalarislabs.com` as the canonical production hostname with a Worker-level `www` redirect
 - DNS managed by Cloudflare
 - WAF protection enabled
+
+`npm run dev` uses `astro.config.dev.mjs` and Astro's native development server so public assets and Vite modules resolve correctly on Windows. Production builds, Worker-local previews, and deployments continue to use the Cloudflare adapter in `astro.config.mjs`; use `npm run dev:worker` when Worker-runtime parity is required.
 
 ## Notes
 

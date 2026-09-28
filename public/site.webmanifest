@@ -1,7 +1,7 @@
 {
   "name": "Kalaris Labs",
   "short_name": "Kalaris",
-  "description": "Recursive, self-improving infrastructure for scientific research.",
+  "description": "Agent-powered infrastructure for scientific discovery, built for researchers everywhere.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#08080a",

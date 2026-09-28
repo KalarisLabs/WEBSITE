@@ -18,7 +18,10 @@ export interface DiscoveryEntry {
   };
 }
 
-export function entryPath(collection: DiscoveryCollection, entry: { id: string }) {
+export function entryPath(
+  collection: DiscoveryCollection,
+  entry: { id: string },
+) {
   return `/${collection}/${entry.id}`;
 }
 
@@ -55,7 +58,8 @@ export function buildRobotsTxt() {
 
 export function buildLlmsTxt(entries: DiscoveryEntry[]) {
   const sections = (['blog', 'research'] as const).map((collection) => {
-    const label = collection === 'blog' ? 'Blog & Engineering Notes' : 'Research Notes';
+    const label =
+      collection === 'blog' ? 'Blog & Engineering Notes' : 'Research Notes';
     const links = entries
       .filter((item) => item.collection === collection)
       .map(

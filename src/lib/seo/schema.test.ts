@@ -70,7 +70,8 @@ describe('SEO structured data', () => {
     const faq = buildFaqSchema([
       {
         question: 'What is Kalaris Labs?',
-        answer: 'Kalaris Labs builds recursive, self-improving infrastructure for scientific research.',
+        answer:
+          'Kalaris Labs builds recursive, self-improving infrastructure for scientific research.',
       },
     ]);
     expect(faq).toMatchObject({

@@ -4,10 +4,10 @@
   "description": "Official website for Kalaris Labs",
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --config astro.config.dev.mjs",
     "dev:worker": "astro build && wrangler dev",
     "build": "astro build",
-    "check": "astro build && astro check && tsc --noEmit && eslint . && prettier --check .",
+    "check": "astro build && astro check && tsc --noEmit && eslint . && prettier --check . && npm run verify:dev-assets",
     "test": "vitest run",
     "test:watch": "vitest",
     "preview": "astro build && wrangler dev",
@@ -21,7 +21,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "verify:dev-assets": "node scripts/verify-dev-assets.mjs astro.config.dev.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.3",

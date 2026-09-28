@@ -8,7 +8,9 @@ describe('SEO & GEO discovery generators', () => {
     expect(robots).toContain('User-agent: PerplexityBot');
     expect(robots).toContain('User-agent: ClaudeBot');
     expect(robots).toContain('Disallow: /api/');
-    expect(robots).toContain('Sitemap: https://kalarislabs.com/sitemap-index.xml');
+    expect(robots).toContain(
+      'Sitemap: https://kalarislabs.com/sitemap-index.xml',
+    );
   });
 
   it('generates llms.txt containing executive summary and entity facts', () => {

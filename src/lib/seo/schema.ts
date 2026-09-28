@@ -33,10 +33,9 @@ export function buildFounderPersonSchema(): JsonLd {
     jobTitle: 'Founder',
     worksFor: { '@id': `${SITE.url}/#organization` },
     url: SITE.founderLinkedin,
-    sameAs: [
-      SITE.founderLinkedin,
-      'https://x.com/sayanchowdhuryai',
-    ].filter(Boolean),
+    sameAs: [SITE.founderLinkedin, 'https://x.com/sayanchowdhuryai'].filter(
+      Boolean,
+    ),
     description:
       'Agentic researcher and builder focused on systems architecture, scientific infrastructure, and the economic layer of agentic systems.',
     knowsAbout: [
@@ -73,10 +72,9 @@ export function buildOrganizationSchema(): JsonLd {
       name: 'Sayan Chowdhury',
       jobTitle: 'Founder',
       url: SITE.founderLinkedin,
-      sameAs: [
-        SITE.founderLinkedin,
-        'https://x.com/sayanchowdhuryai',
-      ].filter(Boolean),
+      sameAs: [SITE.founderLinkedin, 'https://x.com/sayanchowdhuryai'].filter(
+        Boolean,
+      ),
     },
     knowsAbout: [
       'Artificial Intelligence',
@@ -141,7 +139,9 @@ export function buildArticleSchema(input: ArticleSchemaInput): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': isResearch ? 'TechArticle' : 'Article',
-    additionalType: isResearch ? 'https://schema.org/ScholarlyArticle' : undefined,
+    additionalType: isResearch
+      ? 'https://schema.org/ScholarlyArticle'
+      : undefined,
     '@id': `${input.url}#article`,
     headline: input.title,
     description: input.description,

@@ -7,7 +7,9 @@ import {
 export type PublishingCollection = Extract<CollectionKey, 'blog' | 'research'>;
 export type PublishingEntry = CollectionEntry<PublishingCollection>;
 
-export async function getPublishedEntries(collection: PublishingCollection) {
+export async function getPublishedEntries<C extends PublishingCollection>(
+  collection: C,
+): Promise<CollectionEntry<C>[]> {
   const entries = await getCollection(
     collection,
     ({ data }) => !data.draft || import.meta.env.DEV,

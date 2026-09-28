@@ -68,7 +68,7 @@ if (type === 'article' && publishDate && section) {
       updatedDate,
       tags,
       section,
-      authorName,
+      ...(authorName ? { authorName } : {}),
     }),
   );
 }
@@ -162,7 +162,10 @@ if (type === 'article' && publishDate && section) {
       type === 'article' && section === 'Research' && (
         <>
           <meta name="citation_title" content={title} />
-          <meta name="citation_author" content={authorName ?? 'Sayan Chowdhury'} />
+          <meta
+            name="citation_author"
+            content={authorName ?? 'Sayan Chowdhury'}
+          />
           {publishDate && (
             <meta
               name="citation_publication_date"

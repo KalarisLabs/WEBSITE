@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import fs from 'node:fs';
 
 async function generateOgImage() {
   const bannerWidth = 1060;
@@ -95,7 +94,9 @@ async function generateOgImage() {
     .png({ quality: 95 })
     .toFile('./public/og-image.png');
 
-  console.log('Successfully generated ./public/og-image.png with hero banner header!');
+  console.log(
+    'Successfully generated ./public/og-image.png with hero banner header!',
+  );
 }
 
 generateOgImage().catch(console.error);
