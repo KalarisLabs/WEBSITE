@@ -37,17 +37,18 @@
     },
     "production": {
       "name": "kalaris-labs-website",
-      "workers_dev": false,
-      "routes": [
-        {
-          "pattern": "kalarislabs.com",
-          "custom_domain": true,
-        },
-        {
-          "pattern": "www.kalarislabs.com",
-          "custom_domain": true,
-        },
-      ],
+      "workers_dev": true,
+      // Uncomment routes once kalarislabs.com is added as a Zone in dash.cloudflare.com
+      // "routes": [
+      //   {
+      //     "pattern": "kalarislabs.com",
+      //     "custom_domain": true,
+      //   },
+      //   {
+      //     "pattern": "www.kalarislabs.com",
+      //     "custom_domain": true,
+      //   },
+      // ],
       "vars": {
         "APP_ENV": "production",
         "CONTACT_TO_EMAIL": "contact@kalarislabs.com",
