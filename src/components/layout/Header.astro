@@ -1,6 +1,4 @@
 ---
-const docsUrl =
-  import.meta.env.PUBLIC_DOCS_URL ?? 'https://docs.kalarislabs.com';
 const currentPath = Astro.url.pathname;
 const nav = [
   { href: '/', label: 'Home' },
@@ -38,9 +36,6 @@ const isActive = (href: string) =>
           </a>
         ))
       }
-      <a href={docsUrl} class="rail-link"
-        ><span></span>Docs <b aria-hidden="true">↗</b></a
-      >
     </div>
 
     {
@@ -77,9 +72,7 @@ const isActive = (href: string) =>
         ><span></span><span></span></summary
       >
       <div>
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}<a
-          href={docsUrl}>Documentation ↗</a
-        >
+        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
       </div>
     </details>
   </div>

@@ -103,13 +103,19 @@ html.lenis body {
 
 .skip-link {
   position: fixed;
-  z-index: 100;
-  top: calc(var(--announcement-height) + 0.75rem);
-  left: 0.75rem;
-  transform: translateY(-180%);
-  background: white;
-  color: black;
-  padding: 0.75rem 1rem;
+  z-index: 1000;
+  top: 1rem;
+  left: 1rem;
+  transform: translateY(-300%);
+  opacity: 0;
+  pointer-events: none;
+  background: #111113;
+  color: #f0eee8;
+  border: 1px solid var(--blue);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+  transition: transform 150ms ease, opacity 150ms ease;
 }
 
 .global-announcement {
@@ -150,6 +156,8 @@ html.lenis body {
 }
 .skip-link:focus {
   transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 .content-column {
   width: min(calc(100% - 3rem), var(--content));

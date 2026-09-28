@@ -101,7 +101,7 @@ export function buildLlmsTxt(entries: DiscoveryEntry[]) {
     ...faqLines,
     '## Canonical Navigation Links',
     '',
-    `- [Home](${SITE.url}/): Overview, manifesto stream, partners, and FAQ.`,
+    `- [Home](${SITE.url}/): Overview, manifesto stream, partners, research, and technical updates.`,
     `- [Manifesto](${absoluteSiteUrl('/manifesto')}): Full architectural and philosophical thesis on democratizing scientific discovery.`,
     `- [Research](${absoluteSiteUrl('/research')}): Peer-grade research notes on recursive context and systems.`,
     `- [Blog](${absoluteSiteUrl('/blog')}): Engineering implementation details and infrastructure design.`,
