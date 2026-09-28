@@ -3,49 +3,222 @@ const year = new Date().getUTCFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="content-column footer-content">
-    <div class="footer-primary">
-      <div class="footer-identity">
-        <a href="/" class="brand" aria-label="Kalaris Labs home">
-          <img
-            src="/kalaris-wordmark.png"
-            alt="Kalaris Labs"
-            width="150"
-            height="46"
-          />
-        </a>
-        <p class="footer-tagline">
-          Recursive, self-improving infrastructure for scientific discovery.
-        </p>
-      </div>
+  {/* 1. Grand Brand Horizon with 3D Wireframe Geometry (Inspired by Reference) */}
+  <div class="footer-hero-horizon">
+    <div class="footer-wireframe-canvas" aria-hidden="true">
+      <svg
+        class="footer-wireframe-svg"
+        viewBox="0 0 1400 420"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <linearGradient id="wireframe-accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38d995" stop-opacity="0.3" />
+            <stop offset="50%" stop-color="#4d7cff" stop-opacity="0.4" />
+            <stop offset="100%" stop-color="#38d995" stop-opacity="0.2" />
+          </linearGradient>
+          <radialGradient id="horizon-mask-radial" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+            <stop offset="70%" stop-color="#ffffff" stop-opacity="0.75" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
+          <mask id="horizon-mask">
+            <rect width="1400" height="420" fill="url(#horizon-mask-radial)" />
+          </mask>
+        </defs>
 
-      <nav class="footer-links-grid" aria-label="Footer navigation">
-        <div class="footer-nav-group">
-          <span class="footer-col-title">Publications</span>
-          <a href="/research">Research</a>
-          <a href="/blog">Blog</a>
-          <a href="/manifesto">Manifesto</a>
-        </div>
-        <div class="footer-nav-group">
-          <span class="footer-col-title">Company</span>
-          <a href="/company">About</a>
-          <a href="/team">Our team</a>
-          <a href="/company/careers">Careers</a>
-          <a href="mailto:contact@kalarislabs.com">Contact ↗</a>
-        </div>
-      </nav>
+        <g mask="url(#horizon-mask)" stroke-linecap="round" stroke-linejoin="round">
+          {/* Subtle Ground Perspective Grid Lines */}
+          <line x1="120" y1="350" x2="1280" y2="350" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" />
+          <line x1="220" y1="375" x2="1180" y2="375" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+          <line x1="320" y1="398" x2="1080" y2="398" stroke="rgba(255, 255, 255, 0.03)" stroke-width="1" />
+
+          {/* Perspective Vanishing Guide Beams */}
+          <line x1="700" y1="110" x2="80" y2="410" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+          <line x1="700" y1="110" x2="380" y2="410" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+          <line x1="700" y1="110" x2="1020" y2="410" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+          <line x1="700" y1="110" x2="1320" y2="410" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+
+          {/* 3D Wireframe Cube 1 (Left perspective cuboid matching reference) */}
+          <polygon
+            points="380,85 540,55 580,105 420,135"
+            fill="rgba(255, 255, 255, 0.015)"
+            stroke="rgba(255, 255, 255, 0.28)"
+            stroke-width="1.2"
+          />
+          <line x1="380" y1="85" x2="380" y2="295" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="540" y1="55" x2="540" y2="265" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="580" y1="105" x2="580" y2="315" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="420" y1="135" x2="420" y2="345" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <polygon
+            points="380,295 420,345 580,315"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.22)"
+            stroke-width="1.2"
+          />
+          {/* Back hidden edges (dashed) */}
+          <line x1="380" y1="295" x2="540" y2="265" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4 4" />
+          <line x1="540" y1="265" x2="580" y2="315" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4 4" />
+
+          {/* Internal diagonal architectural slice / cross-brace */}
+          <line x1="380" y1="85" x2="580" y2="315" stroke="url(#wireframe-accent-grad)" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="420" y1="135" x2="540" y2="265" stroke="rgba(77, 124, 255, 0.2)" stroke-width="1" stroke-dasharray="3 3" />
+
+          {/* 3D Wireframe Cube 2 (Right taller architectural prism matching reference) */}
+          <polygon
+            points="650,45 790,25 830,75 690,95"
+            fill="rgba(255, 255, 255, 0.02)"
+            stroke="rgba(255, 255, 255, 0.3)"
+            stroke-width="1.2"
+          />
+          <line x1="650" y1="45" x2="650" y2="275" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="790" y1="25" x2="790" y2="255" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="830" y1="75" x2="830" y2="305" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <line x1="690" y1="95" x2="690" y2="325" stroke="rgba(255, 255, 255, 0.25)" stroke-width="1.2" />
+          <polygon
+            points="650,275 690,325 830,305"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.22)"
+            stroke-width="1.2"
+          />
+          {/* Back hidden edges */}
+          <line x1="650" y1="275" x2="790" y2="255" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4 4" />
+          <line x1="790" y1="255" x2="830" y2="305" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" stroke-dasharray="4 4" />
+
+          {/* Tertiary Outer Framework Lines */}
+          <line x1="880" y1="120" x2="1030" y2="90" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1" />
+          <line x1="880" y1="120" x2="880" y2="330" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+          <line x1="1030" y1="90" x2="1030" y2="300" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+          <line x1="1070" y1="130" x2="1070" y2="340" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+          <line x1="880" y1="330" x2="1030" y2="300" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" stroke-dasharray="3 3" />
+        </g>
+      </svg>
     </div>
 
+    {/* Centerpiece Branding (Using STACKED LOGO TRANSPARENT.png) */}
+    <div class="footer-brand-showcase">
+      <a href="/" class="footer-hero-logo-link" aria-label="Kalaris Labs home">
+        <img
+          src="/STACKED LOGO TRANSPARENT.png"
+          alt="Kalaris Labs"
+          class="footer-stacked-logo"
+          width="724"
+          height="241"
+          loading="lazy"
+        />
+      </a>
+      <div class="footer-hero-meta">
+        <span class="footer-status-pill">
+          <span class="status-pulse-dot" aria-hidden="true" />
+          <span>ALL SYSTEMS OPERATIONAL</span>
+        </span>
+        <span class="footer-hero-subhead">
+          RECURSIVE ARCHITECTURES · DETERMINISTIC SCIENTIFIC HARNESSES
+        </span>
+      </div>
+    </div>
+  </div>
+
+  {/* 2. Structured Multi-Column Directory */}
+  <div class="footer-directory-container">
+    <div class="footer-directory-grid">
+      {/* Column 1: Mission & Direct Newsletter */}
+      <div class="footer-dir-col col-brand-summary">
+        <span class="footer-dir-title">MISSION</span>
+        <p class="footer-summary-text">
+          Building deterministic, self-improving infrastructure for autonomous scientific research agents.
+        </p>
+        <div class="footer-newsletter-box">
+          <span class="newsletter-label">RESEARCH NOTES DISPATCH</span>
+          <form class="footer-email-form" action="/api/contact" method="POST">
+            <input
+              type="email"
+              name="email"
+              placeholder="name@domain.com"
+              required
+              class="footer-email-field"
+              aria-label="Email address for research notes"
+            />
+            <button type="submit" class="footer-email-btn" aria-label="Subscribe to research updates">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Column 2: Systems & Infrastructure */}
+      <div class="footer-dir-col">
+        <span class="footer-dir-title">INFRASTRUCTURE</span>
+        <nav class="footer-nav-stack" aria-label="Infrastructure navigation">
+          <a href="/research/recursive-context">Recursive Context</a>
+          <a href="/research/edge-delivery">Edge Delivery Engine</a>
+          <a href="/research/skill-doctor">Skill Doctor Liveness</a>
+          <a href="/blog/ephemeral-sandboxes">Ephemeral Sandboxes</a>
+          <a href="https://docs.kalarislabs.com" target="_blank" rel="noopener noreferrer">
+            Documentation <span class="arrow-glyph" aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
+
+      {/* Column 3: Publications */}
+      <div class="footer-dir-col">
+        <span class="footer-dir-title">PUBLICATIONS</span>
+        <nav class="footer-nav-stack" aria-label="Publications navigation">
+          <a href="/research">Research Notes</a>
+          <a href="/blog">Technical Blog</a>
+          <a href="/manifesto">The Manifesto</a>
+          <a href="/rss.xml">RSS Feed</a>
+          <a href="/llms.txt">llms.txt</a>
+        </nav>
+      </div>
+
+      {/* Column 4: Company & Community */}
+      <div class="footer-dir-col">
+        <span class="footer-dir-title">COMPANY</span>
+        <nav class="footer-nav-stack" aria-label="Company navigation">
+          <a href="/company">About Kalaris</a>
+          <a href="/team">Research Team</a>
+          <a href="/company/careers" class="careers-link-highlight">
+            <span>Careers</span>
+            <span class="hiring-badge">HIRING</span>
+          </a>
+          <a href="mailto:contact@kalarislabs.com">
+            Contact Research <span class="arrow-glyph" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://github.com/KalarisLabs" target="_blank" rel="noopener noreferrer">
+            GitHub <span class="arrow-glyph" aria-hidden="true">↗</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    {/* 3. Bottom Utility Bar */}
     <div class="footer-bottom-bar">
-      <p>© {year} Kalaris Labs. All rights reserved.</p>
+      <div class="footer-legal-copy">
+        <p>© {year} Kalaris Labs, Inc. All rights reserved.</p>
+        <span class="bar-separator" aria-hidden="true">·</span>
+        <p class="footer-latency">Edge: Cloudflare Workers global network</p>
+      </div>
+
       <div class="footer-utility-links">
-        <a href="/manifesto">Manifesto</a>
-        <a href="/rss.xml">RSS</a>
         <a
           href="https://www.linkedin.com/company/kalarislabs"
           target="_blank"
-          rel="noopener noreferrer">LinkedIn ↗</a
+          rel="noopener noreferrer"
         >
+          LinkedIn <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          href="https://twitter.com/kalarislabs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          X / Twitter <span aria-hidden="true">↗</span>
+        </a>
+        <a href="/rss.xml">RSS</a>
         <button type="button" data-analytics-preferences>
           Analytics preferences
         </button>
