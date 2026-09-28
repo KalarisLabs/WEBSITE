@@ -28,6 +28,7 @@ The repository-mandated `posthog-cli api` workflow must be attempted first for P
 
 - Matt Pocock: `codebase-design`, `improve-codebase-architecture`, `diagnosing-bugs`, `tdd`, `code-review`
 - Emil Kowalski: `emil-design-eng`, `review-animations`
+- Impeccable: `impeccable`
 - Locally managed: `ui-ux-pro-max`
 
 ## Maintenance

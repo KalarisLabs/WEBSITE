@@ -1,92 +1,34 @@
 ---
+import manifestoSource from '../../manifesto.md?raw';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from '../layouts/Layout.astro';
 
 export const prerender = true;
+const paragraphs = manifestoSource.trim().split(/\r?\n\r?\n/);
+const [title, ...body] = paragraphs;
 ---
 
 <Layout
   title="Manifesto"
-  description="Why Kalaris Labs is building self-improving scientific research infrastructure for everyone."
+  description="Self-improving scientific research infrastructure for the democratization of research."
 >
   <Header />
-  <main id="main-content">
-    <header class="page-hero">
-      <div class="site-container page-hero-grid">
-        <p class="eyebrow">Manifesto / v1.0</p>
-        <div>
-          <h1>Research is complicated. It doesn’t have to be.</h1>
-          <p class="page-lede">
-            Self-improving scientific research infrastructure for the
-            democratization of discovery.
-          </p>
-        </div>
+  <main id="main-content" class="manifesto-page">
+    <article class="essay-column">
+      <header><h1>{title}</h1></header>
+      <div class="manifesto-copy">
+        {
+          body.map((paragraph, index) =>
+            index === 0 ? (
+              <p class="manifesto-opening">{paragraph}</p>
+            ) : (
+              <p>{paragraph}</p>
+            ),
+          )
+        }
       </div>
-    </header>
-
-    <section class="editorial-section section-rule">
-      <div class="site-container editorial-grid">
-        <p class="eyebrow">The friction / 01</p>
-        <div class="prose-large">
-          <h2>Discovery is buried under setup.</h2>
-          <p>
-            Researchers lose valuable time configuring environments, stitching
-            together tools, managing citations, navigating repositories, and
-            rebuilding context that should never have been lost.
-          </p>
-          <p>
-            That burden does more than slow experienced teams. It raises the
-            entry cost for high-school students, non-computer-scientists,
-            independent researchers, and anyone without access to a well-funded
-            institution.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="editorial-section dark-band">
-      <div class="site-container editorial-grid">
-        <p class="eyebrow">The direction / 02</p>
-        <div class="prose-large">
-          <h2>Infrastructure that learns from the research.</h2>
-          <p>
-            Kalaris Labs is building an agent-powered infrastructure layer for
-            scientific discovery, designed so researchers can stay closer to
-            questions, experiments, and execution.
-          </p>
-          <p>
-            Our premise is recursive self-improvement: the system should adapt
-            to workflows, repositories, iterations, and papers, preserving what
-            was learned and carrying it forward into the next cycle.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="editorial-section section-rule">
-      <div class="site-container editorial-grid">
-        <p class="eyebrow">The promise / 03</p>
-        <div class="prose-large">
-          <h2>
-            Not research for a select few. Research for everyone doing the work.
-          </h2>
-          <p>
-            The ambition is not to replace researchers. It is to give more
-            people the operational leverage to do rigorous work, follow
-            difficult questions, and turn curiosity into evidence.
-          </p>
-          <p>Because the next breakthrough can come from anywhere.</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="/research"
-              >Read our research →</a
-            ><a class="button button-ghost" href="/company/careers"
-              >Build with us</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
+    </article>
   </main>
   <Footer />
 </Layout>

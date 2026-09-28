@@ -1,96 +1,59 @@
 ---
+import cultureSource from '../../culture.md?raw';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from '../layouts/Layout.astro';
 
 export const prerender = true;
-const principles = [
-  [
-    '01',
-    'Break expectations',
-    'We do not treat youth, difference, or impatience as disqualifications. High agency matters more than conformity.',
-  ],
-  [
-    '02',
-    'Share the knowledge',
-    'Information hoarding is cowardice. Ideas, lessons, and useful context should move through the whole team.',
-  ],
-  [
-    '03',
-    'Stay curious',
-    'Research, code, art, and strange side experiments are part of the job. Curiosity creates the surface area for discovery.',
-  ],
-  [
-    '04',
-    'Measure the impact',
-    'We chase lives improved, not performative activity. Revenue sustains the work; impact gives it meaning.',
-  ],
-  [
-    '05',
-    'Work sustainably',
-    'We take focus, rest, celebration, and repair seriously. Ambition is a long game, not a burnout ritual.',
-  ],
-];
+const cultureParagraphs = cultureSource.trim().split(/\r?\n\r?\n/);
+const [cultureTitle, ...cultureBody] = cultureParagraphs;
 ---
 
 <Layout
   title="Our Team"
-  description="The people, principles, and high-agency culture behind Kalaris Labs."
+  description="The people and culture behind Kalaris Labs."
 >
   <Header />
-  <main id="main-content">
-    <header class="page-hero">
-      <div class="site-container page-hero-grid">
-        <p class="eyebrow">Our team / Culture</p><div>
-          <h1>Small team. Unreasonable curiosity.</h1><p class="page-lede">
-            We are researchers, engineers, artists, and builders who believe
-            difficult work gets better when knowledge moves freely.
-          </p>
-        </div>
+  <main id="main-content" class="team-page">
+    <div class="content-column team-intro">
+      <h1>{cultureTitle}</h1>
+      <div class="culture-copy">
+        {cultureBody.map((paragraph) => <p>{paragraph}</p>)}
       </div>
-    </header>
-    <section class="editorial-section section-rule">
-      <div class="site-container">
-        <div class="editorial-grid">
-          <p class="eyebrow">How we operate / 01</p><div class="prose-large">
-            <h2>Societal delinquents, in the most constructive sense.</h2><p>
-              We break expectations, not laws. We were told we were too young,
-              too different, or too impatient. We kept building.
-            </p>
+    </div>
+
+    <section class="founders-section">
+      <div class="content-column">
+        <h2>Founders</h2>
+        <article class="founder-card">
+          <div class="founder-image">
+            <img
+              src="/founders/sayan-chowdhury.jpg"
+              alt="Sayan Chowdhury"
+              width="460"
+              height="460"
+              loading="lazy"
+            />
           </div>
-        </div>
-        <div class="statement-list">
-          {
-            principles.map(([number, title, body]) => (
-              <article class="statement-item">
-                <>
-                  <span>{number}</span>
-                  <div>
-                    <>
-                      <h2>{title}</h2>
-                      <p>{body}</p>
-                    </>
-                  </div>
-                </>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </section>
-    <section class="editorial-section dark-band">
-      <div class="site-container editorial-grid">
-        <p class="eyebrow">Join the work / 02</p><div class="prose-large">
-          <h2>Profiles are coming. The work has already started.</h2><p>
-            We will publish individual team profiles as the company grows. For
-            now, our operating principles are the most honest description of who
-            belongs here.
-          </p><div class="hero-actions">
-            <a class="button button-primary" href="/company/careers"
-              >View careers →</a
+          <div class="founder-name">
+            <p>Sayan Chowdhury</p><span>Founder</span>
+          </div>
+          <div class="founder-bio">
+            <p>
+              Agentic researcher and builder focused on systems architecture,
+              scientific infrastructure, and the economic layer of agentic
+              systems.
+            </p><a href="https://www.linkedin.com/in/sayanchowdhuryai"
+              >LinkedIn ↗</a
             >
           </div>
-        </div>
+          <aside class="founder-fact">
+            <span>Fun fact</span><p>
+              He describes himself as an ADHD builder and entrepreneur at
+              heart—architecture before wrappers.
+            </p>
+          </aside>
+        </article>
       </div>
     </section>
   </main>

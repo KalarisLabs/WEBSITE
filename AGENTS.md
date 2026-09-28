@@ -64,7 +64,7 @@ Official website for Kalaris Labs (kalarislabs.com) built with modern web techno
 
 ## Installed Skills
 
-The canonical project catalog contains 30 flat skill directories under `.agents/skills`. See `docs/skills.md` for the curated infrastructure, framework, analytics, email, observability, engineering, and design categories. `skills-lock.json` is the reproducible source catalog.
+The canonical project catalog contains 31 flat skill directories under `.agents/skills`. See `docs/skills.md` for the curated infrastructure, framework, analytics, email, observability, engineering, and design categories. `skills-lock.json` is the reproducible source catalog.
 
 ## Project Structure
 

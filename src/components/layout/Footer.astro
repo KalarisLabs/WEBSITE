@@ -5,24 +5,59 @@ const year = new Date().getUTCFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="content-column">
-    <div class="footer-mark">
-      <img src="/kalaris-logo-geometric.png" alt="" width="42" height="42" /><p>
-        Because the next breakthrough can come from anywhere.
-      </p>
+  <div class="footer-matrix">
+    <div class="footer-thesis">
+      <p>Research infrastructure<br />should improve itself.</p>
     </div>
-    <div class="footer-links">
+    <div class="footer-column">
+      <h2>Company</h2>
+      <a href="/">Home</a><a href="/company">About</a><a href="/team"
+        >Our team</a
+      ><a href="/company/careers">Careers</a>
+    </div>
+    <div class="footer-column">
+      <h2>Work</h2>
       <a href="/research">Research</a><a href="/blog">Blog</a><a
-        href="/company/careers">Careers</a
-      ><a href={docsUrl}>Docs ↗</a><a href="mailto:contact@kalarislabs.com"
-        >Email ↗</a
-      ><button type="button" data-analytics-preferences
-        >Analytics preferences</button
+        href="/manifesto">Manifesto</a
+      ><a href={docsUrl}>Documentation ↗</a>
+    </div>
+    <div class="footer-column">
+      <h2>Contact</h2>
+      <a href="mailto:contact@kalarislabs.com">General enquiries ↗</a><a
+        href="mailto:careers@kalarislabs.com">Careers ↗</a
+      ><a href="https://www.linkedin.com/company/kalarislabs">LinkedIn ↗</a>
+    </div>
+    <div class="footer-symbol">
+      <img src="/kalaris-logo-geometric.png" alt="" width="180" height="180" />
+    </div>
+    <div class="footer-subscribe">
+      <h2>Stay close to the work</h2>
+      <p>
+        Research notes and material company updates. No manufactured momentum.
+      </p>
+      <a href="/rss.xml"
+        >Follow the RSS feed <span aria-hidden="true">→</span></a
       >
     </div>
-    <p class="footer-meta">
-      © {year} Kalaris Labs · Recursive self-improving infrastructure for scientific
-      research.
-    </p>
+    <div class="footer-address">
+      <h2>Based in</h2><p>India<br />Building for global science.</p>
+    </div>
+    <div class="footer-contact">
+      <h2>New business</h2><a href="mailto:contact@kalarislabs.com"
+        >contact@kalarislabs.com</a
+      >
+    </div>
+  </div>
+
+  <div class="footer-wordmark" aria-hidden="true">
+    <img src="/kalaris-wordmark.png" alt="" width="1200" height="360" />
+  </div>
+  <div class="footer-legal">
+    <p>© {year} Kalaris Labs. All rights reserved.</p><div>
+      <a href="/manifesto">Manifesto</a><a href="/rss.xml">RSS</a><button
+        type="button"
+        data-analytics-preferences>Analytics preferences</button
+      >
+    </div>
   </div>
 </footer>
