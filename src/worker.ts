@@ -9,6 +9,13 @@ export default {
       return Response.redirect(url, 308);
     }
 
+    if (workerEnv.ASSETS) {
+      const assetResponse = await workerEnv.ASSETS.fetch(request);
+      if (assetResponse.status !== 404) {
+        return applyDiscoveryHeaders(request, assetResponse);
+      }
+    }
+
     const response = await astro.fetch(request, workerEnv, context);
     return applyDiscoveryHeaders(request, response);
   },
