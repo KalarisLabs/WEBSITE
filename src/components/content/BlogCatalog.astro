@@ -1,0 +1,243 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entries: CollectionEntry<'blog'>[];
+}
+
+const { entries } = Astro.props;
+
+// Sort entries by publish date descending
+const sorted = [...entries].sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+
+const featured = sorted[0];
+const gridPosts = sorted.slice(1);
+
+// Extract unique categories/tags
+const allTags = Array.from(
+  new Set(sorted.flatMap((post) => post.data.tags))
+).slice(0, 6);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+function estimateReadingTime(text: string) {
+  const words = text ? text.trim().split(/\s+/).length : 500;
+  return Math.max(3, Math.ceil(words / 180));
+}
+---
+
+<div class="blog-catalog-container">
+  {/* Header Title */}
+  <header class="blog-catalog-header">
+    <div class="blog-header-lead">
+      <span class="blog-eyebrow">KALARIS LABS / ENGINEERING & RESEARCH</span>
+      <h1 class="blog-catalog-title">Technical Updates & Systems Writing</h1>
+      <p class="blog-catalog-desc">
+        Deep dives into recursive context, multi-model execution sandboxes, and autonomous infrastructure for scientific discovery.
+      </p>
+    </div>
+  </header>
+
+  {/* 1. Featured Post Hero Card (Inspired by Reference 2) */}
+  {featured && (
+    <section class="blog-featured-section" aria-label="Featured publication">
+      <a href={`/blog/${featured.id}`} class="blog-featured-card group">
+        <div class="featured-content-col">
+          <div class="featured-meta-line">
+            <time datetime={featured.data.publishDate.toISOString()}>
+              {formatDate(featured.data.publishDate)}
+            </time>
+            <span class="meta-dot">·</span>
+            <span>{estimateReadingTime(featured.body ?? '')} min read</span>
+          </div>
+
+          <h2 class="featured-title">
+            {featured.data.title}
+          </h2>
+
+          <p class="featured-desc">
+            {featured.data.description}
+          </p>
+
+          <div class="featured-author-badge">
+            <img
+              src="/founders/sayan-chowdhury.jpg"
+              alt="Sayan Chowdhury"
+              class="featured-author-avatar"
+              width="42"
+              height="42"
+              loading="lazy"
+            />
+            <div class="featured-author-info">
+              <span class="featured-author-name">Sayan Chowdhury</span>
+              <span class="featured-author-role">Founder & Research Lead</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="featured-artwork-col">
+          <div class="featured-media-frame">
+            {featured.data.socialImage ? (
+              <img
+                src={featured.data.socialImage}
+                alt={featured.data.title}
+                class="featured-artwork-img"
+                loading="eager"
+              />
+            ) : (
+              <div class="featured-artwork-placeholder" />
+            )}
+            <div class="artwork-gradient-overlay" />
+            <div class="artwork-badge">
+              <span class="badge-square" />
+              <span class="badge-text">Kalaris Research</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </section>
+  )}
+
+  {/* 2. Category Filter Tabs Bar (Inspired by Reference 2) */}
+  <nav class="blog-filter-bar" aria-label="Article categories">
+    <div class="filter-pills-row" role="tablist">
+      <button
+        type="button"
+        class="filter-pill is-active"
+        data-filter="all"
+        role="tab"
+        aria-selected="true"
+      >
+        All articles
+      </button>
+      {allTags.map((tag) => (
+        <button
+          type="button"
+          class="filter-pill"
+          data-filter={tag}
+          role="tab"
+          aria-selected="false"
+        >
+          {tag.replace('-', ' ')}
+        </button>
+      ))}
+    </div>
+
+    <a
+      href="/rss.xml"
+      class="blog-rss-link"
+      title="Subscribe to RSS Feed"
+      aria-label="RSS Feed"
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </nav>
+
+  {/* 3. 3-Column Article Grid (Inspired by Reference 2) */}
+  <div class="blog-posts-grid" id="blog-grid" role="region" aria-label="Articles list">
+    {gridPosts.map((post) => {
+      const primaryTag = post.data.tags[0] ?? 'research';
+      const readMinutes = estimateReadingTime(post.body ?? '');
+      return (
+        <article
+          class="blog-card group"
+          data-tags={post.data.tags.join(' ')}
+        >
+          <a href={`/blog/${post.id}`} class="blog-card-link">
+            <div class="card-thumb-frame">
+              {post.data.socialImage ? (
+                <img
+                  src={post.data.socialImage}
+                  alt={post.data.title}
+                  class="card-thumb-img"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="card-thumb-placeholder" />
+              )}
+            </div>
+
+            <div class="card-body">
+              <div class="card-meta-line">
+                <span class="card-tag-pill">{primaryTag.replace('-', ' ')}</span>
+                <time
+                  datetime={post.data.publishDate.toISOString()}
+                  class="card-date"
+                >
+                  {formatDate(post.data.publishDate)}
+                </time>
+              </div>
+
+              <h3 class="card-title">
+                {post.data.title}
+              </h3>
+
+              <p class="card-desc">
+                {post.data.description}
+              </p>
+
+              <div class="card-footer">
+                <span class="card-author">By Sayan Chowdhury</span>
+                <span class="card-read-time">{readMinutes} min read</span>
+              </div>
+            </div>
+          </a>
+        </article>
+      );
+    })}
+  </div>
+</div>
+
+<script>
+  // Interactive client-side category filtering
+  const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+  const cards = document.querySelectorAll<HTMLElement>('.blog-card');
+
+  filterButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach((b) => {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-selected', 'true');
+
+      const filter = btn.dataset.filter ?? 'all';
+
+      cards.forEach((card) => {
+        if (filter === 'all') {
+          card.style.display = '';
+        } else {
+          const tags = card.dataset.tags ?? '';
+          if (tags.includes(filter)) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+    });
+  });
+</script>

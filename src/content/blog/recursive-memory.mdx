@@ -1,0 +1,24 @@
+---
+title: In-context recursive synthesis and the limits of stateless agents
+description: Accumulating verified experimental context across generations rather than resetting state on every research cycle.
+publishDate: 2026-09-25
+tags:
+  - architecture
+  - systems
+draft: false
+socialImage: /images/content/recursive-context.jpg
+---
+
+## Why stateless agent prompting fails in complex science
+
+Standard agent architectures treat each execution as an isolated session: a context window loaded with prompts and system instructions, followed by a series of tool calls, culminating in a response. Once the turn completes, the working context evaporates.
+
+In scientific domains, this stateless model breaks down rapidly:
+
+- Negative results are lost, forcing successive agent loops to repeat identical failed experiments.
+- Contextual calibration is omitted, leading models to misinterpret subtle assay anomalies.
+- Evidence lineage is disconnected from the final reported claims.
+
+## Building recursive compounding memory
+
+Recursive synthesis structures scientific inquiry as a persistent, evolving graph. Each experimental cycle updates confidence weights, links experimental evidence to claims, and primes subsequent agent sessions with hardened context.

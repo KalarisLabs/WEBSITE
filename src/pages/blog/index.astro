@@ -1,5 +1,5 @@
 ---
-import ContentIndex from '../../components/content/ContentIndex.astro';
+import BlogCatalog from '../../components/content/BlogCatalog.astro';
 import Footer from '../../components/layout/Footer.astro';
 import Header from '../../components/layout/Header.astro';
 import Layout from '../../layouts/Layout.astro';
@@ -10,8 +10,8 @@ const entries = await getPublishedEntries('blog');
 ---
 
 <Layout
-  title="Blog"
-  description="Engineering notes and company updates from Kalaris Labs."
+  title="Blog - Technical Updates & Systems Writing"
+  description="Engineering notes and technical updates on recursive context and autonomous research systems from Kalaris Labs."
   breadcrumbs={[
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
@@ -19,12 +19,7 @@ const entries = await getPublishedEntries('blog');
 >
   <Header />
   <main id="main-content">
-    <ContentIndex
-      title="Blog"
-      description="Engineering notes and company updates from Kalaris Labs."
-      collection="blog"
-      entries={entries}
-    />
+    <BlogCatalog entries={entries as any} />
   </main>
   <Footer />
 </Layout>

@@ -18,9 +18,9 @@ interface Props {
   entry: CollectionEntry<'blog'>;
 }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 ---
 
-<ArticleLayout entry={entry} collection="blog">
+<ArticleLayout entry={entry} collection="blog" headings={headings}>
   <Content />
 </ArticleLayout>
