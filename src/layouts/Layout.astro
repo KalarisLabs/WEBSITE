@@ -1,36 +1,75 @@
 ---
 import '../styles/global.css';
 import AnalyticsConsent from '../components/integrations/AnalyticsConsent.astro';
+import StructuredData from '../components/seo/StructuredData.astro';
+import {
+  buildArticleSchema,
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+} from '../lib/seo/schema';
+import { SITE } from '../lib/seo/site';
 
 interface Props {
   title: string;
   description?: string;
   image?: string | undefined;
+  type?: 'website' | 'article';
+  publishDate?: Date;
+  updatedDate?: Date | undefined;
+  tags?: string[];
+  section?: 'Blog' | 'Research';
 }
 
 const {
   title,
-  description = 'Kalaris Labs - Building the future of technology',
-  image = '/og-image.svg',
+  description = SITE.description,
+  image = SITE.socialImagePath,
+  type = 'website',
+  publishDate,
+  updatedDate,
+  tags = [],
+  section,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pageTitle = title.includes('Kalaris Labs')
   ? title
   : `${title} | Kalaris Labs`;
+const schemas = [buildOrganizationSchema(), buildWebsiteSchema()];
+
+if (type === 'article' && publishDate && section) {
+  schemas.push(
+    buildArticleSchema({
+      title,
+      description,
+      url: canonicalURL.toString(),
+      image,
+      publishDate,
+      updatedDate,
+      tags,
+      section,
+    }),
+  );
+}
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="title" content={pageTitle} />
     <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="author" content={SITE.name} />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
@@ -45,6 +84,13 @@ const pageTitle = title.includes('Kalaris Labs')
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms.txt"
+      title="LLM content index"
+    />
 
     <link
       rel="alternate"
@@ -58,6 +104,26 @@ const pageTitle = title.includes('Kalaris Labs')
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    {
+      type === 'article' && publishDate && (
+        <>
+          <meta
+            property="article:published_time"
+            content={publishDate.toISOString()}
+          />
+          {updatedDate && (
+            <meta
+              property="article:modified_time"
+              content={updatedDate.toISOString()}
+            />
+          )}
+          {tags.map((tag) => (
+            <meta property="article:tag" content={tag} />
+          ))}
+        </>
+      )
+    }
+    <StructuredData value={schemas} />
     <title>{pageTitle}</title>
   </head>
   <body>

@@ -12,6 +12,7 @@
   "observability": {
     "enabled": true,
     "logs": { "enabled": true, "invocation_logs": true },
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 },
   },
   "vars": {
     "APP_ENV": "development",

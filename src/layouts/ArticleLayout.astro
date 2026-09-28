@@ -16,6 +16,11 @@ const { entry, collection } = Astro.props;
   title={entry.data.title}
   description={entry.data.description}
   image={entry.data.socialImage}
+  type="article"
+  publishDate={entry.data.publishDate}
+  updatedDate={entry.data.updatedDate}
+  tags={entry.data.tags}
+  section={collection === 'blog' ? 'Blog' : 'Research'}
 >
   <Header />
   <main class="container mx-auto min-h-[70vh] max-w-3xl px-4 pt-32 pb-20">

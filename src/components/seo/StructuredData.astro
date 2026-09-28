@@ -1,0 +1,11 @@
+---
+import { serializeJsonLd } from '../../lib/seo/schema';
+
+interface Props {
+  value: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { value } = Astro.props;
+---
+
+<script type="application/ld+json" set:html={serializeJsonLd(value)} />
