@@ -1,0 +1,41 @@
+---
+const careersUrl = '/company/careers';
+---
+
+<section class="careers-section" id="careers">
+  <div class="content-column">
+    <div class="section-lead-compact">
+      <span class="section-marker">| 04. Careers & Mission</span>
+    </div>
+
+    {/* Inspired by reference: Clean graphic card with corner coordinates */}
+    <div class="careers-card-wrapper">
+      <a
+        href={careersUrl}
+        class="careers-card"
+        aria-label="Visit the Kalaris Labs career section"
+      >
+        <div class="careers-card-meta top-left">x 0 y 0</div>
+        <div class="careers-card-meta bottom-right">0 selected</div>
+        <img
+          src="/images/careers-graphic.png"
+          alt="Careers at Kalaris Labs: Autonomous infrastructure for scientific research"
+          width="1729"
+          height="910"
+          class="careers-card-img"
+          loading="lazy"
+        />
+      </a>
+
+      {/* Simple Apply Box below matching the reference image */}
+      <div class="careers-apply-box">
+        <p class="careers-apply-text">
+          We're paving the path for autonomous, self-improving infrastructure for scientific discovery. We'd love to have you join us.
+        </p>
+        <a href={careersUrl} class="button-apply">
+          See open roles <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,127 @@
+---
+const companies = [
+  {
+    id: 'anthropic',
+    name: 'Anthropic',
+    logo: '/images/logos/anthropic.svg',
+    isWordmark: false,
+    width: 22,
+    height: 22,
+  },
+  {
+    id: 'openai',
+    name: 'OpenAI',
+    logo: '/images/logos/openai.svg',
+    isWordmark: false,
+    width: 22,
+    height: 22,
+  },
+  {
+    id: 'cloudflare',
+    name: 'Cloudflare',
+    logo: '/images/logos/cloudflare.svg',
+    isWordmark: false,
+    width: 26,
+    height: 18,
+  },
+  {
+    id: 'mintlify',
+    name: 'Mintlify',
+    logo: '/images/logos/mintlify.svg',
+    isWordmark: false,
+    width: 20,
+    height: 20,
+  },
+  {
+    id: 'posthog',
+    name: 'PostHog',
+    logo: '/images/logos/posthog.svg',
+    isWordmark: false,
+    width: 26,
+    height: 18,
+  },
+  {
+    id: 'e2b',
+    name: 'E2B',
+    logo: '/images/logos/e2b.svg',
+    isWordmark: true,
+    width: 82,
+    height: 24,
+  },
+  {
+    id: 'datadog',
+    name: 'Datadog',
+    logo: '/images/logos/datadog.svg',
+    isWordmark: false,
+    width: 22,
+    height: 22,
+  },
+  {
+    id: 'workos',
+    name: 'WorkOS',
+    logo: '/images/logos/workos.svg',
+    isWordmark: false,
+    width: 22,
+    height: 20,
+  },
+  {
+    id: 'grafana',
+    name: 'Grafana',
+    logo: '/images/logos/grafana.svg',
+    isWordmark: false,
+    width: 22,
+    height: 22,
+  },
+];
+---
+
+<section class="trusted-section" id="partners">
+  <div class="content-column">
+    <div class="section-lead-compact">
+      <span class="mono-eyebrow">INTEGRATIONS & ECOSYSTEM</span>
+      <h2>Trusted by teams building with frontier research infrastructure.</h2>
+      <p>
+        The research execution layer connects directly with modern AI platforms, runtime sandboxes, observability stacks, and model providers.
+      </p>
+    </div>
+
+    {/* Architectural 3x3 Logo Grid inspired by reference */}
+    <div
+      class="trusted-logo-grid"
+      role="region"
+      aria-label="Supported platforms and ecosystem partners"
+    >
+      {
+        companies.map((company) => (
+          <div class="trusted-cell" data-company={company.id}>
+            <div class="trusted-lockup">
+              {company.isWordmark ? (
+                <img
+                  src={company.logo}
+                  alt={company.name}
+                  class={`trusted-wordmark brand-${company.id}`}
+                  loading="lazy"
+                  width={company.width}
+                  height={company.height}
+                />
+              ) : (
+                <div class="trusted-combo">
+                  <img
+                    src={company.logo}
+                    alt=""
+                    class={`trusted-icon brand-${company.id}`}
+                    loading="lazy"
+                    width={company.width}
+                    height={company.height}
+                    aria-hidden="true"
+                  />
+                  <span class="trusted-label">{company.name}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

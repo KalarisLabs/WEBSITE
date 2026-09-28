@@ -10,6 +10,15 @@ interface Props {
 }
 
 const { entry, collection } = Astro.props;
+const isResearch = collection === 'research';
+const sectionName = isResearch ? 'Research' : 'Blog';
+const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${entry.id.replace(/[^a-zA-Z0-9]/g, '_')},
+  title = {${entry.data.title}},
+  author = {Chowdhury, Sayan},
+  journal = {Kalaris Labs Research Notes},
+  year = {${entry.data.publishDate.getUTCFullYear()}},
+  url = {https://kalarislabs.com/${collection}/${entry.id}}
+}`;
 ---
 
 <Layout
@@ -20,38 +29,75 @@ const { entry, collection } = Astro.props;
   publishDate={entry.data.publishDate}
   updatedDate={entry.data.updatedDate}
   tags={entry.data.tags}
-  section={collection === 'blog' ? 'Blog' : 'Research'}
+  section={sectionName}
+  authorName="Sayan Chowdhury"
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: sectionName, url: `/${collection}` },
+    { name: entry.data.title, url: `/${collection}/${entry.id}` },
+  ]}
 >
   <Header />
   <main
     id="main-content"
     class="site-container min-h-[70vh] max-w-3xl pt-32 pb-20"
   >
-    <a class="text-sm hover:underline" href={`/${collection}`}
-      >&larr; Back to {collection}</a
+    <nav aria-label="Breadcrumb" class="text-xs text-muted-foreground mb-4 flex items-center gap-1.5 font-mono">
+      <a href="/" class="hover:text-foreground">Home</a>
+      <span>/</span>
+      <a href={`/${collection}`} class="hover:text-foreground">{sectionName}</a>
+      <span>/</span>
+      <span class="text-foreground/80 truncate max-w-[280px]">{entry.data.title}</span>
+    </nav>
+    <a class="text-sm hover:underline text-blue-400 inline-block mb-2" href={`/${collection}`}
+      >&larr; Back to {sectionName}</a
     >
-    <article class="mt-8">
+    <article class="mt-4">
       <header class="border-border border-b pb-8">
-        <h1 class="text-4xl font-bold md:text-6xl">{entry.data.title}</h1>
-        <p class="text-muted-foreground mt-5 text-xl">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-xs font-mono uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">{sectionName}</span>
+          <span class="text-xs text-muted-foreground font-mono">By Sayan Chowdhury</span>
+        </div>
+        <h1 class="text-4xl font-bold md:text-5xl tracking-tight">{entry.data.title}</h1>
+        <p class="text-muted-foreground mt-4 text-lg leading-relaxed">
           {entry.data.description}
         </p>
         <time
-          class="text-muted-foreground mt-5 block text-sm"
+          class="text-muted-foreground mt-4 block text-xs font-mono"
           datetime={entry.data.publishDate.toISOString()}
         >
-          {
+          Published {
             entry.data.publishDate.toLocaleDateString('en', {
               dateStyle: 'long',
             })
           }
         </time>
       </header>
+      {
+        entry.data.socialImage && (
+          <div class="my-8 overflow-hidden rounded-xl border border-white/10 bg-[#08080a] shadow-2xl">
+            <img
+              src={entry.data.socialImage}
+              alt={entry.data.title}
+              class="w-full aspect-[21/9] object-cover"
+              loading="eager"
+            />
+          </div>
+        )
+      }
       <div
         class="prose prose-headings:text-foreground prose-p:text-foreground/85 mt-10 max-w-none"
       >
         <slot />
       </div>
+
+      {isResearch && (
+        <section class="mt-16 pt-8 border-t border-white/10" aria-labelledby="citation-heading">
+          <h2 id="citation-heading" class="text-base font-semibold text-foreground mb-2">Cite this research note</h2>
+          <p class="text-xs text-muted-foreground mb-3 font-mono">BibTeX citation for academic crawlers and generative research synthesis:</p>
+          <pre class="bg-black/60 border border-white/10 rounded-lg p-4 text-xs font-mono text-blue-300 overflow-x-auto selection:bg-blue-500/30"><code>{bibtex}</code></pre>
+        </section>
+      )}
     </article>
   </main>
   <Footer />

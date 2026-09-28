@@ -12,6 +12,10 @@ const entries = await getPublishedEntries('blog');
 <Layout
   title="Blog"
   description="Engineering notes and company updates from Kalaris Labs."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+  ]}
 >
   <Header />
   <main id="main-content">

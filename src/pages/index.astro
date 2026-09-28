@@ -3,17 +3,30 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Hero from '../components/sections/Hero.astro';
+import DesignPartners from '../components/sections/DesignPartners.astro';
+import ResearchCarousel from '../components/sections/ResearchCarousel.astro';
+import BlogCarousel from '../components/sections/BlogCarousel.astro';
+import CareersBanner from '../components/sections/CareersBanner.astro';
+import FAQ from '../components/sections/FAQ.astro';
+import { FAQS } from '../data/faqs';
+import { buildFaqSchema } from '../lib/seo/schema';
 
 export const prerender = true;
 ---
 
 <Layout
-  title="Kalaris Labs — Self-improving research infrastructure"
+  title="Kalaris Labs - Self-improving research infrastructure"
   description="Kalaris Labs builds recursive, self-improving infrastructure for scientific research."
+  extraSchemas={[buildFaqSchema(FAQS)]}
 >
   <Header />
   <main id="main-content">
     <Hero />
+    <DesignPartners />
+    <ResearchCarousel />
+    <BlogCarousel />
+    <FAQ />
+    <CareersBanner />
   </main>
   <Footer />
 </Layout>

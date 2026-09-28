@@ -1,58 +1,78 @@
 ---
-import { company } from '../../data/company';
 ---
 
 <section class="hero-section" id="mission">
   <div class="content-column">
-    <a class="announcement" href="/manifesto"
-      ><span></span> Introducing Kalaris Labs <b>Read the manifesto ↗</b></a
-    >
-    <h1>{company.oneLiner}</h1>
-    <p class="hero-lede">{company.description}</p>
-    <div class="hero-actions">
-      <a class="button button-primary" href="/research"
-        >Explore the research <span aria-hidden="true">→</span></a
-      ><a class="button button-secondary" href="mailto:contact@kalarislabs.com"
-        >Talk to us ↗</a
-      >
+    {/* 1. Supermemory-style Headline & One-liner */}
+    <div class="hero-header-super">
+      <span class="mono-eyebrow">RESEARCH INFRASTRUCTURE</span>
+      <h1 class="hero-title">
+        Recursive, self-improving infrastructure for scientific research.
+      </h1>
     </div>
 
-    <div
-      class="system-visual"
-      aria-label="A diagram showing research knowledge compounding through recursive cycles"
-    >
-      <div class="visual-grid"></div>
-      <div class="visual-node node-a">Question</div><div
-        class="visual-node node-b"
-      >
-        Context
-      </div><div class="visual-node node-c">Experiment</div><div
-        class="visual-node node-d"
-      >
-        Evidence
-      </div><div class="visual-node node-e">Learning</div>
-      <svg viewBox="0 0 800 280" role="presentation"
-        ><path d="M92 140 C210 24 350 38 406 128 S610 240 716 132"></path><path
-          d="M92 140 C240 258 316 240 406 128 S598 20 716 132"></path></svg
-      >
-      <p>Every research cycle should leave the next one stronger.</p>
+    {/* 2. Original User-Provided Image Component */}
+    <div class="hero-banner-container tick-box">
+      <img
+        src="/images/kalaris-hero-banner.png"
+        alt="Kalaris Labs: Self-improving research infrastructure"
+        width="1024"
+        height="173"
+        class="hero-banner-image"
+        loading="eager"
+      />
     </div>
 
-    <div class="home-brief">
-      <article id="what-we-do">
-        <h2>Less setup. More discovery.</h2><p>
-          We are building an agent-powered infrastructure layer that can learn
-          from workflows, repositories, papers, and iterations while researchers
-          remain in control of the work.
-        </p><a href="/manifesto">Why we are building it ↗</a>
-      </article>
-      <article id="who-it-is-for">
-        <h2>For everyone doing research.</h2><p>
-          Professors, students, independent researchers, interdisciplinary
-          teams, and anyone following a serious question should have access to
-          operational leverage.
-        </p><a href="/research">See what we are learning ↗</a>
-      </article>
+    {/* 3. Manifesto Message with Blue Source Backlinks */}
+    <div class="manifesto-stream">
+      <p>
+        The path to accelerated scientific discovery is to scale{' '}
+        <a href="/manifesto" class="source-backlink">
+          in-context recursive learning<span class="backlink-icon" aria-hidden="true">↗</span>
+        </a>{' '}
+        that works with any model, any experimental harness, and across all research
+        disciplines. As scientific models proliferate and the frontier becomes{' '}
+        <a href="/research/recursive-context" class="source-backlink">
+          multi-domain<span class="backlink-icon" aria-hidden="true">↗</span>
+        </a>, experimental context and operational tooling should be separated from fragile
+        one-off scripts and compound continuously.
+      </p>
+
+      <p class="manifesto-callout">
+        <a href="/manifesto" class="source-backlink callout-link">
+          Operational overhead is no longer a constraint.<span class="backlink-icon" aria-hidden="true">↗</span>
+        </a>
+      </p>
+
+      <p>
+        Pre-training and post-training, scaling on data and compute, will
+        continue to push foundational models' capabilities, but will not enable
+        them to learn, adapt, and improve experiments in real time.
+      </p>
+
+      <p>
+        We build all the hard infrastructure parts of a scalable research
+        engine, with{' '}
+        <a href="/research/edge-delivery" class="source-backlink">
+          dense, interconnected, compounding learnings<span class="backlink-icon" aria-hidden="true">↗</span>
+        </a>, and an understanding of scientific lineage.
+      </p>
+
+      <p>
+        Our architecture helps research teams continuously improve by extracting
+        and synthesizing context from papers, codebases, and experimental
+        iterations: injecting verified context into autonomous agents in real
+        time.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="/manifesto">
+          Read the manifesto <span aria-hidden="true">→</span>
+        </a>
+        <a class="button button-secondary" href="/research">
+          Explore research <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>

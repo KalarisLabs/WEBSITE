@@ -6,8 +6,13 @@ export const SITE = {
   email: 'contact@kalarislabs.com',
   language: 'en',
   logoPath: '/kalaris-logo-geometric.png',
-  socialImagePath: '/og-image.svg',
+  socialImagePath: '/og-image.png',
   docsUrl: 'https://docs.kalarislabs.com',
+  twitterHandle: '@kalarislabs',
+  founderTwitter: '@sayanchowdhuryai',
+  linkedinUrl: 'https://www.linkedin.com/company/kalarislabs',
+  founderLinkedin: 'https://www.linkedin.com/in/sayanchowdhuryai',
+  githubUrl: 'https://github.com/kalaris-labs',
 } as const;
 
 export const CONTENT_SIGNAL =

@@ -8,6 +8,11 @@ export const prerender = true;
 <Layout
   title="News"
   description="Company announcements and milestones from Kalaris Labs."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Company', url: '/company' },
+    { name: 'News', url: '/company/news' },
+  ]}
 >
   <Header />
   <main id="main-content">
@@ -26,7 +31,7 @@ export const prerender = true;
         <p class="eyebrow">Status / 2026</p><div class="prose-large">
           <h2>The archive starts here.</h2><p>
             There are no public company announcements yet. When there is
-            something worth saying, it will appear here—dated, attributable, and
+            something worth saying, it will appear here: dated, attributable, and
             without manufactured momentum.
           </p><div class="hero-actions">
             <a class="button button-ghost" href="/blog">Read the blog →</a>

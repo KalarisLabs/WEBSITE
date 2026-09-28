@@ -10,6 +10,10 @@ export const prerender = true;
 <Layout
   title="Company"
   description="About Kalaris Labs and its mission to make scientific research infrastructure available to everyone."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Company', url: '/company' },
+  ]}
 >
   <Header />
   <main id="main-content">

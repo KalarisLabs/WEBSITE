@@ -1,11 +1,15 @@
 ---
 import '../styles/global.css';
 import AnalyticsConsent from '../components/integrations/AnalyticsConsent.astro';
+import AnnouncementBar from '../components/layout/AnnouncementBar.astro';
 import StructuredData from '../components/seo/StructuredData.astro';
 import {
   buildArticleSchema,
+  buildBreadcrumbSchema,
   buildOrganizationSchema,
   buildWebsiteSchema,
+  type BreadcrumbItem,
+  type JsonLd,
 } from '../lib/seo/schema';
 import { SITE } from '../lib/seo/site';
 
@@ -18,6 +22,10 @@ interface Props {
   updatedDate?: Date | undefined;
   tags?: string[];
   section?: 'Blog' | 'Research';
+  authorName?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  extraSchemas?: JsonLd[];
+  noindex?: boolean;
 }
 
 const {
@@ -29,13 +37,25 @@ const {
   updatedDate,
   tags = [],
   section,
+  authorName,
+  breadcrumbs = [],
+  extraSchemas = [],
+  noindex = false,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pageTitle = title.includes('Kalaris Labs')
   ? title
   : `${title} | Kalaris Labs`;
-const schemas = [buildOrganizationSchema(), buildWebsiteSchema()];
+const schemas: JsonLd[] = [buildOrganizationSchema(), buildWebsiteSchema()];
+
+if (breadcrumbs.length > 0) {
+  schemas.push(buildBreadcrumbSchema(breadcrumbs));
+}
+
+if (extraSchemas.length > 0) {
+  schemas.push(...extraSchemas);
+}
 
 if (type === 'article' && publishDate && section) {
   schemas.push(
@@ -48,6 +68,7 @@ if (type === 'article' && publishDate && section) {
       updatedDate,
       tags,
       section,
+      authorName,
     }),
   );
 }
@@ -61,15 +82,21 @@ if (type === 'article' && publishDate && section) {
     <meta name="description" content={description} />
     <meta
       name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      content={noindex
+        ? 'noindex, follow'
+        : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
-    <meta name="author" content={SITE.name} />
+    <meta name="author" content={authorName ?? SITE.name} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08080a" />
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph / Facebook -->
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
@@ -78,12 +105,14 @@ if (type === 'article' && publishDate && section) {
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content={SITE.twitterHandle} />
+    <meta property="twitter:creator" content={SITE.founderTwitter} />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={pageTitle} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.site)} />
 
-    <!-- Canonical URL -->
+    <!-- Canonical URL & Alternate Discovery -->
     <link rel="canonical" href={canonicalURL} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link
@@ -92,7 +121,12 @@ if (type === 'article' && publishDate && section) {
       href="/llms.txt"
       title="LLM content index"
     />
-
+    <link
+      rel="alternate"
+      type="text/markdown"
+      href="/llms-full.txt"
+      title="Full LLM Context"
+    />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -124,12 +158,67 @@ if (type === 'article' && publishDate && section) {
         </>
       )
     }
+    {
+      type === 'article' && section === 'Research' && (
+        <>
+          <meta name="citation_title" content={title} />
+          <meta name="citation_author" content={authorName ?? 'Sayan Chowdhury'} />
+          {publishDate && (
+            <meta
+              name="citation_publication_date"
+              content={publishDate.toISOString().split('T')[0]}
+            />
+          )}
+          <meta
+            name="citation_journal_title"
+            content="Kalaris Labs Research Notes"
+          />
+          <meta name="citation_language" content="en" />
+        </>
+      )
+    }
     <StructuredData value={schemas} />
     <title>{pageTitle}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
+    <AnnouncementBar />
     <slot />
     <AnalyticsConsent />
+
+    <script>
+      import Lenis from 'lenis';
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          orientation: 'vertical',
+          gestureOrientation: 'vertical',
+          smoothWheel: true,
+          wheelMultiplier: 1.0,
+          touchMultiplier: 1.8,
+        });
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (href && href !== '#' && href.startsWith('#')) {
+              const target = document.querySelector(href);
+              if (target) {
+                e.preventDefault();
+                lenis.scrollTo(target as HTMLElement, { offset: -24 });
+              }
+            }
+          });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -1,0 +1,107 @@
+---
+import { getPublishedEntries, entryPath } from '../../lib/content';
+
+const entries = await getPublishedEntries('research');
+
+function formatDate(date: Date) {
+  const d = new Date(date);
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  const yy = String(d.getFullYear()).slice(-2);
+  return `${mm}.${dd}.${yy}`;
+}
+---
+
+<section class="publications-section" id="research">
+  <div class="content-column">
+    <div class="carousel-header">
+      <div class="carousel-title-group">
+        <span class="section-marker">| 02. Research</span>
+        <h2>Publications & System Notes</h2>
+      </div>
+
+      <div class="carousel-controls">
+        <a href="/research" class="carousel-all-link">All research →</a>
+        <div class="carousel-buttons">
+          <button
+            type="button"
+            class="carousel-btn prev-btn"
+            aria-label="Scroll research left"
+            data-carousel-prev="research-track"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            class="carousel-btn next-btn"
+            aria-label="Scroll research right"
+            data-carousel-next="research-track"
+          >
+            ›
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="carousel-track"
+      id="research-track"
+      role="region"
+      aria-label="Research publications carousel"
+    >
+      {
+        entries.map((entry) => {
+          const imageSrc =
+            entry.data.socialImage ?? '/images/content/edge-delivery.jpg';
+          return (
+            <article class="landscape-card">
+              <a
+                href={entryPath('research', entry)}
+                class="landscape-card-link"
+              >
+                <div class="card-visual-frame">
+                  <img
+                    src={imageSrc}
+                    alt={entry.data.title}
+                    loading="lazy"
+                    width="640"
+                    height="360"
+                  />
+                </div>
+                <div class="card-details">
+                  <h3 class="card-title">{entry.data.title}</h3>
+                  <time
+                    datetime={entry.data.publishDate.toISOString()}
+                    class="card-date"
+                  >
+                    {formatDate(entry.data.publishDate)}
+                  </time>
+                </div>
+              </a>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupCarousel(trackId: string) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+
+    const prevBtn = document.querySelector(`[data-carousel-prev="${trackId}"]`);
+    const nextBtn = document.querySelector(`[data-carousel-next="${trackId}"]`);
+
+    prevBtn?.addEventListener('click', () => {
+      track.scrollBy({ left: -340, behavior: 'smooth' });
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      track.scrollBy({ left: 340, behavior: 'smooth' });
+    });
+  }
+
+  setupCarousel('research-track');
+</script>

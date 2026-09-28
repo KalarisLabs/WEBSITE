@@ -8,7 +8,7 @@ export const company = {
     {
       number: '01',
       title: 'Research should compound',
-      body: 'Infrastructure should learn from workflows, repositories, papers, and every iteration—not reset at the start of each project.',
+      body: 'Infrastructure should learn from workflows, repositories, papers, and every iteration: not reset at the start of each project.',
     },
     {
       number: '02',

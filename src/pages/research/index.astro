@@ -1,26 +1,132 @@
 ---
-import ContentIndex from '../../components/content/ContentIndex.astro';
 import Footer from '../../components/layout/Footer.astro';
 import Header from '../../components/layout/Header.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getPublishedEntries } from '../../lib/content';
+import { getPublishedEntries, entryPath } from '../../lib/content';
 
 export const prerender = true;
 const entries = await getPublishedEntries('research');
+const flagshipEntry =
+  entries.find((e) => e.id === 'skill-doctor') ?? entries[0];
 ---
 
 <Layout
   title="Research"
-  description="Research notes on software, systems, and emerging technology."
+  description="System notes, capability diagnostics, and empirical architectures for compounding scientific discovery."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Research', url: '/research' },
+  ]}
 >
   <Header />
   <main id="main-content">
-    <ContentIndex
-      title="Research"
-      description="Research notes on software, systems, and emerging technology."
-      collection="research"
-      entries={entries}
-    />
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Kalaris Labs / Research</p>
+        <div>
+          <h1>Autonomous Research Infrastructure</h1>
+          <p class="page-lede">
+            System notes, capability diagnostics, and empirical architectures for compounding scientific discovery.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    {/* Featured Flagship Research: Skill Doctor Banner Embed */}
+    {
+      flagshipEntry && (
+        <section class="flagship-research-section">
+          <div class="site-container">
+            <div class="flagship-card tick-box">
+              <a
+                href={entryPath('research', flagshipEntry)}
+                class="flagship-image-link"
+                aria-label={`Read ${flagshipEntry.data.title}`}
+              >
+                <div class="flagship-image-frame">
+                  <img
+                    src={flagshipEntry.data.socialImage ?? '/skill-doctor-banner.webp'}
+                    alt={flagshipEntry.data.title}
+                    width="2520"
+                    height="1080"
+                    class="flagship-banner-img"
+                    loading="eager"
+                  />
+                  <div class="flagship-badge">
+                    <span class="pulse-indicator" aria-hidden="true"></span>
+                    <span>FLAGSHIP RESEARCH // PUBLICATION</span>
+                  </div>
+                </div>
+              </a>
+
+              <div class="flagship-info-row">
+                <div class="flagship-info-text">
+                  <span class="mono-eyebrow">BENCHMARK & SYSTEM NOTE</span>
+                  <h2 class="flagship-title">
+                    <a href={entryPath('research', flagshipEntry)}>
+                      {flagshipEntry.data.title}
+                    </a>
+                  </h2>
+                  <p class="flagship-desc">{flagshipEntry.data.description}</p>
+                  <div class="research-tag-list">
+                    {flagshipEntry.data.tags.map((tag) => (
+                      <span class="research-tag">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                <div class="flagship-action">
+                  <a
+                    href={entryPath('research', flagshipEntry)}
+                    class="button button-primary"
+                  >
+                    Read paper <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    {/* All Publications Archive */}
+    <section class="editorial-section section-rule">
+      <div class="site-container">
+        <p class="eyebrow">
+          All Publications / {String(entries.length).padStart(2, '0')}
+        </p>
+        <div class="content-list">
+          {
+            entries.map((entry, index) => (
+              <article class="content-row">
+                <p class="mono-number">{String(index + 1).padStart(2, '0')}</p>
+                <div>
+                  <p class="content-meta">
+                    <time datetime={entry.data.publishDate.toISOString()}>
+                      {entry.data.publishDate.toLocaleDateString('en', {
+                        dateStyle: 'long',
+                      })}
+                    </time>{' '}
+                    / {entry.data.tags.join(' · ')}
+                  </p>
+                  <h2>
+                    <a href={entryPath('research', entry)}>{entry.data.title}</a>
+                  </h2>
+                  <p>{entry.data.description}</p>
+                </div>
+                <a
+                  class="content-arrow"
+                  href={entryPath('research', entry)}
+                  aria-label={`Read ${entry.data.title}`}
+                >
+                  →
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
   </main>
   <Footer />
 </Layout>

@@ -3,6 +3,7 @@ import cultureSource from '../../culture.md?raw';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from '../layouts/Layout.astro';
+import { buildFounderPersonSchema } from '../lib/seo/schema';
 
 export const prerender = true;
 const cultureParagraphs = cultureSource.trim().split(/\r?\n\r?\n/);
@@ -12,6 +13,11 @@ const [cultureTitle, ...cultureBody] = cultureParagraphs;
 <Layout
   title="Our Team"
   description="The people and culture behind Kalaris Labs."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Team', url: '/team' },
+  ]}
+  extraSchemas={[buildFounderPersonSchema()]}
 >
   <Header />
   <main id="main-content" class="team-page">
@@ -50,7 +56,7 @@ const [cultureTitle, ...cultureBody] = cultureParagraphs;
           <aside class="founder-fact">
             <span>Fun fact</span><p>
               He describes himself as an ADHD builder and entrepreneur at
-              heart—architecture before wrappers.
+              heart: architecture before wrappers.
             </p>
           </aside>
         </article>

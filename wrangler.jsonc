@@ -11,13 +11,19 @@
   },
   "observability": {
     "enabled": true,
-    "logs": { "enabled": true, "invocation_logs": true },
-    "traces": { "enabled": true, "head_sampling_rate": 0.01 },
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.01,
+    },
   },
   "vars": {
     "APP_ENV": "development",
-    "CONTACT_TO_EMAIL": "contact@kalarislabs.com",
-    "CONTACT_FROM_EMAIL": "Kalaris Labs <contact@kalarislabs.com>",
+    "CONTACT_TO_EMAIL": "hello@kalarislabs.com",
+    "CONTACT_FROM_EMAIL": "Kalaris Labs <hello@kalarislabs.com>",
   },
   "env": {
     "staging": {
@@ -33,8 +39,14 @@
       "name": "kalaris-labs-website",
       "workers_dev": false,
       "routes": [
-        { "pattern": "kalarislabs.com", "custom_domain": true },
-        { "pattern": "www.kalarislabs.com", "custom_domain": true },
+        {
+          "pattern": "kalarislabs.com",
+          "custom_domain": true,
+        },
+        {
+          "pattern": "www.kalarislabs.com",
+          "custom_domain": true,
+        },
       ],
       "vars": {
         "APP_ENV": "production",
