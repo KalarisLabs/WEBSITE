@@ -10,6 +10,10 @@ export default defineConfig({
   adapter: undefined,
   vite: {
     ...workerConfig.vite,
+    // Production builds use a different Vite config and rewrite the shared
+    // node_modules/.vite cache, which leaves a running dev server serving
+    // stale dependency hashes ("Outdated Optimize Dep"). Keep dev separate.
+    cacheDir: 'node_modules/.vite-dev',
     optimizeDeps: {
       // The fellowship badge is lazy-loaded, so Vite would only discover its
       // dependencies after startup and serve them as "Outdated Optimize Dep"
