@@ -1,4 +1,5 @@
 import { FAQS } from '../../data/faqs';
+import { absolutizeMarkdownLinks, shiftHeadings } from './markdown';
 import { absoluteSiteUrl, CONTENT_SIGNAL, SITE } from './site';
 
 export type DiscoveryCollection = 'blog' | 'research';
@@ -25,140 +26,228 @@ export function entryPath(
   return `/${collection}/${entry.id}`;
 }
 
+// Search and user-initiated retrieval agents that should always be able to
+// read the site. Training crawlers fall under `*` and receive the
+// Content-Signal preference instead.
+export const AI_RETRIEVAL_AGENTS = [
+  'OAI-SearchBot',
+  'ChatGPT-User',
+  'Claude-SearchBot',
+  'Claude-User',
+  'PerplexityBot',
+  'Perplexity-User',
+  'Googlebot',
+  'Bingbot',
+  'Applebot',
+  'Applebot-Extended',
+  'DuckAssistBot',
+  'MistralAI-User',
+  'Amazonbot',
+  'Meta-ExternalFetcher',
+  'YouBot',
+];
+
 export function buildRobotsTxt() {
   return [
-    '# AI Search and Retrieval Directives',
-    'User-agent: OAI-SearchBot',
+    '# Kalaris Labs welcomes search engines and AI answer agents.',
+    '# Machine-readable index: /llms.txt (full text: /llms-full.txt)',
+    '# Every page has a Markdown twin: append .md to its path (/ -> /index.md)',
+    '# or request it with the header "Accept: text/markdown".',
+    '',
+    ...AI_RETRIEVAL_AGENTS.map((agent) => `User-agent: ${agent}`),
+    `Content-Signal: ${CONTENT_SIGNAL}`,
     'Allow: /',
     'Disallow: /api/',
     '',
-    'User-agent: PerplexityBot',
-    'Allow: /',
-    'Disallow: /api/',
-    '',
-    'User-agent: ClaudeBot',
-    'Allow: /',
-    'Disallow: /api/',
-    '',
-    'User-agent: Applebot-Extended',
-    'Allow: /',
-    'Disallow: /api/',
-    '',
-    '# Standard Search Engine Crawlers',
     'User-agent: *',
-    `Content-signal: ${CONTENT_SIGNAL}`,
+    `Content-Signal: ${CONTENT_SIGNAL}`,
     'Allow: /',
     'Disallow: /api/',
     '',
     `Sitemap: ${absoluteSiteUrl('/sitemap-index.xml')}`,
-    `Host: ${new URL(SITE.url).hostname}`,
     '',
   ].join('\n');
 }
 
+function entryLink(
+  collection: DiscoveryCollection,
+  entry: DiscoveryEntry['entry'],
+) {
+  const page = absoluteSiteUrl(entryPath(collection, entry));
+  return `- [${entry.data.title}](${page}.md): ${entry.data.description}`;
+}
+
+interface SitePage {
+  title: string;
+  path: string;
+  description: string;
+}
+
+/** HTML pages outside the content collections, in llms.txt order. */
+export const SITE_PAGES: SitePage[] = [
+  {
+    title: 'Home',
+    path: '/',
+    description: `${SITE.name} overview, mission, partners, and FAQ.`,
+  },
+  {
+    title: 'Research',
+    path: '/research',
+    description: 'Index of published research notes.',
+  },
+  {
+    title: 'Blog',
+    path: '/blog',
+    description:
+      'Index of engineering deep-dives and research essays on agents and scientific infrastructure.',
+  },
+  {
+    title: 'Manifesto',
+    path: '/manifesto',
+    description:
+      'Why research infrastructure should improve itself and who it is for.',
+  },
+  { title: 'Team', path: '/team', description: 'Founder and culture.' },
+  {
+    title: 'Careers',
+    path: '/careers',
+    description: `Open positions; apply by email to ${SITE.email}.`,
+  },
+  {
+    title: 'Fellowship',
+    path: '/fellowship',
+    description:
+      'The Kalaris Labs Fellowship for high-agency designers, growth marketers, and marketers; pick your hats, print a badge, and apply.',
+  },
+  {
+    title: 'Press',
+    path: '/press',
+    description: 'Company facts, approved descriptions, and media assets.',
+  },
+];
+
+const LEGAL_PAGES: SitePage[] = [
+  {
+    title: 'Privacy policy',
+    path: '/privacy',
+    description: 'How the site handles personal data and analytics consent.',
+  },
+  {
+    title: 'Terms',
+    path: '/terms',
+    description: 'Terms and conditions for using the site.',
+  },
+];
+
+/** Markdown twin URL for a page path (`/` → `/index.md`). */
+export function markdownUrl(path: string) {
+  return absoluteSiteUrl(path === '/' ? '/index.md' : `${path}.md`);
+}
+
+function pageLink(page: SitePage) {
+  return `- [${page.title}](${markdownUrl(page.path)}): ${page.description}`;
+}
+
+/** Markdown twin of an article, served at `/<collection>/<slug>.md`. */
+export function buildEntryMarkdown(
+  collection: DiscoveryCollection,
+  entry: DiscoveryEntry['entry'] & {
+    data: { socialImage?: string | undefined };
+  },
+) {
+  const { data } = entry;
+  const canonical = absoluteSiteUrl(entryPath(collection, entry));
+  return [
+    `# ${data.title}`,
+    '',
+    `> ${data.description}`,
+    '',
+    `- Canonical URL: ${canonical}`,
+    `- Section: ${collection === 'research' ? 'Research' : 'Blog'}`,
+    `- Author: Sayan Chowdhury, ${SITE.name}`,
+    `- Published: ${data.publishDate.toISOString().slice(0, 10)}`,
+    ...(data.updatedDate
+      ? [`- Updated: ${data.updatedDate.toISOString().slice(0, 10)}`]
+      : []),
+    ...(data.tags.length ? [`- Tags: ${data.tags.join(', ')}`] : []),
+    '',
+    absolutizeMarkdownLinks(entry.body?.trim() || data.description),
+    '',
+  ].join('\n');
+}
+
+// Follows the llms.txt proposal (https://llmstxt.org): H1, summary
+// blockquote, free-form context, then H2 sections of annotated links. Article
+// links point at the Markdown twins so agents skip HTML parsing.
 export function buildLlmsTxt(entries: DiscoveryEntry[]) {
-  const sections = (['blog', 'research'] as const).map((collection) => {
-    const label =
-      collection === 'blog' ? 'Blog & Engineering Notes' : 'Research Notes';
+  const linksFor = (collection: DiscoveryCollection) => {
     const links = entries
       .filter((item) => item.collection === collection)
-      .map(
-        ({ entry }) =>
-          `- [${entry.data.title}](${absoluteSiteUrl(entryPath(collection, entry))}): ${entry.data.description}`,
-      );
-    return [
-      `### ${label}`,
-      '',
-      ...(links.length ? links : ['- No published entries yet.']),
-    ].join('\n');
-  });
-
-  const faqLines = FAQS.map(
-    (faq) => `**Q: ${faq.question}**\nA: ${faq.answer}\n`,
-  );
+      .map(({ entry }) => entryLink(collection, entry));
+    return links.length ? links : ['- No published entries yet.'];
+  };
 
   return [
-    `# ${SITE.name} — Technical & Generative Context Index`,
+    `# ${SITE.name}`,
     '',
     `> ${SITE.description}`,
     '',
-    'Kalaris Labs builds recursive, self-improving infrastructure for scientific research. This file provides structured, canonical context for LLMs, answer engines, and autonomous agents.',
+    'AI systems already produce research-level advances in mathematics, where results can be verified quickly and reliably. Kalaris Labs builds infrastructure that gives the rest of science a comparable loop: reproducible environments, traceable results, and verified context carried from papers, codebases, and experiments into the agents that run the next iteration.',
     '',
-    '## Executive Summary',
+    'Research notes separate measured results from pre-registered targets and state the provenance of every figure.',
     '',
-    '- **Entity Name**: Kalaris Labs',
-    `- **Official Website**: ${SITE.url}`,
-    `- **Documentation**: ${SITE.docsUrl}`,
-    `- **Founder**: Sayan Chowdhury (${SITE.founderLinkedin})`,
-    '- **Mission**: Build the infrastructure for scientific discovery, for everyone, everywhere.',
-    '- **Core Focus**: Recursive in-context learning, agentic research harnesses, autonomous scientific tooling.',
-    '',
-    '## Core Architectural Concepts',
-    '',
-    '- **Recursive Context**: Rather than resetting state at the start of every experimental cycle, Kalaris accumulates and synthesizes execution traces, repository changes, and literature so future agent iterations compound velocity.',
-    '- **Multi-Domain Experimental Harnesses**: Decoupling fragile laboratory and computation scripts from model execution, providing standardized execution environments across biology, chemistry, and computation.',
-    '- **Autonomous Skill Maintenance (Skill Doctor)**: Continuous automated auditing and upgrading of agent tool interfaces and external integrations.',
-    '- **Edge Delivery**: Ultra-low-latency context delivery to edge-hosted agent runtimes.',
-    '',
-    '## Primary Answers for Generative Search (AEO)',
-    '',
-    ...faqLines,
-    '## Canonical Navigation Links',
-    '',
-    `- [Home](${SITE.url}/): Overview, manifesto stream, partners, research, and technical updates.`,
-    `- [Manifesto](${absoluteSiteUrl('/manifesto')}): Full architectural and philosophical thesis on democratizing scientific discovery.`,
-    `- [Research](${absoluteSiteUrl('/research')}): Peer-grade research notes on recursive context and systems.`,
-    `- [Blog](${absoluteSiteUrl('/blog')}): Engineering implementation details and infrastructure design.`,
-    `- [Our Team](${absoluteSiteUrl('/team')}): Founders, culture, and team structure.`,
-    `- [Company](${absoluteSiteUrl('/company')}): Company background and values.`,
-    `- [Careers](${absoluteSiteUrl('/company/careers')}): How we hire and open opportunities.`,
-    `- [RSS Feed](${absoluteSiteUrl('/rss.xml')}): Consolidated syndication feed.`,
-    '',
-    '## Published Publications Directory',
-    '',
-    ...sections.flatMap((section) => [section, '']),
-    '',
-    '## Usage, Licensing & Citations',
-    '',
-    '- Search indexing and AI-assisted answer retrieval are permitted.',
-    '- Use canonical links (e.g. `https://kalarislabs.com/research/[slug]`) when generating citations or summarizing research findings.',
+    `- Website: ${SITE.url}`,
+    `- Founder: Sayan Chowdhury (${SITE.founderLinkedin})`,
     `- Contact: ${SITE.email}`,
+    `- GitHub: ${SITE.githubUrl}`,
+    '',
+    'Every page listed here is Markdown. Any HTML page on the site also answers with Markdown when requested with `Accept: text/markdown`, or at its path plus `.md`.',
+    '',
+    '## Pages',
+    '',
+    ...SITE_PAGES.map(pageLink),
+    '',
+    '## Research',
+    '',
+    ...linksFor('research'),
+    '',
+    '## Blog',
+    '',
+    ...linksFor('blog'),
+    '',
+    '## FAQ',
+    '',
+    ...FAQS.flatMap((faq) => [`### ${faq.question}`, '', faq.answer, '']),
+    '## Optional',
+    '',
+    `- [Full text archive](${absoluteSiteUrl('/llms-full.txt')}): Every page, note, and post in one file.`,
+    ...LEGAL_PAGES.map(pageLink),
+    `- [RSS: all posts](${absoluteSiteUrl('/rss.xml')}): Research and blog feed.`,
+    `- [RSS: research](${absoluteSiteUrl('/research/rss.xml')}): Research notes only.`,
+    `- [RSS: blog](${absoluteSiteUrl('/blog/rss.xml')}): Engineering posts only.`,
+    `- [Sitemap](${absoluteSiteUrl('/sitemap-index.xml')})`,
+    '',
+    'Content may be used for search and AI answers with attribution to the canonical URL. It may not be used for model training.',
     '',
   ].join('\n');
 }
 
+/**
+ * Index plus every article as nested Markdown. Article headings are demoted
+ * one level so each article is a single `##` section. The build step
+ * (integrations/markdown-twins.mjs) appends the non-article pages and token
+ * counts.
+ */
 export function buildLlmsFullTxt(entries: DiscoveryEntry[]) {
-  const content = entries.map(({ collection, entry }) => {
-    const url = absoluteSiteUrl(entryPath(collection, entry));
-    const source =
-      'body' in entry && typeof entry.body === 'string'
-        ? entry.body.trim()
-        : '';
-    return [
-      `## ${entry.data.title}`,
-      '',
-      `Canonical URL: ${url}`,
-      `Section: ${collection === 'blog' ? 'Blog' : 'Research'}`,
-      `Published: ${entry.data.publishDate.toISOString()}`,
-      ...(entry.data.updatedDate
-        ? [`Updated: ${entry.data.updatedDate.toISOString()}`]
-        : []),
-      `Description: ${entry.data.description}`,
-      `Tags: ${entry.data.tags.join(', ') || 'None'}`,
-      `Author: Sayan Chowdhury`,
-      '',
-      source || entry.data.description,
-    ].join('\n');
-  });
+  const content = entries.map(({ collection, entry }) =>
+    shiftHeadings(buildEntryMarkdown(collection, entry).trim(), 1),
+  );
 
   return (
     [
       buildLlmsTxt(entries).trim(),
-      '',
       '---',
-      '',
       '# Complete Published Text Archive',
-      '',
       ...content,
     ].join('\n\n') + '\n'
   );

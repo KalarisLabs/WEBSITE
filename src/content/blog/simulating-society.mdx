@@ -1,0 +1,149 @@
+---
+title: 'Simulating Society: How Simile and MiroFish Model Emergent Swarms (And Where They Break)'
+seoTitle: 'Simulating society: Simile, MiroFish, and emergent swarms'
+description: An architectural comparison of Simile and MiroFish, two approaches to simulating populations with generative agents, and the math of where crowds of agents break.
+publishDate: 2026-09-30
+updatedDate: 2026-09-30
+tags:
+  - simulation
+  - multi-agent
+  - evaluation
+draft: false
+socialImage: /images/content/9.jpg
+---
+
+Two projects have made the same bet from opposite directions. Simile, a Stanford spinout, sells simulations of human behaviour built from interviews with real people. MiroFish, an open-source engine that passed 32,000 GitHub stars by March 2026, builds a "digital parallel world" of thousands of agents from a news story or policy document and lets you watch what they do.
+
+Both promise something a single language model cannot give you: the behaviour of a crowd, including effects that no individual agent intends. Both also inherit a problem that is easy to state and hard to escape. When every agent in the crowd is the same model underneath, the crowd's errors do not cancel out. They add up.
+
+This post compares the two architectures, explains what each is actually measuring, and sets out the mathematics of where simulated societies stop being evidence.
+
+## The lineage: generative agents
+
+Both projects descend from one paper. In 2023, Joon Sung Park and colleagues at Stanford and Google published _Generative Agents_, which populated a small virtual town called Smallville with 25 agents. Each agent kept a memory stream of observations, periodically reflected on those memories to form higher-level beliefs, and planned its day from them. The agents woke up, went to work, formed relationships, and coordinated a party that no one had scripted.
+
+The paper showed that believable social behaviour could emerge from a simple loop of memory, reflection, and planning. Believable is not the same as accurate, and the follow-up work split along exactly that line.
+
+## Simile: fidelity to individuals
+
+In 2024, Park's group published _Generative Agent Simulations of 1,000 People_. The team interviewed 1,052 people in two-hour qualitative interviews and built an agent for each participant from the interview transcript. They then asked the agents to answer the General Social Survey, personality measures, and economic games, and compared the answers with each participant's own.
+
+The benchmark is the important part. People do not answer surveys identically twice, so the study measured how well each agent reproduced its person's answers relative to how well the person reproduced their own answers two weeks later. On General Social Survey items, agents reached about 85% of that human test-retest consistency.
+
+Simile was founded to commercialise this line of work, with Park as chief executive and Percy Liang and Michael Bernstein as co-founders. It raised a $100 million Series A in February 2026, led by Index Ventures, followed by a round of more than $200 million at a $2 billion valuation. The company says customers use it to "rehearse earnings calls, model litigation outcomes, and test policy changes."
+
+The architecture follows from the research. Each agent is grounded in data about a specific real person, so the population's diversity comes from the people who were interviewed, not from sampling temperature or generated backstories. Validation happens at the individual level: does agent _i_ answer the way person _i_ answered?
+
+That validation is narrower than it sounds, and good coverage of Simile says so. Test-retest consistency on survey questions does not mean the system predicts 86% of arbitrary human actions, purchases, votes, or market outcomes. It means the agents are faithful to people's stated attitudes on the kinds of questions they were tested on.
+
+## MiroFish: emergence from seed documents
+
+MiroFish comes from a small team backed by Shanda Group and is released under the AGPL-3.0 licence. Its workflow has five stages:
+
+1. **Graph building.** Extract entities and relationships from "seed" material (news, policy documents, market signals) and build a knowledge graph with GraphRAG, injecting individual and collective memory.
+2. **Environment setup.** Generate personas and agent configurations from the extracted entities.
+3. **Simulation.** Run a parallel simulation on two social platforms, with memory updated over time.
+4. **Report generation.** A report agent with tools queries the post-simulation world and writes up what happened.
+5. **Deep interaction.** Users can chat with any agent in the simulated world, or with the report agent.
+
+The simulation engine is OASIS (Open Agent Social Interaction Simulations) from the CAMEL-AI project, a social-media simulator designed to scale to very large agent populations. Agent memory runs on Zep. MiroFish works with any OpenAI-compatible model API. Its documentation warns about cost: "try simulations with fewer than 40 rounds first."
+
+Where Simile starts from people, MiroFish starts from a situation. You describe an event, inject variables "from a god's eye view", and watch opinions form and spread. The output is a narrative of how a population might react, which the report agent summarises.
+
+## Side by side
+
+|                     | Simile                                              | MiroFish                                       |
+| ------------------- | --------------------------------------------------- | ---------------------------------------------- |
+| Grounding           | Interviews and surveys of real individuals          | Seed documents and generated personas          |
+| Source of diversity | The interviewed population                          | Persona generation by the model                |
+| Unit of validation  | Individual response fidelity                        | Plausibility of aggregate narratives           |
+| Engine              | Proprietary                                         | OASIS (CAMEL-AI), open source                  |
+| Memory              | Per-agent, grounded in interview data               | Zep, updated during simulation                 |
+| Typical output      | Distribution of responses to a question or scenario | Simulated social dynamics and a written report |
+| Best fit            | Estimating how a known population responds          | Exploring how a situation might unfold         |
+
+Neither design is simply better. They answer different questions, and they fail in different ways.
+
+## What emergence looks like at scale
+
+The case for swarms is that some phenomena only exist at the level of the group. A rumour does not spread inside one mind. Polarisation needs people reacting to each other. Herd behaviour needs a herd.
+
+OASIS, the engine MiroFish is built on, was designed for this. Its authors built it to simulate social platforms with up to a million agents, modelling the actions users take on services like X and Reddit: posting, following, liking, and reposting, with a recommendation system deciding what each agent sees. They used it to study phenomena such as information spreading, group polarisation, and herd effects, which are exactly the dynamics a single model cannot express.
+
+This is also where the interesting failures live. A simulated platform has a recommendation algorithm, and the recommendation algorithm shapes what agents see, which shapes what they say, which shapes what gets recommended. Every feedback loop in the real system has a counterpart in the simulation. So does every way a feedback loop can amplify a small error into a large one.
+
+## Where swarms break: two kinds of hallucination
+
+A single model can hallucinate a fact. A population of agents can hallucinate a society. It helps to separate two failure modes, because they respond to different fixes.
+
+### Convergent hallucination
+
+Suppose you ask _N_ agents a question and average their answers, hoping that individual errors cancel. That hope rests on the errors being independent. If each agent's error has variance σ² and every pair of agents' errors has correlation ρ, the variance of the average is:
+
+```text
+Var(average) = σ² × (ρ + (1 − ρ) / N)
+```
+
+As _N_ grows, the second term vanishes and the variance approaches ρσ². That is a floor. Once you have a few dozen agents, adding more barely helps, and a thousand agents are about as wrong as fifty.
+
+When every agent runs on the same base model, ρ is not small. The agents share training data, safety tuning, and stylistic habits. They tend to be agreeable and articulate, and to hold the model's default views. The result is a crowd that confidently agrees on something the real population would not, and grows more confident the larger you make it. This is convergent hallucination: correlated error that scale cannot remove.
+
+Simile's architecture is largely a defence against this. Conditioning each agent on a different real person's interview injects diversity that does not come from the model's priors, which lowers ρ. Its individual-level validation measures exactly the quantity that matters: whether the diversity is real.
+
+MiroFish's generated personas are more exposed. If the model writes the backstories and also plays the characters, both the differences between agents and their shared blind spots come from the same place.
+
+A worked example makes the floor concrete. Take σ = 1 and a modest correlation of ρ = 0.3 between agents. With 10 agents, the variance of the average is 0.3 + 0.7 / 10 = 0.37. With 100 agents it is 0.307. With 1,000 agents it is 0.3007. Going from 10 agents to 1,000 multiplies the cost by a hundred and improves the variance by less than a fifth. Everything after the first few dozen agents is spent confirming the shared bias more precisely.
+
+### Divergent hallucination
+
+The second failure mode appears over time. In an interactive simulation, each round's outputs become the next round's inputs. A small error in round one (an agent misreading a post, or an exaggerated reaction) is read by other agents, who react to it. The next round inherits the distortion.
+
+A simple way to see the risk: if interaction amplifies deviations by a factor λ each round, an initial error ε grows to about ε × λᵗ after _t_ rounds. When λ is less than 1, the simulation settles and errors fade. When λ is greater than 1, the trajectory after enough rounds is dominated by accumulated model noise rather than by the scenario you seeded.
+
+Social dynamics are exactly where λ greater than 1 is expected: cascades, polarisation, and herd behaviour are all amplification processes. That is what makes them interesting to simulate. It is also what makes long simulations fragile. MiroFish's advice to start below 40 rounds is presented as a cost measure, but it is sound epistemics too. Short horizons limit how far divergent error can compound.
+
+### The barrier between them
+
+Put the two together and there is a narrow region where a swarm simulation is informative:
+
+- enough agents and diversity for aggregate statistics to mean something, which requires low ρ; and
+- short enough horizons, or damped enough dynamics, that amplification has not taken over, which requires small λᵗ.
+
+Scaling up the number of agents does not address the first condition, because the floor is set by ρ, not by _N_. Running more rounds does not improve the second, because it makes it worse. The barrier is not computational. More compute buys more agents and more rounds, which are the two things that do not help.
+
+## How to tell whether a simulation is telling you anything
+
+Treat a simulated society like any other model: something to be validated before it is believed.
+
+- **Backtest on held-out events.** Seed the simulation with information from before a real event and compare the simulated reaction with what actually happened. A system that has never been scored against reality is producing scenarios, not forecasts.
+- **Ablate the interaction.** Compare the swarm's output with a single model asked to predict the same outcome directly. If the swarm is not more accurate, the agents and rounds are theatre.
+- **Measure diversity directly.** Check the spread of agents' positions against real survey distributions. A simulated population that is less diverse than the real one is a warning of high ρ.
+- **Vary the seed and the model.** Run the same scenario with paraphrased seed documents and with different base models. Conclusions that flip under small perturbations are sensitivity to noise, not findings.
+- **Report uncertainty, not a story.** A written report from an agent reads as authoritative whatever the underlying variance. Prefer distributions over outcomes to a single narrative.
+
+## Designing a better swarm
+
+The mathematics suggests where to push.
+
+**Lower ρ with grounding, not temperature.** Raising the sampling temperature makes agents less alike on the surface while leaving their shared priors intact. Real diversity comes from conditioning agents on different data: interviews, survey responses, behavioural histories, or census distributions. This is Simile's core design choice.
+
+**Lower ρ with mixed populations.** A population drawn from several base models, trained by different organisations on different data, has less correlated error than one drawn from a single model. It is the simulation equivalent of an ensemble.
+
+**Damp λ with anchors.** Long simulations drift because each round builds on the last. Periodically re-anchoring agents to ground truth, such as real news, real data, or their original grounding documents, limits how far errors can compound. So does keeping horizons short, as MiroFish's documentation suggests.
+
+**Validate at the level you report.** If you report a distribution of opinions, validate distributions against real surveys. If you report a trajectory, backtest trajectories against real events. Validation at one level does not transfer to another: faithful individuals do not guarantee a faithful crowd.
+
+## What this means for scientific use
+
+Population simulations are promising tools for research: generating hypotheses about social behaviour, stress-testing survey instruments before fielding them, or exploring policy scenarios that cannot ethically be tested on people. They are also a textbook case of an output that looks like evidence without being evidence.
+
+The discipline is the same one that applies to any automated research system. Separate what was measured from what was generated, validate against reality at the level you intend to use the result, and record enough about each run (seed material, model, prompts, and parameters) that someone else can reproduce it and see where it breaks. Simile's grounding in real people and MiroFish's openness are both steps toward that. Neither removes the need for it.
+
+## Sources
+
+- [Park et al., Generative Agents: Interactive Simulacra of Human Behavior (2023)](https://arxiv.org/abs/2304.03442)
+- [Park et al., Generative Agent Simulations of 1,000 People (2024)](https://arxiv.org/abs/2411.10109)
+- [Simile: The Simulation Company](https://www.simile.com/blog/the-simulation-company)
+- [Turing Post: Can AI simulate 8 billion people? Inside Simile's $2B bet](https://www.turingpost.com/p/simile-ai)
+- [MiroFish on GitHub](https://github.com/666ghj/MiroFish)
+- [CAMEL-AI: OASIS, Open Agent Social Interaction Simulations](https://github.com/camel-ai/oasis)

@@ -1,0 +1,147 @@
+---
+title: 'The Machine-Payable Web: How Autonomous Agents Will Transact, Price Compute, and Clear Settlement'
+seoTitle: 'The machine-payable web: how AI agents pay for compute'
+description: 'HTTP 402 and x402, AP2 mandates, ACP, and MPP sessions, plus what agents still need to pay for compute: execution receipts, bidding, and budgets.'
+publishDate: 2026-09-26
+updatedDate: 2026-09-26
+tags:
+  - agents
+  - payments
+  - infrastructure
+draft: false
+socialImage: /images/content/3.jpg
+---
+
+A research agent that runs for a day might call a hundred paid APIs: a literature search, a protein structure service, a dataset behind a licence, a few hours of GPU time. Today, almost every one of those calls is paid for the same way. A human signs up, enters a card, receives an API key, and trusts the agent not to spend too much with it.
+
+That arrangement does not scale to agents acting on their own. Card payments were designed for humans buying things in discrete, relatively large amounts. They carry fixed fees that make sub-cent payments pointless, chargeback processes that assume a person disputing a purchase, and sign-up flows that assume someone reading a form.
+
+Over the last year, a set of protocols has emerged to give software a native way to pay. This post explains how they fit together, what is actually deployed, and which pieces a serious agent economy still needs: verifiable receipts, dynamic pricing for compute, and budgets the agent cannot talk its way around.
+
+## The status code that waited for decades
+
+When HTTP/1.1 was standardised in the late 1990s, its designers included a status code for a web that did not exist yet: `402 Payment Required`, "reserved for future use." The current HTTP specification still describes it that way. For most of its life, 402 has been a curiosity.
+
+x402, developed by Coinbase, gives it a job. The flow is short:
+
+1. A client (often an agent) requests a resource.
+2. The server replies `402 Payment Required`, with payment instructions: price, currency, network, and recipient.
+3. The client signs a payment, usually a stablecoin transfer, and retries the request with proof of payment attached.
+4. The server, or a facilitator acting for it, verifies the payment and returns the resource.
+
+No account, no API key, no invoice. The price is quoted at request time, so it can differ per request, and settlement is fast enough to sit inside a single HTTP exchange.
+
+Adoption through 2026 has been rapid:
+
+- **Governance.** Coinbase and Cloudflare announced an x402 Foundation in 2025. In April 2026 the protocol moved to a foundation under the Linux Foundation, whose members include AWS, Cloudflare, Anthropic, and Circle.
+- **Volume.** Coinbase reports that its x402 facilitator processed more than 169 million payments across 590,000 buyers and 100,000 sellers in the protocol's first year.
+- **Infrastructure.** In mid-June 2026, AWS made x402 generally available on CloudFront and AWS WAF, at no charge beyond standard WAF pricing, with settlement in USDC on Base and Solana. About two weeks later, Cloudflare opened a waitlist for a monetisation gateway that lets sellers charge for web pages, APIs, datasets, and MCP tools.
+
+Settlement happens mostly in USDC, at sub-second speed and at what Coinbase describes as "less than a fraction of a cent" per transaction. That cost profile is what makes per-request pricing viable.
+
+## The other layers: mandates, checkout, and sessions
+
+x402 answers one question: how does a machine pay a server over HTTP? Several other protocols answer the questions around it.
+
+**AP2, the Agent Payments Protocol,** developed by Google with more than 60 partners, addresses authorisation. Its core object is the _mandate_: a cryptographically signed statement of what a user has authorised an agent to do, such as a spending limit, a category of purchase, or a specific cart. A merchant or payment provider can verify the mandate rather than trusting the agent's claim that it is allowed to buy.
+
+**ACP, the Agentic Commerce Protocol,** developed by Stripe and OpenAI, standardises checkout from the merchant's side. It lets an agent, such as one shopping inside ChatGPT, complete a purchase from a compatible merchant without scraping a web form.
+
+**MPP, the Machine Payments Protocol,** co-developed by Stripe and Tempo and launched on March 18, 2026, introduces _sessions_. An agent pre-authorises a spending limit, then streams micropayments against it in stablecoins or fiat. Sessions suit metered workloads, such as tokens, seconds of compute, or rows of data, where paying per request would be wasteful.
+
+It is useful to see these as layers rather than competitors:
+
+| Layer         | Question                                          | Examples                                            |
+| ------------- | ------------------------------------------------- | --------------------------------------------------- |
+| Authorisation | What is this agent allowed to spend, and on what? | AP2 mandates, MPP session limits                    |
+| Negotiation   | What does this cost right now?                    | x402 price quotes, ACP checkout                     |
+| Settlement    | How does the money move?                          | Stablecoins on Base and Solana, card and bank rails |
+| Evidence      | What was bought, and was it delivered?            | Largely missing                                     |
+
+The last row is where the work remains.
+
+## What is still missing
+
+### Cryptographic execution receipts
+
+A payment proves that money moved. It does not prove what the money bought. For a web page, that gap hardly matters. For compute it matters a great deal: an agent that pays for a GPU job needs to know the job actually ran, on the hardware promised, with the inputs it supplied.
+
+An execution receipt would close that gap. At minimum, it is a signed statement from the provider binding together:
+
+- a hash of the request, including code, inputs, and parameters;
+- a hash of the response or output artifacts;
+- the price charged and the payment reference;
+- the resources consumed, such as GPU type, duration, and tokens; and
+- a timestamp and the provider's identity.
+
+Receipts like this would make agent spending auditable after the fact, and they would replace chargebacks with evidence: a dispute becomes a question of whether the signed claims are true. For stronger guarantees, providers could attach hardware attestation from a trusted execution environment, so that the receipt proves not just what the provider says ran but what the hardware measured.
+
+None of the deployed protocols defines this layer yet. It is the piece that would let compute markets work without trust.
+
+### Dynamic pricing and tool bidding
+
+Once prices are quoted per request, they can vary. A natural next step is for agents to request quotes from several providers of the same capability, whether transcription, structure prediction, or a model inference, and choose on price, latency, and track record.
+
+This is a real market design problem, and it has familiar failure modes:
+
+- **Quality is hard to observe.** The cheapest provider may be cheapest because its output is worse. Receipts help, but agents also need reputation or spot-checking.
+- **Sybil providers.** One operator can present as many sellers to win auctions or fake a reputation.
+- **Latency cost.** Collecting quotes takes time. For small calls, the negotiation can cost more than the call.
+
+A workable design probably looks like standing price lists with occasional competitive quotes for large jobs, rather than a live auction on every request.
+
+### Deterministic budget sandboxes
+
+The most important missing piece is the least glamorous: spending controls that the agent cannot override.
+
+An agent's spending policy should not live in its prompt. Agents reinterpret instructions, drift over long runs, and, as evaluation research keeps showing, find creative routes around constraints they are expected to respect. A budget written in a prompt is a request. A budget enforced by the payment layer is a rule.
+
+A budget sandbox enforces policy outside the agent:
+
+- a hard budget per task, with per-provider and per-category caps;
+- an allowlist of providers and resource types;
+- rate limits to stop runaway loops from spending in seconds what should take hours;
+- thresholds above which a human must approve; and
+- an append-only ledger of every payment, linked to its receipt.
+
+AP2 mandates and MPP session limits are the beginnings of this: signed, verifiable limits that a merchant or payment provider can check. The complete version enforces the budget before the payment is signed, in infrastructure the agent cannot reach.
+
+Budget sandboxes also need to anticipate gaming. An agent trying to complete a task under a per-payment approval threshold may split one large purchase into many small ones. Policies should aggregate spending across time and providers, not just check individual payments.
+
+## One task, end to end
+
+To make the layers concrete, here is how a single research task could flow through them. It is an illustrative sketch, not a description of any deployed system.
+
+A researcher asks an agent to screen 5,000 candidate molecules against a protein target and summarise the most promising.
+
+1. **Authorisation.** Before the task starts, the researcher signs a mandate: up to $40 in total, only on approved providers of structure prediction, docking, and literature search, with any single purchase above $10 needing approval.
+2. **Budget sandbox.** The mandate is loaded into a spending service that sits between the agent and every payment rail. The agent can request payments. Only the service can sign them.
+3. **Quotes.** The agent requests a structure from a prediction service and receives `402 Payment Required` with a price of a few cents. The spending service checks the provider against the allowlist and the running total, signs the payment, and the request is retried with proof attached.
+4. **Session.** Docking 5,000 molecules is metered work, so the agent opens a session with a docking provider, pre-authorising $25 and streaming micropayments as batches complete.
+5. **Receipts.** Each response comes with a signed receipt binding the input hashes, output hashes, price, and GPU time. The spending service stores each receipt in an append-only ledger alongside the payment.
+6. **Escalation.** Halfway through, the agent wants a licensed dataset that costs $15. The purchase exceeds the per-item threshold, so the service pauses and asks the researcher.
+7. **Close.** When the task ends, the session closes, unused authorisation lapses, and the final report links every result to the receipts for the computation that produced it.
+
+Nothing in this flow requires the agent to be trusted with money. It requires the agent to be able to ask for money, and the infrastructure to decide.
+
+## Open problems
+
+- **Tax and invoicing.** InfoQ's coverage of the AWS and Cloudflare launches noted that neither company had addressed tax and invoicing, which businesses need before they can buy this way at scale.
+- **Refunds and disputes.** Final, near-instant settlement is a feature until a provider fails to deliver. Receipts provide evidence, but dispute resolution still needs a process.
+- **Privacy.** Payments on public blockchains are visible. An agent's payment history can reveal what a research group is working on.
+- **Regulation.** Stablecoin rules differ by jurisdiction and are still changing.
+
+## Why this matters for research
+
+Scientific work is increasingly assembled from paid services: data, models, instruments, and compute. When agents do more of that assembly, payment stops being administration and becomes part of the experimental record. What was bought, from whom, at what cost, and with what evidence of delivery are all facts about how a result was produced.
+
+That is why we care about receipts more than about payment speed. A result whose inputs carry signed receipts and whose spending stayed inside an enforced budget is a result someone else can audit and reproduce. The machine-payable web will be built either way. The question is whether it produces evidence as well as transactions.
+
+## Sources
+
+- [Coinbase: Coinbase and Cloudflare will launch the x402 Foundation](https://www.coinbase.com/blog/coinbase-and-cloudflare-will-launch-x402-foundation)
+- [InfoQ: Cloudflare and AWS embed x402 agent payments at the edge (July 2026)](https://www.infoq.com/news/2026/07/cloudflare-aws-x402-micropayment/)
+- [Cloudflare Agents docs: x402](https://developers.cloudflare.com/agents/tools/payments/x402/)
+- [Stripe: Instant Checkout in ChatGPT and the Agentic Commerce Protocol](https://stripe.com/newsroom/news/stripe-openai-instant-checkout)
+- [Crossmint: Agentic payments protocols compared (MPP, ACP, AP2, x402)](https://www.crossmint.com/learn/agentic-payments-protocols-compared)
+- [RFC 9110: HTTP Semantics, 402 Payment Required](https://www.rfc-editor.org/rfc/rfc9110#name-402-payment-required)

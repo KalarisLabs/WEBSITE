@@ -1,5 +1,9 @@
 ---
-import { getPublishedEntries, entryPath } from '../../lib/content';
+import {
+  coverTransitionStyle,
+  entryPath,
+  getPublishedEntries,
+} from '../../lib/content';
 
 const entries = await getPublishedEntries('blog');
 
@@ -51,12 +55,14 @@ function formatDate(date: Date) {
     >
       {
         entries.map((entry) => {
-          const imageSrc =
-            entry.data.socialImage ?? '/images/content/workers-foundation.jpg';
+          const imageSrc = entry.data.socialImage ?? '/images/content/1.jpg';
           return (
             <article class="landscape-card">
               <a href={entryPath('blog', entry)} class="landscape-card-link">
-                <div class="card-visual-frame">
+                <div
+                  class="card-visual-frame"
+                  style={coverTransitionStyle('blog', entry)}
+                >
                   <img
                     src={imageSrc}
                     alt={entry.data.title}

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from 'react';
 
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 // useLayoutEffect is a no-op (with a console warning) during SSR — fall back
 // to useEffect there since there's no window/matchMedia to read anyway.
 const useIsomorphicLayoutEffect =
-  typeof window === "undefined" ? useEffect : useLayoutEffect;
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /**
  * Tracks the OS-level Reduced Motion setting, live. Unlike a one-time
@@ -34,9 +34,9 @@ export function usePrefersReducedMotion(): boolean {
       setPrefersReducedMotion(media.matches);
     };
     update();
-    media.addEventListener("change", update);
+    media.addEventListener('change', update);
     return () => {
-      media.removeEventListener("change", update);
+      media.removeEventListener('change', update);
     };
   }, []);
 

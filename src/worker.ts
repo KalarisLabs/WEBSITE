@@ -1,5 +1,5 @@
 import astro from '@astrojs/cloudflare/entrypoints/server';
-import { applyDiscoveryHeaders } from './lib/seo/headers';
+import { applyDiscoveryHeaders, negotiateMarkdown } from './lib/seo/headers';
 
 export default {
   async fetch(request: Request, workerEnv: Env, context: ExecutionContext) {
@@ -10,6 +10,9 @@ export default {
     }
 
     if (workerEnv.ASSETS) {
+      const markdown = await negotiateMarkdown(request, workerEnv.ASSETS);
+      if (markdown) return markdown;
+
       const assetResponse = await workerEnv.ASSETS.fetch(request);
       if (assetResponse.status !== 404) {
         return applyDiscoveryHeaders(request, assetResponse);

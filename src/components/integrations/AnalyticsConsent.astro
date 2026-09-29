@@ -7,8 +7,11 @@
     Analytics preferences
   </h2>
   <p class="text-muted-foreground mt-2 text-sm">
-    Help us improve Kalaris Labs with privacy-conscious product analytics.
-    Nothing is loaded until you choose Allow.
+    Help us improve Kalaris Labs with privacy-conscious product analytics and
+    masked error replays. Nothing is loaded until you choose Allow.
+    <a href="/privacy" class="text-foreground underline underline-offset-2"
+      >Privacy policy</a
+    >
   </p>
   <div class="mt-4 flex gap-3">
     <button
@@ -35,6 +38,10 @@
     setAnalyticsConsent,
     trackEvent,
   } from '../../lib/integrations/posthog';
+  import {
+    disableErrorReplay,
+    enableErrorReplay,
+  } from '../../lib/integrations/sentry-replay';
 
   const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
 
@@ -43,7 +50,10 @@
   }
 
   const consent = getAnalyticsConsent();
-  if (consent === 'allow') initializePostHog();
+  if (consent === 'allow') {
+    void initializePostHog();
+    void enableErrorReplay();
+  }
   if (consent === null) showPreferences();
 
   document
@@ -60,7 +70,12 @@
         if (choice !== 'allow' && choice !== 'deny') return;
         setAnalyticsConsent(choice);
         banner.classList.add('hidden');
-        if (choice === 'allow') trackEvent('analytics consent granted');
+        if (choice === 'allow') {
+          void enableErrorReplay();
+          trackEvent('analytics consent granted');
+        } else {
+          void disableErrorReplay();
+        }
       });
     });
 

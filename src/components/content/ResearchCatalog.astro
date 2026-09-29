@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { coverTransitionStyle } from '../../lib/content';
+import '../react-bits/BorderGlow.css';
+import { cardGlowStyle } from './card-glow';
 
 interface Props {
   entries: CollectionEntry<'research'>[];
+  /** Page H1 and the sentence under it. */
+  heading: string;
+  intro: string;
 }
 
-const { entries } = Astro.props;
+const { entries, heading, intro } = Astro.props;
 
 // Sort entries by publish date descending
 const sorted = [...entries].sort(
@@ -35,6 +41,10 @@ function estimateReadingTime(text: string) {
 ---
 
 <div class="blog-catalog-container">
+  <header class="catalog-header">
+    <h1>{heading}</h1>
+    <p>{intro}</p>
+  </header>
   {/* 1. Featured Research Hero Card (Inspired by Reference 2) */}
   {
     featured && (
@@ -42,7 +52,12 @@ function estimateReadingTime(text: string) {
         class="blog-featured-section"
         aria-label="Featured research publication"
       >
-        <a href={`/research/${featured.id}`} class="blog-featured-card group">
+        <a
+          href={`/research/${featured.id}`}
+          class="blog-featured-card border-glow-card group"
+          style={cardGlowStyle}
+        >
+          <span class="edge-light" aria-hidden="true" />
           <div class="featured-content-col">
             <div class="featured-meta-line">
               <time datetime={featured.data.publishDate.toISOString()}>
@@ -74,7 +89,10 @@ function estimateReadingTime(text: string) {
             </div>
           </div>
 
-          <div class="featured-artwork-col">
+          <div
+            class="featured-artwork-col"
+            style={coverTransitionStyle('research', featured)}
+          >
             <div class="featured-media-frame">
               {featured.data.socialImage ? (
                 <img
@@ -98,115 +116,128 @@ function estimateReadingTime(text: string) {
     )
   }
 
-  {/* 2. Category Filter Tabs Bar (Inspired by Reference 2) */}
-  <nav class="blog-filter-bar" aria-label="Research categories">
-    <div class="filter-pills-row" role="tablist">
-      <button
-        type="button"
-        class="filter-pill is-active"
-        data-filter="all"
-        role="tab"
-        aria-selected="true"
-      >
-        All research
-      </button>
-      {
-        allTags.map((tag) => (
-          <button
-            type="button"
-            class="filter-pill"
-            data-filter={tag}
-            role="tab"
-            aria-selected="false"
+  {/* Filters and the grid only earn their space with more than one note. */}
+  {
+    gridPosts.length > 0 && (
+      <>
+        <nav class="blog-filter-bar" aria-label="Research categories">
+          <div class="filter-pills-row" role="tablist">
+            <button
+              type="button"
+              class="filter-pill is-active"
+              data-filter="all"
+              role="tab"
+              aria-selected="true"
+            >
+              All research
+            </button>
+            {allTags.map((tag) => (
+              <button
+                type="button"
+                class="filter-pill"
+                data-filter={tag}
+                role="tab"
+                aria-selected="false"
+              >
+                {tag.replace('-', ' ')}
+              </button>
+            ))}
+          </div>
+
+          <a
+            href="/rss.xml"
+            class="blog-rss-link"
+            title="Subscribe to RSS Feed"
+            aria-label="RSS Feed"
           >
-            {tag.replace('-', ' ')}
-          </button>
-        ))
-      }
-    </div>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 11a9 9 0 0 1 9 9" />
+              <path d="M4 4a16 16 0 0 1 16 16" />
+              <circle cx="5" cy="19" r="1" />
+            </svg>
+          </a>
+        </nav>
 
-    <a
-      href="/rss.xml"
-      class="blog-rss-link"
-      title="Subscribe to RSS Feed"
-      aria-label="RSS Feed"
-    >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M4 11a9 9 0 0 1 9 9"></path>
-        <path d="M4 4a16 16 0 0 1 16 16"></path>
-        <circle cx="5" cy="19" r="1"></circle>
-      </svg>
-    </a>
-  </nav>
-
-  {/* 3. 3-Column Research Grid (Inspired by Reference 2) */}
-  <div
-    class="blog-posts-grid"
-    id="research-grid"
-    role="region"
-    aria-label="Research publications list"
-  >
-    {
-      gridPosts.map((post) => {
-        const primaryTag = post.data.tags[0] ?? 'research';
-        const readMinutes = estimateReadingTime(post.body ?? '');
-        return (
-          <article class="blog-card group" data-tags={post.data.tags.join(' ')}>
-            <a href={`/research/${post.id}`} class="blog-card-link">
-              <div class="card-thumb-frame">
-                {post.data.socialImage ? (
-                  <img
-                    src={post.data.socialImage}
-                    alt={post.data.title}
-                    class="card-thumb-img"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div class="card-thumb-placeholder" />
-                )}
-              </div>
-
-              <div class="card-body">
-                <div class="card-meta-line">
-                  <span class="card-tag-pill">
-                    {primaryTag.replace('-', ' ')}
-                  </span>
-                  <time
-                    datetime={post.data.publishDate.toISOString()}
-                    class="card-date"
+        <div
+          class="blog-posts-grid"
+          id="research-grid"
+          role="region"
+          aria-label="Research publications list"
+        >
+          {gridPosts.map((post) => {
+            const primaryTag = post.data.tags[0] ?? 'research';
+            const readMinutes = estimateReadingTime(post.body ?? '');
+            return (
+              <article
+                class="blog-card border-glow-card group"
+                style={cardGlowStyle}
+                data-tags={post.data.tags.join(' ')}
+              >
+                <span class="edge-light" aria-hidden="true" />
+                <a href={`/research/${post.id}`} class="blog-card-link">
+                  <div
+                    class="card-thumb-frame"
+                    style={coverTransitionStyle('research', post)}
                   >
-                    {formatDate(post.data.publishDate)}
-                  </time>
-                </div>
+                    {post.data.socialImage ? (
+                      <img
+                        src={post.data.socialImage}
+                        alt={post.data.title}
+                        class="card-thumb-img"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div class="card-thumb-placeholder" />
+                    )}
+                  </div>
 
-                <h3 class="card-title">{post.data.title}</h3>
+                  <div class="card-body">
+                    <div class="card-meta-line">
+                      <span class="card-tag-pill">
+                        {primaryTag.replace('-', ' ')}
+                      </span>
+                      <time
+                        datetime={post.data.publishDate.toISOString()}
+                        class="card-date"
+                      >
+                        {formatDate(post.data.publishDate)}
+                      </time>
+                    </div>
 
-                <p class="card-desc">{post.data.description}</p>
+                    <h3 class="card-title">{post.data.title}</h3>
 
-                <div class="card-footer">
-                  <span class="card-author">By Sayan Chowdhury</span>
-                  <span class="card-read-time">{readMinutes} min read</span>
-                </div>
-              </div>
-            </a>
-          </article>
-        );
-      })
-    }
-  </div>
+                    <p class="card-desc">{post.data.description}</p>
+
+                    <div class="card-footer">
+                      <span class="card-author">By Sayan Chowdhury</span>
+                      <span class="card-read-time">{readMinutes} min read</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </>
+    )
+  }
 </div>
 
 <script>
+  import { initBorderGlow } from '../react-bits/border-glow';
+
+  initBorderGlow();
+
   // Interactive client-side category filtering
   const filterButtons =
     document.querySelectorAll<HTMLButtonElement>('.filter-pill');

@@ -1,0 +1,575 @@
+'use client';
+
+import React, { useState, type KeyboardEvent } from 'react';
+import { MotionConfig, motion } from 'motion/react';
+import { cn } from '@/lib/utils/cn';
+
+const themes = {
+  black: {
+    backFill: 'black',
+    backInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.37 0',
+    backInsetShadow: 'inset 0 0 6px 2px rgba(255,255,255,0.37)',
+    flapFill: '#292929',
+    flapFillOpacity: 0.25,
+    flapStroke: '#979797',
+    flapInsetColor: '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0',
+    cardFill: '#F1F1F1',
+    cardStroke: '#E0E0E0',
+    cardLineFill: '#D4D4D4',
+    cardInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0',
+  },
+  white: {
+    backFill: '#ffffff',
+    backInsetColor: '0 0 0 0 0.7 0 0 0 0 0.7 0 0 0 0 0.7 0 0 0 0.25 0',
+    backInsetShadow: 'inset 0 0 6px 2px rgba(178,178,178,0.25)',
+    flapFill: '#f5f5f5',
+    flapFillOpacity: 0.85,
+    flapStroke: '#d4d4d4',
+    flapInsetColor: '0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 0 0.6 0 0 0 0.15 0',
+    cardFill: '#262626',
+    cardStroke: '#404040',
+    cardLineFill: '#737373',
+    cardInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.15 0',
+  },
+  blue: {
+    backFill: '#50B1FD',
+    backInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.35 0',
+    backInsetShadow: 'inset 0 0 6px 2px rgba(255,255,255,0.35)',
+    flapFill: '#3a9ae8',
+    flapFillOpacity: 0.45,
+    flapStroke: '#7ec8ff',
+    flapInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.12 0',
+    cardFill: '#F1F1F1',
+    cardStroke: '#E0E0E0',
+    cardLineFill: '#D4D4D4',
+    cardInsetColor: '0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0',
+  },
+} as const;
+
+const sizeScales = {
+  sm: 0.65,
+  md: 1,
+  lg: 1.35,
+} as const;
+
+/** Content printed on a card; without items the cards show placeholder lines. */
+type FolderItem = { title: string; body: string };
+
+type FolderComponentProps = Omit<React.ComponentProps<'div'>, 'color'> & {
+  color?: 'black' | 'white' | 'blue';
+  size?: 'sm' | 'md' | 'lg';
+  /** Up to four cards; they fan out of the folder when it opens. */
+  items?: readonly FolderItem[];
+  /** Accessible name for the folder control. */
+  label?: string;
+  /** Multiplier on how far open cards fan out horizontally. */
+  spread?: number;
+  onOpenChange?: (open: boolean) => void;
+};
+
+// Fan positions, left to right, keyed by card count. Closed cards peek out.
+const FANS = {
+  3: [
+    {
+      open: { x: -65, y: -170, rotate: -14 },
+      rest: { x: -40, y: -22, rotate: -5 },
+    },
+    { open: { x: 0, y: -180, rotate: -3 }, rest: { x: 3, y: -20, rotate: 2 } },
+    {
+      open: { x: 70, y: -160, rotate: 18 },
+      rest: { x: 40, y: -10, rotate: 10 },
+    },
+  ],
+  4: [
+    {
+      open: { x: -252, y: -150, rotate: -10 },
+      rest: { x: -54, y: -18, rotate: -8 },
+    },
+    {
+      open: { x: -84, y: -178, rotate: -3 },
+      rest: { x: -18, y: -24, rotate: -2 },
+    },
+    { open: { x: 84, y: -178, rotate: 3 }, rest: { x: 18, y: -22, rotate: 3 } },
+    {
+      open: { x: 252, y: -150, rotate: 10 },
+      rest: { x: 54, y: -14, rotate: 9 },
+    },
+  ],
+} as const;
+
+const BASE_WIDTH = 321;
+const BASE_HEIGHT = 270;
+
+const FLAP_PATH =
+  'M0 25C0 11.1929 11.1929 0 25 0H136.084C143.044 0 149.689 2.90139 154.42 8.00608L178.08 33.5343C182.811 38.639 189.456 41.5404 196.416 41.5404H296C309.807 41.5404 321 52.7333 321 66.5404V216C321 229.807 309.807 241 296 241H25C11.1929 241 0 229.807 0 216V25Z';
+
+const FolderComponent = ({
+  color = 'black',
+  size = 'md',
+  items,
+  label = 'Open folder',
+  spread = 1,
+  onOpenChange,
+  className,
+  ...props
+}: FolderComponentProps) => {
+  const theme = themes[color] ?? themes.black;
+  const scale = sizeScales[size];
+  const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const cards = items?.slice(0, 4);
+  const fan = FANS[cards && cards.length === 4 ? 4 : 3];
+
+  function toggle() {
+    const next = !isOpen;
+    setIsOpen(next);
+    onOpenChange?.(next);
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggle();
+    }
+  }
+
+  return (
+    <MotionConfig reducedMotion="user">
+      <div
+        data-slot="folder"
+        className={cn(
+          'relative flex h-full w-full items-center justify-center',
+          className,
+        )}
+        {...props}
+      >
+        <div
+          role="button"
+          tabIndex={0}
+          aria-expanded={isOpen}
+          aria-label={label}
+          data-slot="folder-control"
+          className="relative cursor-pointer select-none"
+          style={{
+            width: BASE_WIDTH * scale,
+            height: BASE_HEIGHT * scale,
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onClick={toggle}
+          onKeyDown={onKeyDown}
+        >
+          <div
+            className="absolute top-1/2 left-1/2"
+            style={{
+              width: BASE_WIDTH,
+              height: BASE_HEIGHT,
+              transform: `translate(-50%, -50%) scale(${scale})`,
+              perspective: 800 * scale,
+            }}
+          >
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div
+                style={{
+                  width: BASE_WIDTH,
+                  height: BASE_HEIGHT,
+                  borderRadius: 25,
+                  backgroundColor: theme.backFill,
+                  boxShadow: theme.backInsetShadow,
+                }}
+              />
+            </div>
+
+            <div className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+              {fan.map((pose, index) => {
+                const item = cards?.[index];
+                if (cards && !item) return null;
+                const lift = isHovered && !isOpen ? -14 - index * 4 : 0;
+                return (
+                  <motion.div
+                    key={index}
+                    className="absolute"
+                    initial={false}
+                    animate={{
+                      x: isOpen ? pose.open.x * spread : pose.rest.x,
+                      y: isOpen ? pose.open.y : pose.rest.y + lift,
+                      rotate: isOpen ? pose.open.rotate : pose.rest.rotate,
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 120,
+                      damping: 13,
+                      delay: isOpen ? index * 0.05 : 0,
+                    }}
+                  >
+                    {item ? (
+                      <ContentCard item={item} theme={theme} />
+                    ) : (
+                      <Card id={index + 1} theme={theme} />
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            <motion.div
+              className="absolute top-1/2 left-1/2 mt-4 -translate-x-1/2 -translate-y-1/2"
+              style={{
+                transformOrigin: 'bottom center',
+                transformStyle: 'preserve-3d',
+                width: 321,
+                height: 241,
+              }}
+              animate={{ rotateX: isOpen ? -55 : isHovered ? -45 : -15 }}
+              transition={{ type: 'spring', stiffness: 120, damping: 14 }}
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  backdropFilter: 'blur(6px)',
+                  WebkitBackdropFilter: 'blur(6px)',
+                  clipPath: `path('${FLAP_PATH}')`,
+                  WebkitClipPath: `path('${FLAP_PATH}')`,
+                  transform: 'translateZ(0)',
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  willChange: 'transform',
+                }}
+              />
+              <svg
+                className="absolute inset-0"
+                width="321"
+                height="241"
+                viewBox="0 0 321 241"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g filter="url(#filter0_i_171_13)">
+                  <path
+                    d={FLAP_PATH}
+                    fill={theme.flapFill}
+                    fillOpacity={theme.flapFillOpacity}
+                  />
+                  <path
+                    d="M25 0.5H136.084C142.905 0.5 149.417 3.3431 154.054 8.3457L177.713 33.874C182.539 39.0808 189.317 42.04 196.416 42.04H296C309.531 42.04 320.5 53.0092 320.5 66.54V216C320.5 229.531 309.531 240.5 296 240.5H25C11.469 240.5 0.5 229.531 0.5 216V25C0.5 11.469 11.469 0.5 25 0.5Z"
+                    stroke={theme.flapStroke}
+                  />
+                </g>
+                <defs>
+                  <filter
+                    id="filter0_i_171_13"
+                    x="-25.4"
+                    y="-25.4"
+                    width="371.8"
+                    height="291.8"
+                    filterUnits="userSpaceOnUse"
+                    colorInterpolationFilters="sRGB"
+                  >
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                    <feBlend
+                      mode="normal"
+                      in="SourceGraphic"
+                      in2="BackgroundImageFix"
+                      result="shape"
+                    />
+                    <feColorMatrix
+                      in="SourceAlpha"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                      result="hardAlpha"
+                    />
+                    <feOffset />
+                    <feGaussianBlur stdDeviation="2.65" />
+                    <feComposite
+                      in2="hardAlpha"
+                      operator="arithmetic"
+                      k2="-1"
+                      k3="1"
+                    />
+                    <feColorMatrix
+                      type="matrix"
+                      values={theme.flapInsetColor}
+                    />
+                    <feBlend
+                      mode="normal"
+                      in2="shape"
+                      result="effect1_innerShadow_171_13"
+                    />
+                  </filter>
+                </defs>
+              </svg>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </MotionConfig>
+  );
+};
+
+export default FolderComponent;
+
+export { FolderComponent as Folder };
+export type { FolderComponentProps, FolderItem };
+
+type Theme = (typeof themes)[keyof typeof themes];
+
+const Card = ({ id, theme }: { id: number; theme: Theme }) => {
+  const filterId = `filter0_i_card_${id}`;
+  return (
+    <div data-slot="folder-card">
+      <svg
+        width="164"
+        height="214"
+        viewBox="0 0 164 214"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g filter={`url(#${filterId})`}>
+          <rect
+            width="163.078"
+            height="213.262"
+            rx="20"
+            fill={theme.cardFill}
+          />
+        </g>
+        <rect
+          x="0.5"
+          y="0.5"
+          width="162.078"
+          height="212.262"
+          rx="19.5"
+          stroke={theme.cardStroke}
+        />
+        <rect
+          x="14.1193"
+          y="31.2091"
+          width="134.84"
+          height="11.8892"
+          rx="5.94459"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 60.9939)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 60.9617)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 75.1122)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 75.0801)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 89.2306)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 89.1985)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 103.349)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 103.317)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 117.467)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 117.435)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 131.586)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 131.554)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 145.704)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 145.672)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 159.823)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 159.79)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000409158 0.00201956 0.999998 14.8253 173.941)"
+          fill={theme.cardLineFill}
+        />
+        <rect
+          width="64.5183"
+          height="5.88276"
+          rx="2.94138"
+          transform="matrix(1 -0.000461045 0.00179228 0.999998 84.4303 173.909)"
+          fill={theme.cardLineFill}
+        />
+        <defs>
+          <filter
+            id={filterId}
+            x="0"
+            y="0"
+            width="166.078"
+            height="218.262"
+            filterUnits="userSpaceOnUse"
+            colorInterpolationFilters="sRGB"
+          >
+            <feFlood floodOpacity="0" result="BackgroundImageFix" />
+            <feBlend
+              mode="normal"
+              in="SourceGraphic"
+              in2="BackgroundImageFix"
+              result="shape"
+            />
+            <feColorMatrix
+              in="SourceAlpha"
+              type="matrix"
+              values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+              result="hardAlpha"
+            />
+            <feMorphology
+              radius="2"
+              operator="erode"
+              in="SourceAlpha"
+              result={`effect1_innerShadow_${id}`}
+            />
+            <feOffset dx="3" dy="5" />
+            <feGaussianBlur stdDeviation="3.05" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values={theme.cardInsetColor} />
+            <feBlend
+              mode="normal"
+              in2="shape"
+              result={`effect1_innerShadow_${id}`}
+            />
+          </filter>
+        </defs>
+      </svg>
+    </div>
+  );
+};
+
+/** A card carrying real text, in the same material as the placeholder card. */
+const ContentCard = ({ item, theme }: { item: FolderItem; theme: Theme }) => (
+  <div
+    data-slot="folder-card"
+    className="flex flex-col justify-between"
+    style={{
+      width: 164,
+      height: 214,
+      padding: '18px 16px',
+      borderRadius: 20,
+      backgroundColor: theme.cardFill,
+      border: `1px solid ${theme.cardStroke}`,
+      boxShadow:
+        'inset 3px 5px 6px rgba(255,255,255,0.6), 0 10px 24px rgba(0,0,0,0.35)',
+      color: theme.cardFill === '#262626' ? '#f0eee8' : '#111113',
+    }}
+  >
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        width: '100%',
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: theme.cardLineFill,
+      }}
+    />
+    <div>
+      <p
+        style={{
+          margin: 0,
+          fontSize: 17,
+          fontWeight: 700,
+          letterSpacing: '-0.02em',
+          lineHeight: 1.1,
+        }}
+      >
+        {item.title}
+      </p>
+      <p
+        style={{
+          margin: '8px 0 0',
+          fontSize: 12,
+          lineHeight: 1.45,
+          opacity: 0.72,
+        }}
+      >
+        {item.body}
+      </p>
+    </div>
+  </div>
+);

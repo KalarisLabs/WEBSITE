@@ -41,9 +41,7 @@ export function buildFounderPersonSchema(): JsonLd {
     jobTitle: 'Founder',
     worksFor: { '@id': `${SITE.url}/#organization` },
     url: SITE.founderLinkedin,
-    sameAs: [SITE.founderLinkedin, 'https://x.com/sayanchowdhuryai'].filter(
-      Boolean,
-    ),
+    sameAs: [SITE.founderLinkedin, SITE.founderX].filter(Boolean),
     description:
       'Agentic researcher and builder focused on systems architecture, scientific infrastructure, and the economic layer of agentic systems.',
     knowsAbout: [
@@ -69,20 +67,16 @@ export function buildOrganizationSchema(): JsonLd {
       '@type': 'ImageObject',
       url: absoluteSiteUrl(SITE.logoPath),
     },
-    sameAs: [
-      SITE.linkedinUrl,
-      SITE.githubUrl,
-      'https://x.com/kalarislabs',
-    ].filter(Boolean),
+    sameAs: [SITE.linkedinUrl, SITE.githubUrl, SITE.xUrl].filter(Boolean),
+    address: { '@type': 'PostalAddress', addressCountry: 'IN' },
+    areaServed: 'Worldwide',
     founder: {
       '@type': 'Person',
       '@id': `${SITE.url}/#founder`,
       name: 'Sayan Chowdhury',
       jobTitle: 'Founder',
       url: SITE.founderLinkedin,
-      sameAs: [SITE.founderLinkedin, 'https://x.com/sayanchowdhuryai'].filter(
-        Boolean,
-      ),
+      sameAs: [SITE.founderLinkedin, SITE.founderX].filter(Boolean),
     },
     knowsAbout: [
       'Artificial Intelligence',
@@ -94,7 +88,8 @@ export function buildOrganizationSchema(): JsonLd {
     contactPoint: {
       '@type': 'ContactPoint',
       email: SITE.email,
-      contactType: 'customer support',
+      contactType: 'general inquiries',
+      availableLanguage: ['English'],
     },
   };
 }

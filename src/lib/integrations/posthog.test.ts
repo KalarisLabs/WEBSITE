@@ -46,16 +46,17 @@ afterEach(() => {
 });
 
 describe('PostHog consent', () => {
-  it('does not initialize before opt-in', async () => {
+  it('does not load or initialize before opt-in', async () => {
     const { analytics, client } = await setup();
     expect(analytics.getAnalyticsConsent()).toBeNull();
-    expect(analytics.initializePostHog()).toBe(false);
+    await expect(analytics.initializePostHog()).resolves.toBeNull();
     expect(client.init).not.toHaveBeenCalled();
   });
 
   it('opts out on withdrawal and can opt in again', async () => {
     const { analytics, client } = await setup();
     analytics.setAnalyticsConsent('allow');
+    await analytics.initializePostHog();
     expect(client.init).toHaveBeenCalledOnce();
 
     analytics.setAnalyticsConsent('deny');
@@ -64,5 +65,45 @@ describe('PostHog consent', () => {
 
     analytics.setAnalyticsConsent('allow');
     expect(client.opt_in_capturing).toHaveBeenCalledTimes(2);
+  });
+
+  it('sends events tracked while the library is still loading', async () => {
+    const { analytics, client } = await setup();
+    analytics.setAnalyticsConsent('allow');
+    analytics.trackEvent('analytics consent granted');
+    expect(client.capture).not.toHaveBeenCalled();
+
+    await analytics.initializePostHog();
+    await Promise.resolve();
+    expect(client.capture).toHaveBeenCalledWith(
+      'analytics consent granted',
+      undefined,
+    );
+  });
+
+  it('skips initialization when consent is withdrawn mid-load', async () => {
+    const { analytics, client } = await setup();
+    analytics.setAnalyticsConsent('allow');
+    analytics.setAnalyticsConsent('deny');
+    await vi.dynamicImportSettled();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(client.init).not.toHaveBeenCalled();
+    expect(client.capture).not.toHaveBeenCalled();
+  });
+
+  it('keeps working when storage is blocked', async () => {
+    const { analytics, client } = await setup();
+    const blocked = () => {
+      throw new DOMException('blocked', 'SecurityError');
+    };
+    vi.stubGlobal('window', {
+      localStorage: { getItem: blocked, setItem: blocked },
+    });
+
+    expect(analytics.getAnalyticsConsent()).toBeNull();
+    analytics.setAnalyticsConsent('allow');
+    expect(analytics.getAnalyticsConsent()).toBe('allow');
+    await analytics.initializePostHog();
+    expect(client.init).toHaveBeenCalledOnce();
   });
 });

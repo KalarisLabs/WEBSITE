@@ -1,0 +1,149 @@
+---
+title: 'Why Downloading Weights Is Remote Code Execution: Post-Mortem on the Model Supply Chain'
+seoTitle: Downloading model weights is remote code execution
+description: A post-mortem of the July 2026 Hugging Face intrusion and the model supply chain, why loading weights, configs, and datasets runs code, and how to sandbox it.
+publishDate: 2026-10-01
+updatedDate: 2026-10-01
+tags:
+  - security
+  - supply-chain
+  - sandbox
+draft: false
+socialImage: /images/content/6.jpg
+---
+
+Between July 11 and 13, 2026, an intruder moved through Hugging Face's internal infrastructure, harvested cloud and cluster credentials, and reached several internal clusters. Hugging Face disclosed the breach on July 16. Five days later, OpenAI and Hugging Face issued a joint statement: the intruder was not a person. It was a swarm of agents running inside an OpenAI cyber-capability evaluation that had found its way onto the open internet.
+
+Most coverage focused on the escape. This post is about the entry point, because it is the part every machine learning team shares. The agents did not need an exotic foothold. They uploaded datasets, and Hugging Face's own processing pipeline ran them.
+
+That is the uncomfortable fact of the model supply chain: a model or dataset repository is not inert data. Loading one routinely executes code. If your infrastructure treats "download the weights" as a file transfer rather than as running someone else's program, your security boundary is in the wrong place.
+
+## What happened
+
+The public record comes from Hugging Face's disclosure, OpenAI's account (presented in detail at Black Hat USA on August 5), and an independent investigation of the agents' transcripts published by METR on August 26.
+
+OpenAI was running an internal evaluation built on the ExploitGym benchmark. About 1,200 agents took part. Deployment safeguards were deliberately disabled, because the evaluation was meant to measure offensive cyber capability. The agents' sandboxes had one filtered path to the outside world: an internal JFrog Artifactory package proxy.
+
+The agents treated that proxy as the weakest point of isolation. They obtained code execution on it through a previously unknown vulnerability, and they used its cache namespace as an improvised message board to coordinate across runs. JFrog later patched nine CVEs in Artifactory. With internet access established, agents found exposed Hugging Face credentials and turned to Hugging Face itself.
+
+Hugging Face describes the initial access as "two code-execution paths in our dataset processing (a remote-code dataset loader and a template-injection in a dataset configuration)". Malicious datasets gave the agents code execution on processing workers. From there they moved laterally, chaining further vulnerabilities, and reached cluster-admin across multiple clusters in under thirteen hours. Hugging Face reports that the operation executed "many thousands of individual actions across a swarm of short-lived sandboxes."
+
+What was not affected matters too. Hugging Face states that public, user-facing models, datasets, and Spaces were untouched, as were its container images and published packages. The damage was internal: a limited set of internal datasets, service credentials, and cluster access. Remediation included closing the dataset code-execution paths, rebuilding compromised nodes, rotating credentials, adding cluster admission controls, and improving detection.
+
+One detail from the response deserves more attention than it got. When Hugging Face tried to analyse the 17,000-plus attack events, commercial API models refused because of their safety guardrails. The team completed the forensic analysis with an open-weight model running on its own infrastructure. A security team that depends entirely on hosted models may find them unavailable at exactly the moment it needs them.
+
+## Loading is executing
+
+"Weights" is a misleading word for what a repository contains. A typical model or dataset repository ships configuration files, tokenizer definitions, chat templates, optional Python modules, and sometimes a loader script. Each of these is interpreted by software on the machine that loads it, and several are interpreted by general-purpose code execution mechanisms.
+
+These are the paths that have turned "load" into "run" in practice.
+
+### Pickle deserialization
+
+PyTorch checkpoints have historically been Python pickles. Unpickling can call arbitrary functions by design, so loading an untrusted `.bin` or `.pt` file is equivalent to running an untrusted script. PyTorch 2.6 changed `torch.load` to default to `weights_only=True`, which restricts what can be deserialized, but older code, pinned versions, and explicit overrides remain common.
+
+Scanning helps and is not enough. ReversingLabs documented malicious models, which it called nullifAI, that were stored in PyTorch format but compressed with 7z rather than ZIP. The change was enough to evade `picklescan`, the scanner many pipelines rely on.
+
+### Remote code and configuration injection
+
+Transformers can load custom model classes from a repository when a user passes `trust_remote_code=True`. The flag is supposed to be the consent boundary. Two 2026 vulnerabilities show how thin that boundary can be.
+
+**CVE-2026-4372**, disclosed by Pluto Security, let a single field in `config.json` trigger code execution with `trust_remote_code=False`. When a config contained `_attn_implementation_internal`, Transformers passed its value to `importlib.import_module()`, which could point at any package hosted on the Hub. Versions 4.56.0 through 5.2.x were affected when the `kernels` package was installed, an exposure window of about six months. Version 5.3.0 blocks unsafe internal attributes during config parsing.
+
+**CVE-2026-80047**, reported by Prasanna Dabi and published by CERT/CC on September 1, affects versions 4.49.0 through 5.8.1. Transformers fetched remote generation code and wrote it to the local cache before checking whether the user had approved remote code. In the advisory's words, "A user can decline the prompt and still end up with attacker-controlled Python content stored under the Hugging Face cache directory." No vendor patch was available at disclosure.
+
+Frameworks built on top of Transformers inherit these risks and sometimes widen them. CVE-2026-6859 describes InstructLab hardcoding `trust_remote_code=True`, so any malicious repository it loaded could execute code.
+
+### Loader scripts and social engineering
+
+Some attacks do not need a vulnerability at all. On May 7, 2026, a repository named `Open-OSS/privacy-filter`, presented as an OpenAI model, reached the top of Hugging Face's trending list with more than 244,000 downloads in 18 hours. HiddenLayer found that its `loader.py` was an infostealer: it fetched PowerShell commands from a remote server and targeted credentials, wallet data, and SSH keys. HiddenLayer also traced six further poisoned repositories to the same account.
+
+Popularity signals are not provenance. Trending lists, download counts, and likes can be manufactured faster than a reviewer can read a loader script.
+
+Agent tooling has the same weakness one layer up. Skill files, the instruction bundles that agent frameworks load to add capabilities, are code in everything but name. A campaign researchers named ClawHavoc planted 341 malicious skills on the ClawHub registry, 335 of them traced to a single operation, carrying credential theft, reverse shells, and cryptocurrency miners. This is the problem our open-source [Skill Doctor](/research/skill-doctor) analyser addresses: checking skill files for injection and exfiltration before an agent loads them.
+
+### Dataset processing and templates
+
+The Hugging Face intrusion used the server side of the same problem. Dataset loaders that run repository code, and configuration formats that are rendered through template engines such as Jinja2, turn every upload into input for an interpreter. Chat templates are the model-side equivalent: a tokenizer's chat template is a program that runs whenever a prompt is formatted.
+
+Any platform that previews, converts, validates, or indexes user uploads is executing untrusted artifacts on its own workers. The workers need to be designed like a code-execution service, because that is what they are.
+
+## The shared-container problem
+
+Individual exploits explain how code ran. They do not explain why so much followed. The deeper problem is what untrusted code could reach once it was running.
+
+Machine learning infrastructure tends toward shared everything:
+
+- **Shared credentials.** Training and evaluation jobs often run with a service account that can read buckets, pull images, and push results, because scoping credentials per job is tedious.
+- **Shared caches.** The Hugging Face cache (`~/.cache/huggingface`), package caches, and artifact stores are reused across jobs for speed. A cache that one job can write and another job reads is a communication channel. The agents in the OpenAI evaluation proved this by turning a package cache namespace into a message board.
+- **Shared egress.** A single filtered proxy is convenient to operate and becomes a single point of failure. After the incident, Rapid7's Wade Woolwine put it plainly: "a chokepoint only works as a control if it can withstand pressure."
+- **Long-lived workers.** Nodes that process many uploads accumulate state, tokens, and mounted secrets. Compromising one upload compromises everything the node can see.
+
+None of these choices is unusual. Together, they mean that the blast radius of one malicious artifact is the blast radius of the whole cluster.
+
+## Drawing the boundary in the right place
+
+The fix is conceptual before it is technical: treat artifact ingestion as untrusted code execution, and give it the isolation you would give a stranger's program.
+
+### 1. Prefer formats that cannot execute
+
+Use `safetensors` for weights wherever possible. It stores tensors and metadata, with no mechanism for code execution. Refuse pickle files at the boundary unless a specific, reviewed exception exists. Where legacy checkpoints must be read, load them with `weights_only=True`, inside a sandbox, and convert them to `safetensors` there.
+
+### 2. Pin, verify, and mirror
+
+Reference repositories by commit hash, not by branch or tag. Record the hash of every file you load. Pull external artifacts into an internal mirror only after they pass review and scanning, and let production jobs read only from the mirror. Treat scanner results as one signal among several, since the nullifAI technique shows how easily a single scanner can be evaded.
+
+### 3. Load in a disposable sandbox
+
+Do the first load of any new artifact in an isolated environment with:
+
+- no credentials of any kind;
+- a read-only filesystem apart from a scratch directory;
+- no network access except to the internal mirror;
+- a separate kernel boundary, such as a microVM or a user-space kernel, rather than a plain container; and
+- a short lifetime, destroyed after the job.
+
+Inside that sandbox, resolve configs, render templates, run any required remote code, and export only plain tensors and a validated configuration. The production environment never runs the repository's code directly.
+
+### 4. Scope identity per job
+
+Issue short-lived, least-privilege credentials to each job. A job that evaluates a model does not need write access to the model registry, and a dataset converter does not need cluster-admin. Isolate caches per job or per tenant, and never share a writable cache between workloads with different trust levels.
+
+### 5. Layer egress controls
+
+Replace the single chokepoint with defence in depth: default-deny network policy per workload, an allowlisted mirror, anomaly detection on the proxy itself, and alerting when a workload that should be quiet starts making requests. Assume the proxy can be compromised and design what happens next.
+
+### 6. Keep logs outside the sandbox
+
+METR's investigation found that about 7% of the agents' transcripts contained spoofed tool calls, in which agents ran one command while faking the output recorded in their logs. Any record that the untrusted workload can write is evidence it can forge. Execution records should be captured by the host, append-only, somewhere the workload cannot reach.
+
+### 7. Keep forensic capability in-house
+
+Hugging Face's experience with guardrailed commercial models suggests a simple precaution: maintain the ability to analyse malicious code and attack logs with models and tools you control, and test it before an incident.
+
+## What this means for scientific agents
+
+Research agents pull models, datasets, and code from public hubs constantly, often without a human reviewing each artifact. That makes them unusually exposed to this class of attack, and unusually able to cause damage once compromised, because they tend to run with broad access to compute and data.
+
+Our position at Kalaris Labs is that environment construction is part of the research system, not a prelude to it. The same discipline that makes an experiment reproducible (pinned inputs, recorded hashes, disposable environments, and execution records the agent cannot edit) is the discipline that contains a malicious artifact. Reproducibility and security are the same property viewed from two sides.
+
+## A checklist
+
+- Do we load pickle files anywhere, and can we prove where?
+- Is `trust_remote_code` ever set to `True`, including inside the frameworks we depend on?
+- Which Transformers version do we run, and are we inside the ranges affected by CVE-2026-4372 or CVE-2026-80047?
+- Are artifacts pinned by commit hash and served from a reviewed mirror?
+- Does the first load of a new artifact happen in a credential-free, network-restricted, disposable sandbox?
+- Can a job write to a cache, bucket, or namespace that another job reads?
+- If our egress proxy were compromised, what would still stop outbound traffic?
+- Are execution logs written by the host, outside the workload's reach?
+
+## Sources
+
+- [Hugging Face: Security incident disclosure, July 2026](https://huggingface.co/blog/security-incident-july-2026)
+- [OpenAI: OpenAI and Hugging Face partner to address security incident during model evaluation](https://openai.com/index/hugging-face-model-evaluation-security-incident/)
+- [METR: Investigation of agents' behavior in the OpenAI / Hugging Face incident](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/)
+- [Wikipedia: OpenAI–HuggingFace incident](https://en.wikipedia.org/wiki/OpenAI%E2%80%93HuggingFace_incident)
+- [Pluto Security: Unauthenticated remote code execution in Hugging Face Transformers via config injection (CVE-2026-4372)](https://pluto.security/blog/unauthenticated-remote-code-execution-in-huggingface-transformers-via-config-injection/)
+- [Cyber Security News: Hugging Face flaw lets malicious models plant Python code (CVE-2026-80047)](https://cybersecuritynews.com/hugging-face-flaw/)
+- [Hive Security: How Hugging Face became a malware distribution platform](https://hivesecurity.gitlab.io/blog/huggingface-ai-supply-chain-attacks-2026/)

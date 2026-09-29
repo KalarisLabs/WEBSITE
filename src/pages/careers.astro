@@ -1,0 +1,76 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import { pageOgImage } from '../lib/seo/og';
+import { applyHref, POSTINGS } from '../data/careers';
+
+export const prerender = true;
+---
+
+<Layout
+  title="Careers"
+  description="Join Kalaris Labs and help build self-improving infrastructure for scientific research. Apply by email in one click."
+  image={pageOgImage('careers')}
+  imageAlt="Kalaris Labs careers"
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Careers', url: '/careers' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="careers-page">
+    <section class="content-column careers-page-intro">
+      <p class="eyebrow">Careers</p>
+      <h1>Build the infrastructure for scientific discovery with us.</h1>
+      <div class="careers-card careers-card-wrapper">
+        <img
+          src="/images/careers-graphic.webp"
+          alt="Careers at Kalaris Labs: let's build recursive self-improvement for scientific discovery"
+          width="1729"
+          height="910"
+          class="careers-card-img"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    </section>
+
+    <section
+      class="content-column careers-postings"
+      aria-labelledby="postings-heading"
+    >
+      <h2 id="postings-heading" class="careers-heading">
+        Open positions <span class="careers-count">{POSTINGS.length}</span>
+      </h2>
+      <ul class="posting-list" role="list">
+        {
+          POSTINGS.map((posting) => (
+            <li class="posting" id={posting.id}>
+              <div class="posting-main">
+                <h3>{posting.title}</h3>
+                <p class="posting-meta">
+                  {posting.type} · {posting.location}
+                </p>
+                <p class="posting-summary">{posting.summary}</p>
+              </div>
+              <a
+                class="button-apply"
+                href={applyHref(posting)}
+                aria-label={`Apply for ${posting.title} by email`}
+              >
+                Apply <span aria-hidden="true">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="posting-note">
+        Apply opens your email app addressed to <a
+          href="mailto:hello@kalarislabs.com">hello@kalarislabs.com</a
+        >. We care more about evidence of agency than a conventional résumé.
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Layout>

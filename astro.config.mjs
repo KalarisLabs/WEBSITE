@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import sentry from '@sentry/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
+import markdownTwins from './integrations/markdown-twins.mjs';
 
 const site = process.env.PUBLIC_SITE_URL ?? 'https://kalarislabs.com';
 
@@ -76,6 +77,7 @@ export default defineConfig({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       telemetry: false,
     }),
+    markdownTwins({ site }),
   ],
   trailingSlash: 'never',
   build: {

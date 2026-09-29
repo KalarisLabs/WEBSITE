@@ -27,6 +27,8 @@
       "headers": {
         "Authorization": "${REACTBITS_LICENSE_KEY}"
       }
-    }
+    },
+    "@soralabs": "https://ui.soralabs.studio/r/{name}.json",
+    "@spectrumui": "https://ui.spectrumhq.in/r/{name}.json"
   }
 }

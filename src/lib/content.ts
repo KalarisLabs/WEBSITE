@@ -25,3 +25,20 @@ export function entryPath(
 ) {
   return `/${collection}/${entry.id}`;
 }
+
+/**
+ * Inline style that pairs an entry's cover image across pages so the browser
+ * morphs the card thumbnail into the article banner on navigation. Names must
+ * be unique per page, so render it on at most one cover per entry.
+ */
+export function coverTransitionStyle(
+  collection: PublishingCollection,
+  entry: PublishingEntry,
+) {
+  if (!entry.data.socialImage) return undefined;
+  const name = `cover-${collection}-${entry.id}`.replace(
+    /[^a-zA-Z0-9_-]/g,
+    '-',
+  );
+  return `view-transition-name: ${name}; view-transition-class: cover;`;
+}

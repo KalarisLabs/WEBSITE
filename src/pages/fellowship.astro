@@ -1,0 +1,86 @@
+---
+import FellowshipHeadline from '../components/fellowship/FellowshipHeadline';
+import FellowshipInterest from '../components/fellowship/FellowshipInterest';
+import FellowshipTraits from '../components/fellowship/FellowshipTraits';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import { pageOgImage } from '../lib/seo/og';
+import {
+  FELLOWSHIP_APPLICATION_URL,
+  FELLOW_HATS,
+  FELLOW_TRAITS,
+} from '../lib/fellowship';
+
+export const prerender = true;
+
+const applicationUrl: string =
+  import.meta.env.PUBLIC_FELLOWSHIP_APPLICATION_URL?.trim() ||
+  FELLOWSHIP_APPLICATION_URL;
+---
+
+<Layout
+  title="Kalaris Labs Fellowship"
+  description="A fellowship for high-agency designers, growth marketers, and marketers who wear more than one hat. Pick your hats, print your badge, and apply."
+  image={pageOgImage('fellowship')}
+  imageAlt="Kalaris Labs Fellowship: students walking towards a sunlit campus building."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Fellowship', url: '/fellowship' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="fellowship-page">
+    <div class="site-container fellowship-stage" id="register">
+      <FellowshipInterest client:load applicationUrl={applicationUrl}>
+        <FellowshipHeadline client:load />
+        <p class="fellowship-lede">
+          The Kalaris Labs Fellowship is for designers, growth marketers, and
+          marketers who wear more than one hat, take responsibility, and think
+          from first principles, helping build the infrastructure for scientific
+          discovery.
+        </p>
+      </FellowshipInterest>
+    </div>
+
+    <section class="fellowship-traits" aria-labelledby="traits-heading">
+      <div class="site-container">
+        <FellowshipTraits client:visible />
+        <p class="fellowship-contact">
+          Questions? Email <a
+            href="mailto:hello@kalarislabs.com?subject=Kalaris%20Labs%20Fellowship"
+            >hello@kalarislabs.com</a
+          >.
+        </p>
+      </div>
+    </section>
+    {
+      /* Plain-text version of the interactive parts for search and AI agents. */
+    }
+    <div hidden data-md-only>
+      <h2>How to apply</h2>
+      <ol>
+        <li>
+          Pick your hats: {FELLOW_HATS.map((hat) => hat.label).join(', ')}.
+          Choose every one you wear.
+        </li>
+        <li>Print your name on your Kalaris Labs Fellowship badge.</li>
+        <li>
+          <a href={applicationUrl}>Apply to the fellowship</a>, then share it on
+          X, LinkedIn, or WhatsApp.
+        </li>
+      </ol>
+      <h2>What we look for</h2>
+      <ul>
+        {
+          FELLOW_TRAITS.map((trait) => (
+            <li>
+              <strong>{trait.title}.</strong> {trait.body}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </main>
+  <Footer />
+</Layout>

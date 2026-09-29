@@ -1,0 +1,22 @@
+---
+import { FAQS } from '../../data/faqs';
+---
+
+<section class="faq-section" id="faq" aria-labelledby="faq-heading">
+  <div class="content-column">
+    <h2 id="faq-heading" class="faq-heading">Questions</h2>
+    <div class="faq-list">
+      {
+        FAQS.map((faq, index) => (
+          <details class="faq-item" open={index === 0}>
+            <summary>
+              <h3>{faq.question}</h3>
+              <span class="faq-toggle" aria-hidden="true" />
+            </summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

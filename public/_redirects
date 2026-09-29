@@ -1,0 +1,32 @@
+# Research notes retired on 2026-09-29. Skill Doctor is the only published note.
+/research/deterministic-evals /research 301
+/research/deterministic-evals.md /research 301
+/research/edge-delivery /research 301
+/research/edge-delivery.md /research 301
+/research/recursive-context /research 301
+/research/recursive-context.md /research 301
+/research/topological-routing /research 301
+/research/topological-routing.md /research 301
+
+# Routes from the previous site that search engines still list.
+/contact / 301
+/company /team 301
+/company.md /team.md 301
+/company/careers /careers 301
+/company/careers.md /careers.md 301
+/company/news /press 301
+/company/news.md /press.md 301
+
+# Blog posts replaced on 2026-09-30 by the new editorial lineup.
+/blog/agent-tooling /blog/closed-loop-science 301
+/blog/agent-tooling.md /blog/closed-loop-science.md 301
+/blog/ephemeral-sandboxes /blog/model-supply-chain 301
+/blog/ephemeral-sandboxes.md /blog/model-supply-chain.md 301
+/blog/knowledge-engineers /blog/closed-loop-science 301
+/blog/knowledge-engineers.md /blog/closed-loop-science.md 301
+/blog/recursive-memory /blog/closed-loop-science 301
+/blog/recursive-memory.md /blog/closed-loop-science.md 301
+/blog/state-of-research-agents /blog/specification-gaming 301
+/blog/state-of-research-agents.md /blog/specification-gaming.md 301
+/blog/workers-foundation /blog 301
+/blog/workers-foundation.md /blog.md 301

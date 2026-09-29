@@ -10,7 +10,7 @@ import { absoluteSiteUrl } from '../../lib/seo/site';
 export const prerender = true;
 const entries = await getPublishedEntries('research');
 const description =
-  'Kalaris Labs research notes on deterministic agent evaluation, recursive context, tool diagnostics, context routing, and scientific infrastructure.';
+  'Research from Kalaris Labs, including Skill Doctor: deterministic, multi-layer security analysis for AI agent skill files.';
 const collectionSchema = buildCollectionPageSchema(
   'Kalaris Labs Research Notes',
   description,
@@ -25,7 +25,7 @@ const collectionSchema = buildCollectionPageSchema(
 ---
 
 <Layout
-  title="Research · Kalaris Labs"
+  title="Research Notes"
   description={description}
   extraSchemas={[collectionSchema]}
   breadcrumbs={[
@@ -35,7 +35,11 @@ const collectionSchema = buildCollectionPageSchema(
 >
   <Header />
   <main id="main-content">
-    <ResearchCatalog entries={entries} />
+    <ResearchCatalog
+      entries={entries}
+      heading="Research notes"
+      intro={description}
+    />
   </main>
   <Footer />
 </Layout>

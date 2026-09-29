@@ -1,5 +1,9 @@
 ---
-import { getPublishedEntries, entryPath } from '../../lib/content';
+import {
+  coverTransitionStyle,
+  entryPath,
+  getPublishedEntries,
+} from '../../lib/content';
 
 const entries = await getPublishedEntries('research');
 
@@ -16,30 +20,34 @@ function formatDate(date: Date) {
   <div class="content-column">
     <div class="carousel-header">
       <div class="carousel-title-group">
-        <span class="section-marker">| 01. Research</span>
+        <span class="section-marker">| Research</span>
         <h2>Publications & System Notes</h2>
       </div>
 
       <div class="carousel-controls">
         <a href="/research" class="carousel-all-link">All research →</a>
-        <div class="carousel-buttons">
-          <button
-            type="button"
-            class="carousel-btn prev-btn"
-            aria-label="Scroll research left"
-            data-carousel-prev="research-track"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            class="carousel-btn next-btn"
-            aria-label="Scroll research right"
-            data-carousel-next="research-track"
-          >
-            ›
-          </button>
-        </div>
+        {
+          entries.length > 1 && (
+            <div class="carousel-buttons">
+              <button
+                type="button"
+                class="carousel-btn prev-btn"
+                aria-label="Scroll research left"
+                data-carousel-prev="research-track"
+              >
+                ‹
+              </button>
+              <button
+                type="button"
+                class="carousel-btn next-btn"
+                aria-label="Scroll research right"
+                data-carousel-next="research-track"
+              >
+                ›
+              </button>
+            </div>
+          )
+        }
       </div>
     </div>
 
@@ -52,14 +60,17 @@ function formatDate(date: Date) {
       {
         entries.map((entry) => {
           const imageSrc =
-            entry.data.socialImage ?? '/images/content/edge-delivery.jpg';
+            entry.data.socialImage ?? '/skill-doctor-banner.webp';
           return (
             <article class="landscape-card">
               <a
                 href={entryPath('research', entry)}
                 class="landscape-card-link"
               >
-                <div class="card-visual-frame">
+                <div
+                  class="card-visual-frame"
+                  style={coverTransitionStyle('research', entry)}
+                >
                   <img
                     src={imageSrc}
                     alt={entry.data.title}

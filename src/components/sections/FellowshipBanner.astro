@@ -1,0 +1,51 @@
+---
+// Homepage feature for the fellowship; mirrors the Careers section layout.
+---
+
+<section
+  class="careers-section fellowship-home"
+  id="fellowship"
+  aria-labelledby="fellowship-home-heading"
+>
+  <div class="content-column">
+    <h2 id="fellowship-home-heading" class="careers-heading">Fellowship</h2>
+    <a
+      href="/fellowship"
+      class="careers-card careers-card-wrapper fellowship-home-card"
+      aria-label="Kalaris Labs Fellowship"
+    >
+      <img
+        src="/fellowship/fellowship-poster-960.webp"
+        srcset="/fellowship/fellowship-poster-960.webp 960w, /fellowship/fellowship-poster.webp 1672w"
+        sizes="(max-width: 900px) 100vw, 60rem"
+        alt="Kalaris Labs Fellowship: students walking towards a sunlit campus building."
+        width="1672"
+        height="942"
+        class="careers-card-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <div class="careers-apply-box">
+      <p class="careers-apply-text">
+        For high-agency designers, growth marketers, and marketers who wear more
+        than one hat. Pick your hats, print your badge, and apply.
+      </p>
+      <a href="/fellowship" class="button-apply fellowship-home-apply">
+        Apply to the fellowship
+        <svg
+          class="inline-arrow"
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg
+        >
+      </a>
+    </div>
+  </div>
+</section>

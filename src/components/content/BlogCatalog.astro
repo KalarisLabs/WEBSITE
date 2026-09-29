@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { coverTransitionStyle } from '../../lib/content';
+import '../react-bits/BorderGlow.css';
+import { cardGlowStyle } from './card-glow';
 
 interface Props {
   entries: CollectionEntry<'blog'>[];
+  /** Page H1 and the sentence under it. */
+  heading: string;
+  intro: string;
 }
 
-const { entries } = Astro.props;
+const { entries, heading, intro } = Astro.props;
 
 // Sort entries by publish date descending
 const sorted = [...entries].sort(
@@ -35,11 +41,20 @@ function estimateReadingTime(text: string) {
 ---
 
 <div class="blog-catalog-container">
+  <header class="catalog-header">
+    <h1>{heading}</h1>
+    <p>{intro}</p>
+  </header>
   {/* 1. Featured Post Hero Card (Inspired by Reference 2) */}
   {
     featured && (
       <section class="blog-featured-section" aria-label="Featured publication">
-        <a href={`/blog/${featured.id}`} class="blog-featured-card group">
+        <a
+          href={`/blog/${featured.id}`}
+          class="blog-featured-card border-glow-card group"
+          style={cardGlowStyle}
+        >
+          <span class="edge-light" aria-hidden="true" />
           <div class="featured-content-col">
             <div class="featured-meta-line">
               <time datetime={featured.data.publishDate.toISOString()}>
@@ -71,7 +86,10 @@ function estimateReadingTime(text: string) {
             </div>
           </div>
 
-          <div class="featured-artwork-col">
+          <div
+            class="featured-artwork-col"
+            style={coverTransitionStyle('blog', featured)}
+          >
             <div class="featured-media-frame">
               {featured.data.socialImage ? (
                 <img
@@ -158,9 +176,17 @@ function estimateReadingTime(text: string) {
         const primaryTag = post.data.tags[0] ?? 'research';
         const readMinutes = estimateReadingTime(post.body ?? '');
         return (
-          <article class="blog-card group" data-tags={post.data.tags.join(' ')}>
+          <article
+            class="blog-card border-glow-card group"
+            style={cardGlowStyle}
+            data-tags={post.data.tags.join(' ')}
+          >
+            <span class="edge-light" aria-hidden="true" />
             <a href={`/blog/${post.id}`} class="blog-card-link">
-              <div class="card-thumb-frame">
+              <div
+                class="card-thumb-frame"
+                style={coverTransitionStyle('blog', post)}
+              >
                 {post.data.socialImage ? (
                   <img
                     src={post.data.socialImage}
@@ -204,6 +230,10 @@ function estimateReadingTime(text: string) {
 </div>
 
 <script>
+  import { initBorderGlow } from '../react-bits/border-glow';
+
+  initBorderGlow();
+
   // Interactive client-side category filtering
   const filterButtons =
     document.querySelectorAll<HTMLButtonElement>('.filter-pill');

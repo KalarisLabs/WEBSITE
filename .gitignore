@@ -47,6 +47,8 @@ coverage/
 .fusebox/
 .dynamodb/
 .tern-port
+.impeccable/
+graphify-out/
 
 # Build artifacts
 *.tgz

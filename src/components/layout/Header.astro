@@ -1,19 +1,31 @@
 ---
+import { HookSidebar } from '../ui/hook-sidebar';
+
 const currentPath = Astro.url.pathname;
 const nav = [
   { href: '/', label: 'Home' },
   { href: '/research', label: 'Research' },
   { href: '/blog', label: 'Blog' },
   { href: '/manifesto', label: 'Manifesto' },
-  { href: '/team', label: 'Our team' },
-  { href: '/company', label: 'Company' },
+  { href: '/team', label: 'Team' },
+  { href: '/fellowship', label: 'Fellowship' },
+  { href: '/careers', label: 'Careers' },
 ];
-const isActive = (href: string) =>
-  href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+const activeHref = nav.find((item) =>
+  item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href),
+)?.href;
+const pageSections = [
+  { href: '#mission', label: 'Mission' },
+  { href: '#partners', label: 'Partners' },
+  { href: '#research', label: 'Research' },
+  { href: '#fellowship', label: 'Fellowship' },
+  { href: '#careers', label: 'Careers' },
+  { href: '#faq', label: 'FAQ' },
+];
 ---
 
 <header class="site-header">
-  <nav class="nav-rail" aria-label="Primary navigation">
+  <div class="nav-rail">
     <a href="/" class="brand" aria-label="Kalaris Labs home">
       <img
         src="/kalaris-wordmark.png"
@@ -23,39 +35,33 @@ const isActive = (href: string) =>
       />
     </a>
 
-    <div class="rail-links">
-      {
-        nav.map((item) => (
-          <a
-            href={item.href}
-            class:list={['rail-link', isActive(item.href) && 'is-active']}
-            aria-current={isActive(item.href) ? 'page' : undefined}
-          >
-            <span />
-            {item.label}
-          </a>
-        ))
-      }
-    </div>
+    <HookSidebar
+      client:load
+      className="rail-nav"
+      aria-label="Primary navigation"
+      items={nav}
+      activeHref={activeHref}
+      highlight
+      itemClassName="rail-nav-item"
+    />
 
     {
       currentPath === '/' && (
-        <div class="page-index" aria-label="On this page">
-          <p>On this page</p>
-          <a href="#mission" class="is-active">
-            Mission
-          </a>
-          <a href="#partners">Partners</a>
-          <a href="#research">Research</a>
-          <a href="#careers">Careers</a>
-        </div>
+        <HookSidebar
+          client:idle
+          className="rail-page-index"
+          label="On this page"
+          items={pageSections}
+          spy
+          itemClassName="rail-index-item"
+        />
       )
     }
 
     <p class="rail-note">
       Scientific infrastructure<br />for everyone, everywhere.
     </p>
-  </nav>
+  </div>
 
   <div class="mobile-bar">
     <a href="/" class="brand" aria-label="Kalaris Labs home"
@@ -70,9 +76,18 @@ const isActive = (href: string) =>
       <summary aria-label="Open navigation menu"
         ><span></span><span></span></summary
       >
-      <div>
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      </div>
+      <nav aria-label="Primary navigation">
+        {
+          nav.map((item) => (
+            <a
+              href={item.href}
+              aria-current={item.href === activeHref ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
     </details>
   </div>
 </header>

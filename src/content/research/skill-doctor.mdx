@@ -1,132 +1,134 @@
 ---
-title: 'Skill Doctor: Autonomous diagnostics for model tooling and observability'
-description: A proposed diagnostic system for checking agent tool contracts, permissions, dependencies, and live availability before failures spread through long-running workflows.
+title: 'Skill Doctor: Deterministic multi-layer security analysis for AI agent skill files'
+seoTitle: 'Skill Doctor: Security analysis for AI agent skill files'
+description: An open-source Rust analyzer that checks AI agent skill files for prompt injection, data exfiltration, and nine other threat classes, offline and reproducibly.
 publishDate: 2026-09-28
-updatedDate: 2026-09-28
+updatedDate: 2026-09-29
 tags:
-  - observability
-  - diagnostics
+  - security
   - agents
-  - architecture
+  - static-analysis
+  - mcp
 draft: false
 socialImage: /skill-doctor-banner.webp
 ---
 
-> **Research status:** System design and benchmark proposal. Any performance or reliability results will be published separately with task definitions, fixtures, and reproducible traces.
+> **Release status:** This note describes [Skill Doctor v0.1.0](https://github.com/KalarisLabs/Skill-Doctor/releases/tag/v0.1.0), released under Apache-2.0. Binary size, peak memory, and bulk throughput have first measurements. Scan latency, detection accuracy, and comparisons against other scanners have **not** been measured yet. Each figure below states where it comes from.
 
-An agent can form a valid plan and still fail because the tool boundary changed. An SDK renames a field, an API removes an endpoint, a credential loses scope, or the local runtime no longer matches the documentation in context. The model often sees only the final error and may spend several turns changing a correct plan.
+Agent runtimes such as Claude Code, Cursor, Codex CLI, and Gemini CLI load skill files (`SKILL.md`, `AGENTS.md`, `.clauderules`, `.cursor/rules`, and MCP server manifests) and interpret them with the agent's full trust context: tool access, the filesystem, credentials, and downstream agents. A skill file behaves like an executable, but it arrives without a signature, an execute bit, or an endpoint check.
 
-Skill Doctor is a diagnostic layer for that boundary. It checks what a tool claims to support, what the active environment can reach, and what happened during execution. The output is structured evidence that a planner can act on without granting the diagnostic system broad repair permissions.
+[Skill Doctor](https://github.com/KalarisLabs/Skill-Doctor) is a security analyzer for those files. It runs before an agent loads a skill, works offline by default, needs no API key, and can produce byte-identical reports across repeated runs so its verdicts can gate a merge.
 
-## Tool health is a versioned contract
+## SDTM-v1: an eleven-class threat taxonomy
 
-Each tool registration should include more than a name and prose description. We define a contract with:
+The project defines SDTM-v1, a taxonomy that synthesizes the OWASP Agentic Skills Top 10 and OWASP MCP Top 10 with published incident reports. Every finding maps to one class.
 
-- input and output schemas;
-- authentication and permission requirements;
-- side-effect classification;
-- timeout, retry, and rate-limit behavior;
-- runtime and dependency versions;
-- safe probe operations;
-- known error categories; and
-- the time and environment of the last successful check.
+| ID    | Class                  | Severity | Example                                              |
+| :---- | :--------------------- | :------- | :--------------------------------------------------- |
+| SD-01 | Prompt injection       | Critical | Instructions hidden in HTML comments or Unicode tags |
+| SD-02 | Command injection      | Critical | Script arguments flowing into `eval` or `exec`       |
+| SD-03 | Data exfiltration      | High     | Reading `.env` or cloud keys and posting them out    |
+| SD-04 | Privilege escalation   | Critical | Operations the skill never declared, such as `sudo`  |
+| SD-05 | Supply-chain tampering | High     | Unpinned package installs                            |
+| SD-06 | SSRF                   | High     | Requests to cloud metadata or loopback addresses     |
+| SD-07 | Tool poisoning         | Critical | Overriding another tool's name or implementation     |
+| SD-08 | Persistent backdoors   | High     | Writing auto-loaded agent rules or cron entries      |
+| SD-09 | Context flooding       | Medium   | Repetition or padding that washes out instructions   |
+| SD-10 | Obfuscation & evasion  | High     | Homoglyphs, bidi "Trojan Source", logic bombs        |
+| SD-11 | Scanner hijacking      | Critical | Content aimed at the scanner or its host model       |
 
-```typescript
-interface ToolHealthRecord {
-  toolId: string;
-  contractVersion: string;
-  environmentDigest: string;
-  checkedAt: string;
-  checks: Array<{
-    id: string;
-    status: 'pass' | 'fail' | 'unknown';
-    evidence: string[];
-    safeToRetry: boolean;
-  }>;
-}
+SD-11, **scanner-mediated injection**, is the class the taxonomy adds. Any scanner that sends untrusted skill content to a language model for analysis turns that model into a new injection target.
+
+## Architecture
+
+A scan passes through numbered layers. L1 is always on; L2 through L4 are opt-in.
+
+- **L0 intake** reads a directory, ZIP, tar.gz, or single file and computes a canonical SHA-256 digest over normalized, sorted bundle entries. At v0.1.0 the digest is recomputed on every scan; caching is planned.
+- **L1 deterministic analysis** runs with no network access and no model:
+  - YARA-X rules for all eleven classes, compiled into the binary at build time;
+  - Unicode checks for zero-width characters, bidi controls, and UTS #39 confusables;
+  - Shannon entropy profiling with recursive decoding of encoded payloads;
+  - lexical source-to-sink heuristics that flag script arguments (`$1`, `sys.argv`, `process.argv`) reaching execution sinks (`eval`, `exec`, `system`). This is pattern matching over companion scripts, not AST-based taint tracking;
+  - a capability differ that compares the operations a skill declares with the operations its contents perform (SD-04).
+- **L2 host-delegated semantic inference** runs only in MCP mode. Skill Doctor performs no inference itself. It returns its static findings together with a sanitized, fenced envelope bound to a per-scan nonce, and the host agent's own model returns a schema-constrained verdict, which is merged back through a second MCP tool.
+- **L3 behavioral harness** (`--sandbox`) runs companion scripts as subprocesses in a temporary home directory with host credentials and CI variables stripped, plants synthetic canary credentials, and kills the process tree on timeout (3,000 ms by default) using Windows Job Objects or Unix process groups. It replays scripts across up to four environment profiles (baseline, CI, cloud, time-shifted) to expose environment-triggered logic bombs. It is a process harness, **not a microVM**.
+- **L4 threat intelligence** (`--intel`) looks up the bundle digest against known-malicious signatures. At v0.1.0 the embedded set contains three test fixtures and no public feed is populated.
+- **L5** scores findings, computes coverage, and writes the report.
+
+Two rules hold across layers. The **additive-only invariant** means L2, L3, and L4 can add findings but can never remove, downgrade, or reclassify an L1 finding. **Secret protection** means only key names, never values, appear in findings, reports, and logs.
+
+## Structural coverage
+
+"No findings" is not the same as "no risk." Every Skill Doctor report states how many of the eleven SDTM-v1 classes were structurally evaluable, given what the bundle contains and which layers were enabled. That ratio is also a CI gate: `--fail-under-coverage 0.8` exits with code 3 when coverage falls below 80%.
+
+| Exit code | Meaning                                           |
+| :-------- | :------------------------------------------------ |
+| `0`       | Clean: no findings at or above the threshold      |
+| `1`       | Usage or internal engine error                    |
+| `2`       | Findings at or above `--fail-on` (default `HIGH`) |
+| `3`       | Structural coverage below `--fail-under-coverage` |
+
+## Using it
+
+Scan a skill without installing anything:
+
+```bash
+npx @security.kalarislabs/skill-doctor scan ./path/to/skill
 ```
 
-The record is evidence for one version in one environment. It should expire when the tool, credential scope, or runtime changes.
+Register it as an MCP server so an agent can audit skills before loading them:
 
-## Diagnostic pipeline
-
-The proposed architecture has four stages.
-
-```
-[Agent Planner] -> [Contract Gate] -> [Scoped Probe Runner] -> [Tool]
-                         |                    |
-                         v                    v
-                  [Contract Diff]       [Trace Store]
-                         \                    /
-                          -> [Health Record] ->
+```bash
+claude mcp add skill-doctor -- npx -y @security.kalarislabs/skill-doctor mcp
 ```
 
-### 1. Static contract audit
+Gate a pipeline on severity and coverage, with reproducible SARIF output:
 
-Before execution, the auditor compares the registered schema with the active client and available documentation. It checks required parameters, enum values, response shapes, dependency versions, credentials declared by name, and missing configuration.
+```bash
+skill-doctor scan-all . --fail-on HIGH --fail-under-coverage 0.8 \
+  --output sarif --deterministic
+```
 
-Static analysis can identify a stale function signature without making a network request. It cannot confirm that the service or credential is active.
+The CLI also provides `diff` against a saved JSON report, `gate`, `watch` for re-scanning on change, and `explain`. Output formats are text, JSON, and SARIF 2.1.0. Release binaries cover six targets (x86_64 and aarch64 for Linux musl, macOS, and Windows), are checksummed in `SHA256SUMS.txt`, and are signed with Sigstore Cosign.
 
-### 2. Scoped dynamic probes
+## What has been measured
 
-The probe runner executes only operations marked non-destructive. Examples include reading service metadata, listing a bounded resource, validating a token without mutation, or running a fixture through a local adapter.
+| Metric                           | Result                       | Provenance                                       |
+| :------------------------------- | :--------------------------- | :----------------------------------------------- |
+| Binary size (stripped, with MCP) | 16,934,512 bytes (16.15 MiB) | CI benchmark, `x86_64-unknown-linux-musl`        |
+| Peak memory (RSS)                | 14.67 MiB                    | Local, `x86_64-pc-windows-msvc`, not CI-verified |
+| Bulk throughput                  | 660 skills/s                 | Local, `x86_64-pc-windows-msvc`, not CI-verified |
+| Full L5 pipeline, benign skill   | 31.90 µs mean                | Criterion micro-benchmark, in-process            |
 
-The runner uses dedicated low-privilege credentials, strict timeouts, and a separate rate budget. A diagnostic system should never convert “check whether deletion works” into a real deletion.
+About 14 MiB of the binary comes from the WebAssembly runtime that YARA-X embeds, so the original ~12 MB size target was missed. The size stays under the project's 20 MiB ceiling.
 
-### 3. Runtime trace analysis
+The micro-benchmark measures one in-process pipeline iteration. It is not a scan latency, which also includes process startup and file I/O.
 
-During a workflow, the diagnostic proxy records tool name, contract version, sanitized inputs, latency, retry count, response shape, error category, and correlation identifiers. Sensitive values are removed before storage.
+## What has not been measured
 
-The trace lets the system separate several failures that may produce similar model-visible text:
+The v0.1.0 release ships 14 curated fixtures: 6 attack fixtures covering SD-01, SD-02, SD-03, SD-04, and SD-10; 3 benign fixtures; 4 benchmark skills; and 1 example skill. The remaining six classes are covered by rules, not fixtures.
 
-- invalid arguments generated by the planner;
-- a stale adapter that serialized valid arguments incorrectly;
-- authentication or permission failure;
-- rate limiting or temporary unavailability;
-- a response that violates the registered schema; and
-- a downstream scientific or business rule rejecting the request.
+The whitepaper specifies an evaluation protocol against the Cisco AI Defense Skill Scanner and NVIDIA SkillSpector at pinned versions. It uses a 1,000-skill public corpus, 55 synthetic attacks spanning all eleven classes, and separate evasion, adversarial-scanner, and hard-negative corpora. Those corpora are specified but not yet populated. Until they are:
 
-### 4. Recovery recommendation
+- median scan latency is a pre-registered target (under 150 ms), not a result;
+- no precision or recall figures exist;
+- no comparison with other scanners has been run.
 
-Skill Doctor returns a bounded recommendation, not an unrestricted code change. The planner may correct an argument, select a compatible tool version, wait under the retry policy, use an approved fallback, or ask for human intervention.
+The project has committed to publishing these results, including targets it misses.
 
-Changes to code, schemas, credentials, or external state remain subject to the normal review boundary. Automatic repair is appropriate only when the allowed transformation is narrow, reversible, and tested against fixtures.
+## Next
 
-## Observability that agents can consume
+The [v0.1.1 milestone](https://github.com/KalarisLabs/Skill-Doctor/milestone/1) covers:
 
-Traditional dashboards are designed for operators. Agents need a compact health view that can enter planning context without replacing the underlying evidence.
+- fixtures for all eleven classes;
+- evaluation on external public skill repositories;
+- Cosign verification inside the GitHub Action;
+- a smaller binary through conditional compilation;
+- Apple notarization for macOS binaries.
 
-A useful view answers:
+## Sources
 
-- Is the tool available in this environment?
-- Does the active interface match the registered contract?
-- Which operations are permitted with the current credential?
-- What failed most recently, and is a retry safe?
-- Which fallback is approved for this operation?
-- Which evidence supports the health status?
-
-The status should include `unknown`. Absence of a recent failure is not proof that a tool works.
-
-## Benchmark design
-
-We propose a fixture-based benchmark with controlled faults. Each task package starts from a working tool integration, then introduces one change at a time:
-
-1. renamed or removed parameter;
-2. incompatible response field;
-3. expired or under-scoped credential;
-4. missing runtime dependency;
-5. deterministic rate-limit response;
-6. temporary network failure; or
-7. unsafe operation that must not be probed.
-
-The benchmark measures fault classification accuracy, unnecessary tool calls, unsafe actions attempted, recovery success, time and tokens spent, and false positives against healthy integrations. Results should be reported per fault class; a single aggregate score would hide the failures that matter most.
-
-## Security boundary
-
-Diagnostics increase access to schemas, logs, and service state. The system must redact secrets, restrict probe credentials, cap response storage, and prevent untrusted tool output from rewriting its own contract. Health records should be signed or stored in an append-only audit stream when they influence high-impact automation.
-
-## Relationship to the research stack
-
-Skill Doctor covers operational evidence at the tool boundary. [Deterministic evaluations](/research/deterministic-evals) define how to compare agent versions under controlled tools. [Recursive context](/research/recursive-context) defines how verified failures and repairs can inform later runs without becoming permanent folklore.
-
-The next publishable result is not a claim that the system self-heals. It is a reproducible benchmark showing which tool failures it detects, which recoveries it performs, and where it stops for review.
+- Repository: [github.com/KalarisLabs/Skill-Doctor](https://github.com/KalarisLabs/Skill-Doctor)
+- Whitepaper: [Skill Doctor: Deterministic Multi-Layer Security Analysis of AI Agent Skill Files with Host-Delegated Semantic Inference](https://github.com/KalarisLabs/Skill-Doctor/blob/main/paper/skill-doctor-whitepaper.pdf) (PDF)
+- Implementation mapping: [whitepaper reconciliation report](https://github.com/KalarisLabs/Skill-Doctor/blob/main/docs/PAPER-RECONCILIATION.md)
+- Packages: [`@security.kalarislabs/skill-doctor`](https://www.npmjs.com/package/@security.kalarislabs/skill-doctor) on npm, [`skill-doctor`](https://crates.io/crates/skill-doctor) on crates.io

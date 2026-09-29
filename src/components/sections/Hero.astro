@@ -1,28 +1,38 @@
 ---
-import { FogTextReveal } from '../sora-ui/texts/fog-text-reveal';
+import { DiaTextReveal } from '../sora-ui/texts/dia-text-reveal';
 import { SoraCtaButton } from '../sora-ui/SoraCtaButton';
+
+const revealColors = ['#4d7cff', '#38bdf8', '#a5b4fc', '#e1e1fe'];
 ---
 
 <section class="hero-section" id="mission">
   <div class="content-column">
-    {/* 1. Supermemory-style Headline & One-liner */}
     <div class="hero-header-super">
       <h1 class="hero-title">
         Recursive, self-improving infrastructure for{' '}
-        <FogTextReveal
+        <DiaTextReveal
           client:load
-          className="hero-fog-reveal"
-          holdDuration={1500}
+          className="hero-dia-reveal"
           text={[
             'scientific research.',
             'autonomous labs.',
             'discovery at scale.',
           ]}
+          colors={revealColors}
+          duration={1.4}
+          holdDuration={2.2}
+          repeat
+          fixedWidth
         />
       </h1>
+      <p class="hero-lede">
+        AI systems are already producing research-level advances in mathematics,
+        with new AI-assisted discoveries appearing in rapid succession.
+        Mathematics benefits from comparatively fast, abundant, and trustworthy
+        verification. We are building that same loop for the rest of science.
+      </p>
     </div>
 
-    {/* 2. Original User-Provided Image Component */}
     <div class="hero-banner-container tick-box">
       <img
         src="/images/kalaris-hero-banner.png"
@@ -31,10 +41,10 @@ import { SoraCtaButton } from '../sora-ui/SoraCtaButton';
         height="173"
         class="hero-banner-image"
         loading="eager"
+        fetchpriority="high"
       />
     </div>
 
-    {/* 3. Manifesto Message with Blue Source Backlinks */}
     <div class="manifesto-stream">
       <p>
         The path to accelerated scientific discovery is to scale{' '}
@@ -45,21 +55,19 @@ import { SoraCtaButton } from '../sora-ui/SoraCtaButton';
           >
         </a>{' '}
         that works with any model, any experimental harness, and across all research
-        disciplines. As scientific models proliferate and the frontier becomes{
-          ' '
-        }
-        <a href="/research/recursive-context" class="source-backlink">
-          multi-domain<span class="backlink-icon" aria-hidden="true">↗</span>
-        </a>, experimental context and operational tooling should be separated
-        from fragile one-off scripts and compound continuously.
+        disciplines. As scientific models proliferate and the frontier becomes multi-domain,
+        experimental context and operational tooling should be separated from fragile
+        one-off scripts and compound continuously.
       </p>
 
       <p class="manifesto-callout">
         <a href="/manifesto" class="source-backlink callout-link">
-          Operational overhead is no longer a constraint.<span
-            class="backlink-icon"
-            aria-hidden="true">↗</span
-          >
+          <DiaTextReveal
+            client:visible
+            text="Operational overhead is no longer a constraint."
+            colors={revealColors}
+            duration={1.6}
+          /><span class="backlink-icon" aria-hidden="true">↗</span>
         </a>
       </p>
 
@@ -72,7 +80,7 @@ import { SoraCtaButton } from '../sora-ui/SoraCtaButton';
       <p>
         We build all the hard infrastructure parts of a scalable research
         engine, with{' '}
-        <a href="/research/edge-delivery" class="source-backlink">
+        <a href="/blog/closed-loop-science" class="source-backlink">
           dense, interconnected, compounding learnings<span
             class="backlink-icon"
             aria-hidden="true">↗</span

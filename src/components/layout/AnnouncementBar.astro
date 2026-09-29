@@ -1,11 +1,35 @@
-<aside class="global-announcement" aria-label="Kalaris Fellowship applications">
+---
+const onFellowshipPage = Astro.url.pathname.startsWith('/fellowship');
+---
+
+<aside class="global-announcement" aria-label="Kalaris Fellowship">
   <a
-    href="mailto:careers@kalarislabs.com?subject=Kalaris%20Fellowship%20Application"
+    href={onFellowshipPage ? '#register' : '/fellowship'}
+    class="announcement-link"
   >
+    <img
+      src="/fellowship/kalaris-mark-96.png"
+      alt=""
+      width="20"
+      height="20"
+      class="announcement-mark"
+    />
     <span class="announcement-label">Kalaris Fellowship</span>
-    <strong>Applications are open</strong>
-    <span class="announcement-action"
-      >Apply <span aria-hidden="true">↗</span></span
-    >
+    <strong class="announcement-title">Applications are open</strong>
+    <span class="announcement-cta">
+      {onFellowshipPage ? 'Pick your hats' : 'Apply now'}
+      <svg
+        class="inline-arrow"
+        viewBox="0 0 24 24"
+        width="14"
+        height="14"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg
+      >
+    </span>
   </a>
 </aside>

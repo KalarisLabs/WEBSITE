@@ -1,8 +1,8 @@
 /** biome-ignore-all lint/suspicious/noArrayIndexKey: fixed-size particle pool, never reordered/resized. */
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils/cn";
-import { animate } from "motion";
+import { cn } from '@/lib/utils/cn';
+import { animate } from 'motion';
 import {
   type ReactNode,
   type PointerEvent as ReactPointerEvent,
@@ -10,15 +10,15 @@ import {
   type RefCallback,
   useEffect,
   useRef,
-} from "react";
-import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+} from 'react';
+import { usePrefersReducedMotion } from '@/hooks/use-prefers-reduced-motion';
 
 const DEFAULT_PARTICLE = (
   <span className="block h-1.5 w-1.5 rounded-full bg-current" />
 );
 
 const PARTICLE_CLASS =
-  "-translate-x-1/2 -translate-y-1/2 absolute top-0 left-0 opacity-0 [filter:drop-shadow(0_0_3px_currentColor)] dark:[mix-blend-mode:plus-lighter]";
+  '-translate-x-1/2 -translate-y-1/2 absolute top-0 left-0 opacity-0 [filter:drop-shadow(0_0_3px_currentColor)] dark:[mix-blend-mode:plus-lighter]';
 
 export interface ParticleHoverButtonClassNames {
   /** The wrapper around `children` that pulses on hover. */
@@ -66,7 +66,7 @@ function mergeRefs<T>(...refs: (Ref<T> | undefined)[]): RefCallback<T> {
       if (!ref) {
         continue;
       }
-      if (typeof ref === "function") {
+      if (typeof ref === 'function') {
         ref(node);
       } else {
         ref.current = node;
@@ -100,7 +100,7 @@ export function ParticleHoverButton({
   const emitIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pulseControlsRef = useRef<ReturnType<typeof animate> | null>(null);
   const activeParticleAnimationsRef = useRef<Set<ReturnType<typeof animate>>>(
-    new Set()
+    new Set(),
   );
 
   useEffect(
@@ -114,7 +114,7 @@ export function ParticleHoverButton({
       }
       activeParticleAnimationsRef.current.clear();
     },
-    []
+    [],
   );
 
   const updatePointer = (e: ReactPointerEvent<HTMLSpanElement>) => {
@@ -155,7 +155,7 @@ export function ParticleHoverButton({
         x: [0, jitterA, jitterB],
         y: [0, -drift],
       },
-      { duration: duration / 1000, ease: "easeOut" }
+      { duration: duration / 1000, ease: 'easeOut' },
     );
     activeParticleAnimationsRef.current.add(controls);
     controls.then(() => {
@@ -177,7 +177,7 @@ export function ParticleHoverButton({
       pulseControlsRef.current = animate(
         contentRef.current,
         { scale: [1, 1.04, 1] },
-        { duration: 0.9, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY }
+        { duration: 0.9, ease: 'easeInOut', repeat: Number.POSITIVE_INFINITY },
       );
     }
   };
@@ -192,21 +192,21 @@ export function ParticleHoverButton({
       pulseControlsRef.current = animate(
         contentRef.current,
         { scale: 1 },
-        { duration: 0.3 }
+        { duration: 0.3 },
       );
     }
   };
 
   return (
     <span
-      className={cn("relative inline-flex", className)}
+      className={cn('relative inline-flex', className)}
       onPointerEnter={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
       onPointerMove={updatePointer}
       ref={mergeRefs(rootRef, ref)}
     >
       <span
-        className={cn("relative z-[1] inline-flex", classNames?.content)}
+        className={cn('relative z-[1] inline-flex', classNames?.content)}
         ref={contentRef}
       >
         {children}

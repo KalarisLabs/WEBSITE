@@ -4,6 +4,7 @@
 interface ImportMetaEnv {
   readonly PUBLIC_SITE_URL?: string;
   readonly PUBLIC_DOCS_URL?: string;
+  readonly PUBLIC_FELLOWSHIP_APPLICATION_URL?: string;
   readonly PUBLIC_POSTHOG_TOKEN?: string;
   readonly PUBLIC_POSTHOG_HOST?: string;
   readonly PUBLIC_TURNSTILE_SITE_KEY?: string;

@@ -1,4 +1,6 @@
 ---
+import FooterWordmark from './FooterWordmark';
+
 const year = new Date().getUTCFullYear();
 ---
 
@@ -36,19 +38,13 @@ const year = new Date().getUTCFullYear();
         </div>
 
         <div class="footer-nav-col">
-          <span class="footer-nav-heading">Company</span>
+          <span class="footer-nav-heading">About</span>
           <ul class="footer-nav-list" role="list">
-            <li><a href="/company">About</a></li>
             <li><a href="/press">Press</a></li>
             <li><a href="/team">Research Team</a></li>
+            <li><a href="/careers">Careers</a></li>
             <li>
-              <a href="/company/careers" class="careers-nav-link">
-                <span>Careers</span>
-                <span class="hiring-tag">Open intro</span>
-              </a>
-            </li>
-            <li>
-              <a href="mailto:contact@kalarislabs.com">
+              <a href="mailto:hello@kalarislabs.com">
                 Contact <span class="arrow-glyph" aria-hidden="true">↗</span>
               </a>
             </li>
@@ -113,5 +109,8 @@ const year = new Date().getUTCFullYear();
         </button>
       </div>
     </div>
+
+    {/* Bold wordmark with the dither reveal; hover or tap to reveal colour. */}
+    <FooterWordmark client:visible />
   </div>
 </footer>

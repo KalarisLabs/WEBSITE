@@ -1,46 +1,101 @@
 ---
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
+import AsciiDither404 from '../components/sections/AsciiDither404.astro';
 import Layout from '../layouts/Layout.astro';
 
 export const prerender = true;
+
+// Every main section, so a dead link still leads somewhere useful.
+const destinations = [
+  { href: '/', label: 'Home', body: 'What Kalaris Labs is building.' },
+  { href: '/research', label: 'Research notes', body: 'Published research.' },
+  { href: '/blog', label: 'Engineering blog', body: 'How we build it.' },
+  { href: '/fellowship', label: 'Fellowship', body: 'Pick your hats.' },
+  { href: '/careers', label: 'Careers', body: 'Open roles.' },
+  { href: '/manifesto', label: 'Manifesto', body: 'Why this matters.' },
+];
 ---
 
 <Layout
-  title="404 — Page Not Found"
+  title="Page not found"
   description="The requested page could not be found on Kalaris Labs."
   noindex={true}
 >
   <Header />
-  <main
-    id="main-content"
-    class="flex min-h-[70vh] items-center justify-center pt-32 pb-20"
-  >
-    <div class="content-column mx-auto max-w-xl px-4 text-center">
-      <span
-        class="mono-eyebrow font-mono text-xs tracking-widest text-blue-400 uppercase"
-        >Status 404 // Routing Error</span
-      >
-      <h1
-        class="text-foreground mt-4 mb-4 text-5xl font-bold tracking-tight md:text-6xl"
-      >
-        Page Not Found
-      </h1>
-      <p
-        class="text-muted-foreground mb-8 text-base leading-relaxed md:text-lg"
-      >
-        The experiment, note, or pathway you requested does not exist or has
-        been relocated.
-      </p>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <a href="/" class="button button-primary">
-          Back to Home <span aria-hidden="true">&rarr;</span>
-        </a>
-        <a href="/research" class="button button-secondary">
-          Explore Research Notes
-        </a>
+  <main id="main-content" class="not-found-page">
+    <div class="site-container">
+      <AsciiDither404 />
+      <div class="not-found-copy">
+        <h1>Page not found</h1>
+        <p>
+          The note, post, or page you asked for does not exist or has moved. Try
+          one of these instead.
+        </p>
       </div>
+      <nav class="not-found-links" aria-label="Main sections">
+        {
+          destinations.map((item) => (
+            <a href={item.href}>
+              <span>{item.label}</span>
+              <small>{item.body}</small>
+            </a>
+          ))
+        }
+      </nav>
     </div>
   </main>
   <Footer />
 </Layout>
+
+<style>
+  .not-found-page {
+    padding: 2.5rem 0 5rem;
+  }
+  .not-found-copy {
+    max-width: 36rem;
+    margin-top: 2rem;
+  }
+  .not-found-copy h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .not-found-copy p {
+    margin: 0.9rem 0 0;
+    color: #a4a4ab;
+    line-height: 1.65;
+  }
+  .not-found-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .not-found-links a {
+    display: grid;
+    gap: 0.3rem;
+    padding: 1.1rem 1.25rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background-color 160ms var(--ease-out);
+  }
+  .not-found-links a:hover {
+    background: #0d0d0f;
+  }
+  .not-found-links span {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .not-found-links small {
+    color: var(--subtle);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 640px) {
+    .not-found-links {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

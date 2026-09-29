@@ -1,30 +1,35 @@
 ---
-const careersUrl = '/company/careers';
+import { POSTINGS } from '../../data/careers';
 ---
 
-<section class="careers-section" id="careers">
+<section class="careers-section" id="careers" aria-labelledby="careers-heading">
   <div class="content-column">
-    <div class="section-lead-compact">
-      <span class="section-marker">| 02. Careers & Mission</span>
-    </div>
-
-    {/* Inspired by reference: Clean graphic card with corner coordinates */}
-    <div class="careers-card-wrapper">
-      <a
-        href={careersUrl}
-        class="careers-card"
-        aria-label="Visit the Kalaris Labs career section"
-      >
-        <div class="careers-card-meta top-left">x 0 y 0</div>
-        <div class="careers-card-meta bottom-right">0 selected</div>
-        <img
-          src="/images/careers-graphic.png"
-          alt="Careers at Kalaris Labs: Autonomous infrastructure for scientific research"
-          width="1729"
-          height="910"
-          class="careers-card-img"
-          loading="lazy"
-        />
+    <h2 id="careers-heading" class="careers-heading">Careers</h2>
+    <a
+      href="/careers"
+      class="careers-card careers-card-wrapper"
+      aria-label="Careers at Kalaris Labs"
+    >
+      <img
+        src="/images/careers-graphic.webp"
+        alt="Careers at Kalaris Labs: let's build recursive self-improvement for scientific discovery"
+        width="1729"
+        height="910"
+        class="careers-card-img"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+    <div class="careers-apply-box">
+      <p class="careers-apply-text">
+        We are building a small applied AI research team. {
+          POSTINGS.length === 1
+            ? 'Applications are open.'
+            : `${POSTINGS.length} postings are open.`
+        }
+      </p>
+      <a href="/careers" class="button-apply">
+        View open positions <span aria-hidden="true">→</span>
       </a>
     </div>
   </div>

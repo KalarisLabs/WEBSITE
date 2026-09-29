@@ -6,20 +6,28 @@ import Hero from '../components/sections/Hero.astro';
 import DesignPartners from '../components/sections/DesignPartners.astro';
 import ResearchCarousel from '../components/sections/ResearchCarousel.astro';
 import CareersBanner from '../components/sections/CareersBanner.astro';
+import FellowshipBanner from '../components/sections/FellowshipBanner.astro';
+import Faq from '../components/sections/Faq.astro';
+import { FAQS } from '../data/faqs';
+import { buildFaqSchema } from '../lib/seo/schema';
 
 export const prerender = true;
 ---
 
 <Layout
   title="Kalaris Labs"
-  description="Agent-powered infrastructure for scientific discovery, built for researchers everywhere."
+  seoTitle="Kalaris Labs: Self-improving infrastructure for scientific research"
+  description="Kalaris Labs builds recursive, self-improving infrastructure that brings fast, trustworthy verification loops to scientific research, for researchers everywhere."
+  extraSchemas={[buildFaqSchema(FAQS)]}
 >
   <Header />
   <main id="main-content">
     <Hero />
     <DesignPartners />
     <ResearchCarousel />
+    <FellowshipBanner />
     <CareersBanner />
+    <Faq />
   </main>
   <Footer />
 </Layout>

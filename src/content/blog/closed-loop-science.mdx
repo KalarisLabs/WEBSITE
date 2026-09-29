@@ -1,0 +1,190 @@
+---
+title: 'Closed-Loop Science: Replacing Stochastic Paper Generation with Deterministic Verification'
+seoTitle: 'Closed-loop science: verification over paper generation'
+description: Generating papers became cheap and verifying them did not. An essay on automated hypothesis validation, literature contradiction graphs, and closed-loop labs.
+publishDate: 2026-09-24
+updatedDate: 2026-09-24
+tags:
+  - science
+  - verification
+  - automation
+draft: false
+socialImage: /images/content/8.jpg
+---
+
+On May 16, 2026, arXiv announced that it would ban authors for a year if their submissions showed clear evidence of unchecked output from a language model: hallucinated references, leftover comments to or from the model, or placeholder data that was never replaced. After the ban, an author's future submissions must first be accepted by a reputable peer-reviewed venue. Thomas Dietterich, who chairs arXiv's computer science section and announced the rule, explained the logic simply. If a paper contains incontrovertible evidence of unvetted model output, nothing in it can be trusted.
+
+It is a reasonable rule and a revealing one. The world's largest preprint server now spends moderator time detecting text that no one checked. Peer review, already stretched, faces the same flood. Meanwhile, systems built to automate research have reached the point where Sakana AI's AI Scientist-v2 produced a paper, written end to end by the system, that passed peer review at a machine learning workshop.
+
+Producing research papers has become cheap. Verifying research claims has not. This essay argues that the useful response is not better detection of machine-written papers. It is to change what automated research produces: not papers, but verified claims, with the paper as a view generated at the end.
+
+## Stochastic paper generation
+
+Most "AI scientist" systems follow the same pipeline. A model proposes an idea, writes code, runs experiments, and writes up the results in the format of a paper. Each step is sampled from a probability distribution. Run the pipeline again and you get a different idea, different code, different numbers, and a different paper.
+
+That is not a flaw in itself. Science has always involved generating many ideas and keeping few. The problem is where verification sits. In a pipeline that ends in a paper, verification is left to readers and reviewers: the people least able to rerun the experiments, and most likely to trust fluent prose.
+
+The failure modes follow directly:
+
+- **Fabricated support.** References that do not exist, or that exist but do not say what the text claims. Research reported in _The Lancet_ has tracked fabricated citations rising in the biomedical literature as language model use grows.
+- **Unreproducible results.** Numbers produced by code that no one can run again, in an environment no one recorded.
+- **Selection at scale.** When generating an experiment costs almost nothing, a system can run hundreds of variants and write up the one that crossed a significance threshold. Nothing in the finished paper reveals the others.
+- **Reviewer overload.** Every generated paper costs human attention to evaluate, whether or not it is any good.
+
+Better generation does not fix any of these. A more capable model writes a more convincing paper, which makes the verification gap harder to see, not smaller.
+
+## Deterministic verification
+
+The alternative is to make verification part of the loop, and to make it deterministic in a specific sense.
+
+Deterministic does not mean the world is deterministic. Experiments are noisy, cells vary, and instruments drift. It means the _process_ is exactly specified and replayable: given the same recorded inputs, anyone can re-execute it and get the same outputs, or outputs within stated tolerances when randomness is part of the method, with seeds and repeat counts recorded.
+
+In practice, every claim a system makes carries its evidence:
+
+- the hypothesis, prediction, and test, written down before the experiment ran;
+- the environment, pinned exactly, including code version, dependencies, hardware, and instrument configuration;
+- the data, identified by content hash;
+- the execution record, captured by infrastructure rather than reported by the agent; and
+- the result, with its uncertainty.
+
+A claim without that bundle is not a result. It is a draft.
+
+Three components make this work at scale.
+
+## 1. Automated hypothesis validation
+
+The most important discipline in empirical science is deciding what would count as success before you look at the data. Pre-registration exists because people, given room to reinterpret a result after seeing it, reliably find a way to see what they hoped.
+
+Automated systems need the same discipline, enforced by infrastructure. Before an experiment runs, the system commits a record containing:
+
+- the hypothesis in plain language;
+- a quantitative prediction;
+- the test that will evaluate it, as executable code; and
+- the criteria for failure.
+
+The record is hashed and stored where the agent cannot edit it. After the experiment, the test runs exactly as committed. If the agent wants to change the analysis, that is allowed, but it creates a new hypothesis with a new record, and the original result stands.
+
+This matters more for agents than for people. Evaluation research has documented agents editing tests, tampering with scorers, and rewriting their own time limits when success is otherwise out of reach. A system that is allowed to change its success criteria after seeing the results will learn to do so. Committing the test first turns that from a temptation into an impossibility.
+
+It also changes what failure means. A falsified hypothesis, recorded with its evidence, is a result. Negative results are the most under-reported findings in science. A closed-loop system can record every one of them at no extra cost.
+
+### What a committed record looks like
+
+A pre-registered hypothesis record does not need to be elaborate. The example below is illustrative, but every field in it earns its place:
+
+```yaml
+hypothesis: >
+  Compound K-17 reduces aggregation of protein X in cell line Y
+  at concentrations below 10 micromolar.
+prediction:
+  metric: aggregate_fraction
+  direction: decrease
+  minimum_effect: 0.20
+test:
+  code: analysis/aggregation_test.py
+  code_hash: sha256:9f2c...
+  method: two-sided t-test, alpha 0.01, n = 12 wells per arm
+failure_criteria:
+  - effect below minimum_effect
+  - p-value above alpha
+  - positive control fails
+environment:
+  lockfile_hash: sha256:41ab...
+  instrument_profile: plate-reader-03/calibration-2026-09-20
+data_inputs:
+  - sha256:c7e1...
+committed_at: 2026-09-24T10:12:00Z
+```
+
+Once committed, the record is immutable. The experiment's result is appended as a separate record that references this one by hash, so anyone reading the result can see exactly what was predicted, how it was tested, and whether the test changed.
+
+## 2. Literature contradiction graphs
+
+Papers are the wrong unit for a machine to reason over. A paper bundles dozens of claims, made under specific conditions, with varying strength of evidence, in prose written to persuade. What a research system needs is the claims themselves.
+
+A contradiction graph represents the literature as:
+
+- **nodes,** each an individual claim extracted from a source, together with its conditions (organism, cell line, dose, dataset, temperature, or model scale) and a pointer to the exact passage that supports it; and
+- **edges,** marking where claims support each other, contradict each other, or refine each other under different conditions.
+
+Two things become possible that are impossible with a stack of PDFs.
+
+First, a new hypothesis can be checked against the graph before any experiment runs. Has this been tested? Under what conditions? Does existing evidence already contradict it? Much of what automated systems "discover" today is already known. The graph turns that from an embarrassment into a lookup.
+
+Second, contradictions become work items. When two credible claims conflict, either one is wrong or the conditions differ in a way no one has isolated. Either way, there is an experiment to run. A contradiction graph is, in effect, a prioritised list of the places where the literature does not agree with itself.
+
+Extraction is the hard part, and it should be treated as fallible. Every edge needs provenance back to the source text, so that a person or another system can check it. A graph built from unverified extraction is just a more structured way to hallucinate.
+
+## 3. Closed-loop lab automation
+
+The loop is only fully closed when the experiments themselves can be run by the system. Self-driving laboratories combine robotics, automated measurement, and models that choose the next experiment, in a design, build, test, and learn cycle with minimal human intervention.
+
+The field is now heavily funded. Periodic Labs, founded in 2025 by Liam Fedus, formerly of OpenAI, and Ekin Dogus Cubuk, formerly of Google DeepMind, raised a $300 million seed round to automate materials discovery. It focuses on inorganic solid materials such as high-temperature superconductors, with robots that mix powders and fire them in furnaces. Lila Sciences has raised about $550 million to build what it calls AI Science Factories: facilities where robotic instruments run experiments continuously under AI control. FutureHouse, a philanthropically funded lab, reported that its multi-agent system Robin generated hypotheses, designed experiments, analysed data, and identified ripasudil as a candidate treatment for dry age-related macular degeneration, taking two and a half months from concept to paper.
+
+Reviews of the field are appropriately cautious. Early self-driving labs proved that closed-loop discovery is feasible, but were limited by narrow scope, poor interoperability between instruments, and reliance on human-curated heuristics. Capital is flowing faster than published discoveries.
+
+The contribution of lab automation to verification is often overlooked. A robot does not just run experiments faster. It runs them identically, logs every parameter, and can repeat any experiment on demand. Replication, the most expensive step in conventional science, becomes a function call. That makes automated labs the natural home for deterministic verification, provided the software around them records everything and lets the agent edit nothing that matters.
+
+## How the loop runs
+
+Put the three components together and one iteration of the loop looks like this:
+
+1. **Read the graph.** Find a contradiction, a gap, or a claim with weak support that matters to the research question.
+2. **Propose.** Generate candidate hypotheses that would resolve it, and check each against the graph to discard what is already known or already refuted.
+3. **Commit.** Write the hypothesis record, including prediction, test, and failure criteria, and store it beyond the agent's reach.
+4. **Execute.** Run the experiment in a pinned environment, on a robot where possible, with execution recorded by infrastructure.
+5. **Evaluate.** Run the committed test, exactly as written, on the recorded data.
+6. **Update.** Add the result to the graph as a new claim with full provenance, whether it confirms, refutes, or complicates what was known.
+7. **Replicate selectively.** When a result would change what the system does next, schedule an independent replication before building on it.
+
+The loop is not faster than a human researcher at any single step. Its advantage is that it never skips steps 3, 5, and 6, and that everything it learns remains available to every later iteration.
+
+## Where verification is hard
+
+It would be dishonest to present this as a solved problem.
+
+- **Measurement is noisy.** Many biological and physical measurements have large variance. Verification must be statistical, with sample sizes chosen in advance.
+- **Some experiments are expensive or slow.** A mouse study cannot be rerun on demand. For these, the loop has to prioritise which claims are worth the cost of checking.
+- **Some claims cannot be tested directly.** Mechanistic explanations, causal claims from observational data, and claims about rare events all resist simple re-execution. The honest move is to mark their verification status as partial rather than pretend.
+- **Automation can verify the wrong thing.** A test that is committed in advance but badly designed will faithfully confirm a meaningless result. Pre-registration protects the analysis from the agent. It does not protect the experiment from a bad idea.
+
+Closed-loop science does not remove the need for scientific judgment. It moves judgment to where it is most valuable: designing tests, choosing which contradictions to resolve, and deciding what a result means.
+
+## What changes for researchers
+
+If research systems produce verified claims rather than papers, the work of the people around them changes too.
+
+**Reviewing becomes auditing.** A reviewer no longer has to judge whether a result is plausible from the prose. They can check whether the committed test matches the claim, whether the environment reproduces, and whether the evidence supports the conclusion drawn from it. Much of that can be automated, which leaves human attention for what cannot be: whether the question was worth asking and the test was well designed.
+
+**Reading becomes querying.** Instead of reading forty papers to learn what is known about a mechanism, a researcher asks the graph: which claims exist, under which conditions, with what support, and where do they conflict? The papers remain, as the human-readable record, but they are no longer the only way in.
+
+**Credit follows evidence.** Today, credit attaches to papers, which rewards producing papers. In a claim-centred system, credit can attach to claims that survive replication, to contradictions resolved, and to datasets and environments that others build on. That is a better match for what actually moves a field forward.
+
+**Negative results count.** A researcher who spends a month showing that a promising hypothesis is false has produced something valuable. When falsified hypotheses are recorded with the same structure and provenance as confirmed ones, that work stops disappearing.
+
+None of this requires abandoning papers. Narrative still matters: it is how people communicate why a question is interesting and what a set of results means together. The change is in the order of operations. Evidence first, verified and machine-readable. Narrative second, generated from the evidence and checkable against it.
+
+## Five principles
+
+1. **Claims before prose.** The primary output of a research system is a set of claims with evidence. The paper is a view over that set, generated last.
+2. **Every result carries its environment.** Code, data, and configuration are pinned and hashed, so any result can be re-executed.
+3. **Tests are committed before experiments.** Success criteria are fixed in advance and stored beyond the agent's reach.
+4. **Contradictions are work.** Conflicts in the evidence are the highest-value experiments to run next.
+5. **Failures are data.** Falsified hypotheses and null results are recorded with the same care as successes.
+
+## Why we build this way
+
+Kalaris Labs builds infrastructure for scientific research on one premise: research should compound. Each experiment should leave behind verified context (environments, execution traces, results, and the literature it relied on) that the next experiment starts from, instead of starting from scratch.
+
+That premise is incompatible with stochastic paper generation. A pile of unverified papers does not compound. It accumulates noise that every later reader has to filter. Verified claims compound, because each one can be built on without being rechecked.
+
+AI has already produced research-level results in mathematics, where proofs can be checked quickly and reliably. The rest of science has no equivalent loop yet. Building it is less a question of better models than of better infrastructure: pinned environments, committed tests, claim graphs, and labs that can replicate on demand. The papers can come afterwards. They will be worth reading.
+
+## Sources
+
+- [TechCrunch: arXiv will ban authors for a year if they let AI do all the work (May 2026)](https://techcrunch.com/2026/05/16/research-repository-arxiv-will-ban-authors-for-a-year-if-they-let-ai-do-all-the-work/)
+- [Yamada et al., The AI Scientist-v2: Workshop-level automated scientific discovery via agentic tree search](https://arxiv.org/abs/2504.08066)
+- [Sakana AI: The AI Scientist, published in Nature](https://sakana.ai/ai-scientist-nature/)
+- [FutureHouse: Research](https://www.futurehouse.org/research)
+- [Contrary Research: Lila Sciences](https://research.contrary.com/company/lila-sciences)
+- [Materials Horizons: Toward self-driving laboratory 2.0 for chemistry and materials discovery](https://pubs.rsc.org/en/content/articlelanding/2026/mh/d5mh01984b)
