@@ -75,6 +75,8 @@ export default defineConfig({
       org: process.env.SENTRY_ORG ?? 'kalaris-labs',
       project: process.env.SENTRY_PROJECT ?? 'kalaris-labs-website',
       authToken: process.env.SENTRY_AUTH_TOKEN,
+      // Maps are uploaded to Sentry, then removed so they are never served.
+      sourcemaps: { filesToDeleteAfterUpload: ['dist/**/*.map'] },
       telemetry: false,
     }),
     markdownTwins({ site }),
@@ -85,6 +87,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    build: { sourcemap: true },
+    // Hidden maps (no sourceMappingURL) only when Sentry can receive them.
+    build: { sourcemap: process.env.SENTRY_AUTH_TOKEN ? 'hidden' : false },
   },
 });

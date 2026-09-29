@@ -14,6 +14,7 @@ export type ContactRequest = z.infer<typeof contactRequestSchema>;
 
 export type ContactErrorCode =
   | 'INVALID_REQUEST'
+  | 'FORBIDDEN_ORIGIN'
   | 'PAYLOAD_TOO_LARGE'
   | 'CHALLENGE_FAILED'
   | 'THROTTLED'

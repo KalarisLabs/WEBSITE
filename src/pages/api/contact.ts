@@ -3,7 +3,10 @@ import { getSecret } from 'astro:env/server';
 import type { APIRoute } from 'astro';
 import { createResendAdapter } from '../../lib/contact/email';
 import { handleContactRequest } from '../../lib/contact/handler';
-import { createTurnstileAdapter } from '../../lib/contact/turnstile';
+import {
+  createTurnstileAdapter,
+  turnstileHostnamesFor,
+} from '../../lib/contact/turnstile';
 
 export const prerender = false;
 
@@ -16,7 +19,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     return {
-      turnstile: createTurnstileAdapter(turnstileSecretKey),
+      turnstile: createTurnstileAdapter(
+        turnstileSecretKey,
+        turnstileHostnamesFor(env.APP_ENV, new URL(request.url).hostname),
+      ),
       email: createResendAdapter({
         apiKey: resendApiKey,
         from: env.CONTACT_FROM_EMAIL,

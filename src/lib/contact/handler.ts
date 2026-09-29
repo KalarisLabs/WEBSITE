@@ -18,6 +18,16 @@ function json(body: ContactResponse, status: number) {
   });
 }
 
+/**
+ * Only same-origin browser submissions are accepted: browsers always send
+ * `Origin` on POST, so a missing or foreign origin means a cross-site form or
+ * a script posting directly.
+ */
+function isSameOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin');
+  return origin !== null && origin === new URL(request.url).origin;
+}
+
 async function readBoundedBody(request: Request): Promise<string> {
   const declaredLength = Number(request.headers.get('content-length') ?? '0');
   if (declaredLength > MAX_CONTACT_BODY_BYTES) throw new RangeError('payload');
@@ -52,6 +62,17 @@ export async function handleContactRequest(
 ): Promise<Response> {
   if (request.method !== 'POST') {
     return new Response(null, { status: 405, headers: { allow: 'POST' } });
+  }
+
+  if (!isSameOrigin(request)) {
+    return json(
+      {
+        ok: false,
+        code: 'FORBIDDEN_ORIGIN',
+        message: 'Submit the form from kalarislabs.com.',
+      },
+      403,
+    );
   }
 
   let rawBody: string;

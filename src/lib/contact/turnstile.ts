@@ -6,9 +6,24 @@ interface TurnstileResponse {
   hostname?: string;
 }
 
+const PRODUCTION_HOSTNAMES = ['kalarislabs.com', 'www.kalarislabs.com'];
+
+/**
+ * Hostnames a Turnstile token may have been issued on. Production accepts only
+ * the canonical domains; other environments also accept localhost and the
+ * host serving the request (e.g. the staging workers.dev URL).
+ */
+export function turnstileHostnamesFor(
+  appEnv: string,
+  requestHostname: string,
+): string[] {
+  if (appEnv === 'production') return PRODUCTION_HOSTNAMES;
+  return [...PRODUCTION_HOSTNAMES, 'localhost', requestHostname];
+}
+
 export function createTurnstileAdapter(
   secret: string,
-  expectedHostnames = ['kalarislabs.com', 'www.kalarislabs.com', 'localhost'],
+  expectedHostnames = PRODUCTION_HOSTNAMES,
   fetcher: typeof fetch = fetch,
 ): TurnstileAdapter {
   return {

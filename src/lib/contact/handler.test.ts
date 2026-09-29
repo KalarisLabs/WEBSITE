@@ -16,12 +16,16 @@ const validRequest: ContactRequest = {
   turnstileToken: 'verified-token',
 };
 
-function request(body: unknown) {
+function request(
+  body: unknown,
+  origin: string | null = 'https://kalarislabs.com',
+) {
   return new Request('https://kalarislabs.com/api/contact', {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       'cf-connecting-ip': '203.0.113.10',
+      ...(origin ? { origin } : {}),
     },
     body: JSON.stringify(body),
   });
@@ -41,6 +45,22 @@ function dependencies(overrides?: {
 }
 
 describe('contact endpoint handler', () => {
+  it.each([
+    ['a foreign origin', 'https://attacker.example'],
+    ['a missing origin', null],
+  ])('rejects %s before provider work', async (_label, origin) => {
+    const getDependencies = vi.fn(() => dependencies());
+    const response = await handleContactRequest(
+      request(validRequest, origin),
+      getDependencies,
+    );
+    expect(response.status).toBe(403);
+    await expect(response.json()).resolves.toMatchObject({
+      code: 'FORBIDDEN_ORIGIN',
+    });
+    expect(getDependencies).not.toHaveBeenCalled();
+  });
+
   it('rejects malformed input', async () => {
     const getDependencies = vi.fn(() => dependencies());
     const response = await handleContactRequest(
