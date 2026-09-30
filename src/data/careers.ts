@@ -16,7 +16,7 @@ export const POSTINGS: Posting[] = [
     type: 'Any discipline',
     location: 'India / Remote',
     summary:
-      'No roles are listed right now. If you investigate problems without waiting for permission and share what you learn, tell us what you have built and why scientific infrastructure matters to you.',
+      'No roles are listed right now. If you investigate problems without waiting for permission and share what you learn, tell us what you have built and why the infrastructure for the agentic era matters to you.',
   },
 ];
 

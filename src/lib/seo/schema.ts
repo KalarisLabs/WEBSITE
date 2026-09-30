@@ -43,13 +43,13 @@ export function buildFounderPersonSchema(): JsonLd {
     url: SITE.founderLinkedin,
     sameAs: [SITE.founderLinkedin, SITE.founderX].filter(Boolean),
     description:
-      'Agentic researcher and builder focused on systems architecture, scientific infrastructure, and the economic layer of agentic systems.',
+      'Agentic researcher and builder focused on systems architecture, agent infrastructure, and the economic layer of agentic systems.',
     knowsAbout: [
       'Artificial Intelligence',
-      'Autonomous Scientific Research',
       'Agentic Systems',
+      'Multi-Agent Systems',
+      'Agent Economics',
       'Recursive Self-Improvement',
-      'Scientific Computing',
     ],
   };
 }
@@ -80,10 +80,14 @@ export function buildOrganizationSchema(): JsonLd {
     },
     knowsAbout: [
       'Artificial Intelligence',
-      'Scientific Research Infrastructure',
-      'Autonomous Agents',
-      'Recursive Self-Improving Systems',
-      'Distributed Systems',
+      'Agentic AI',
+      'Agent Infrastructure',
+      'Multi-Agent Systems',
+      'Reinforcement Learning',
+      'Game Theory',
+      'Agent Protocols',
+      'AI Safety',
+      'AI Security',
     ],
     contactPoint: {
       '@type': 'ContactPoint',

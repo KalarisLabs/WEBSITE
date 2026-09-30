@@ -8,19 +8,19 @@ web
 
 ## Users
 
-- Researchers, students, research engineers, and interdisciplinary teams who want to understand what Kalaris Labs is building and follow its research notes and posts.
+- AI researchers, agent builders, engineers, and people working on AI safety, security, and the economics of agents who want to understand what Kalaris Labs is building and follow its research and posts.
 - Prospective hires evaluating open roles on `/careers`.
 - Prospective fellows: high-agency designers, growth marketers, and marketing people. They wear different hats, take responsibility, and think from first principles. The fellowship is **not** recruiting researchers.
 
 ## Product Purpose
 
-Kalaris Labs builds recursive, self-improving infrastructure for scientific research, so more people can spend their time on questions, experiments, and results instead of repetitive technical setup. Mission: build the infrastructure for scientific discovery, for everyone, everywhere.
+Kalaris Labs is a research lab building the infrastructure for the agentic era. Mission: build the infrastructure for the agentic era, and keep it safe, clean, and governable. Research areas, public-claim rules, and approved descriptions live in `docs/company-context.md`; follow it over any older copy.
 
 The website explains the company, publishes research and writing, and recruits: employees through Careers and fellows through the Fellowship. Fellowship success means a visitor prints their name badge, completes the Typeform application, and shares the fellowship.
 
 ## Positioning
 
-Research infrastructure that compounds: it learns from workflows, repositories, papers, and every iteration instead of resetting at the start of each project.
+Infrastructure for the agentic era, built safety-first: agent harnesses, protocols, multi-agent simulation, the economics of agents, and evaluations that are hard to game. Upcoming public work centres on protocol papers, game theory, economics, and AI security and safety.
 
 ## Operating Context
 
@@ -38,13 +38,15 @@ Research infrastructure that compounds: it learns from workflows, repositories, 
 
 - Name: Kalaris Labs; programme name: Kalaris Labs Fellowship.
 - Never use the term "agent-powered".
+- Never name or hint at unannounced products or models; describe research areas only.
+- The pre-September-2026 positioning (self-improving scientific research infrastructure, democratizing research) is retired.
 - Values stated on the site: agency, curiosity, shared knowledge, commitment.
 
 ## Evidence on Hand
 
 - Fellowship graphic: `public/fellowship/kalaris labs fellowship.png` (web copies `fellowship-poster.webp`, `fellowship-poster-960.webp`).
 - Brand marks: `public/kalaris-wordmark.png`, `public/fellowship/kalaris-mark.webp`.
-- Manifesto: `manifesto.md`. Company copy: `src/data/company.ts`.
+- Manifesto: `manifesto.md`. Canonical positioning: `docs/company-context.md`. Company copy: `src/data/company.ts`.
 - No fellow testimonials, alumni, cohort sizes, or outcomes exist; do not invent them.
 
 ## Product Principles

@@ -12,4 +12,4 @@ We're chasing an end that may never come. We know the odds. We know the risks. W
 
 And we're committed. Work is fun, but it's also work. We balance joy and productivity. We take breaks seriously. We celebrate wins. We fix what's broken. We don't do performative busyness.
 
-We are Kalaris Labs. We are building the infrastructure for scientific discovery, for everyone, everywhere.
+We are Kalaris Labs. We are building the infrastructure for the agentic era, and we intend to get the foundations right.

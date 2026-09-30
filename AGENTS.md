@@ -4,6 +4,8 @@
 
 Official website for Kalaris Labs (kalarislabs.com) built with modern web technologies and production-grade infrastructure.
 
+Kalaris Labs is a research lab building the infrastructure for the agentic era. Before writing any company, mission, or marketing copy, read `docs/company-context.md`: it is the canonical source for positioning, research areas, and what must not be claimed. The manifesto page renders `manifesto.md` (first paragraph is the title; the body is plain paragraphs with no Markdown syntax).
+
 ## Tech Stack
 
 ### Framework & Language

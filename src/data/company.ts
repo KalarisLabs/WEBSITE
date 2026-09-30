@@ -1,31 +1,31 @@
 export const company = {
-  oneLiner: 'Recursive, self-improving infrastructure for scientific research.',
+  oneLiner: 'A research lab building the infrastructure for the agentic era.',
   mission:
-    'Build the infrastructure for scientific discovery, for everyone, everywhere.',
+    'Build the infrastructure for the agentic era, and keep it safe, clean, and governable.',
   description:
-    'Kalaris Labs is building an agent-powered infrastructure layer that removes repetitive technical work from research so more people can focus on questions, experiments, and results.',
+    'Kalaris Labs researches and builds the foundations agents need: the harnesses they run in, the protocols they communicate through, the markets they transact in, and the evaluations and safety work that make them trustworthy.',
   principles: [
     {
       number: '01',
-      title: 'Research should compound',
-      body: 'Infrastructure should learn from workflows, repositories, papers, and every iteration: not reset at the start of each project.',
+      title: 'Rules before actors',
+      body: 'When software acts at machine speed, protocols, mandates, and safeguards have to exist before agents are deployed, not after the damage.',
     },
     {
       number: '02',
-      title: 'Access changes outcomes',
-      body: 'Students, independent researchers, and non-computer-scientists deserve the same operational leverage as well-funded institutions.',
+      title: 'Safety is a design constraint',
+      body: 'Alignment, safety, and security shape everything we build. An agent that is capable but ungoverned is a liability, not progress.',
     },
     {
       number: '03',
-      title: 'Impact is the measure',
-      body: 'We chase the number of lives improved. Revenue can sustain the work; human impact is why the work exists.',
+      title: 'Built in the open',
+      body: 'Infrastructure that only one company can read is a toll booth. We publish our protocol and research work openly.',
     },
   ],
   audiences: [
-    'Laboratory researchers',
-    'Independent scientists',
-    'Students and first-time researchers',
-    'Research engineers',
-    'Interdisciplinary teams',
+    'AI researchers',
+    'Agent builders',
+    'AI safety and security researchers',
+    'Economists and game theorists',
+    'Protocol and infrastructure engineers',
   ],
 } as const;

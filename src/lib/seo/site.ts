@@ -2,13 +2,13 @@ export const SITE = {
   name: 'Kalaris Labs',
   url: 'https://kalarislabs.com',
   description:
-    'Kalaris Labs builds recursive, self-improving infrastructure for scientific research.',
+    'Kalaris Labs is a research lab building the infrastructure for the agentic era.',
   email: 'hello@kalarislabs.com',
   language: 'en',
   logoPath: '/kalaris-logo-geometric.png',
   socialImagePath: '/og/default.jpg',
   socialImageAlt:
-    'Kalaris Labs: recursive, self-improving infrastructure for scientific research.',
+    'Kalaris Labs: building the infrastructure for the agentic era.',
   docsUrl: 'https://docs.kalarislabs.com',
   twitterHandle: '@kalarislabs',
   xUrl: 'https://x.com/kalarislabs',

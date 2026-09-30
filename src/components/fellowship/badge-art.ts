@@ -259,8 +259,8 @@ export function drawBadgeBack(
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.font = `500 16px ${MONO}`;
-  ctx.fillText('SCIENTIFIC INFRASTRUCTURE', w / 2, 440);
-  ctx.fillText('FOR EVERYONE, EVERYWHERE.', w / 2, 466);
+  ctx.fillText('INFRASTRUCTURE FOR', w / 2, 440);
+  ctx.fillText('THE AGENTIC ERA.', w / 2, 466);
 
   ctx.fillStyle = SUBTLE;
   ctx.font = `500 15px ${MONO}`;

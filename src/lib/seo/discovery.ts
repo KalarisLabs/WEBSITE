@@ -99,13 +99,13 @@ export const SITE_PAGES: SitePage[] = [
     title: 'Blog',
     path: '/blog',
     description:
-      'Index of engineering deep-dives and research essays on agents and scientific infrastructure.',
+      'Index of engineering deep-dives and research essays on agents, safety, and the agentic economy.',
   },
   {
     title: 'Manifesto',
     path: '/manifesto',
     description:
-      'Why research infrastructure should improve itself and who it is for.',
+      'Infrastructure for the agentic era, and why it must be safe, clean, and governable.',
   },
   { title: 'Team', path: '/team', description: 'Founder and culture.' },
   {

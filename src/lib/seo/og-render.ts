@@ -89,19 +89,19 @@ export async function renderSiteImage() {
       <g transform="translate(70, 305)">
         <!-- Eyebrow -->
         <rect width="210" height="28" rx="14" fill="#1e293b" fill-opacity="0.7" stroke="#3b82f6" stroke-opacity="0.35"/>
-        <text x="105" y="18" fill="#60a5fa" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="1.5" text-anchor="middle">RESEARCH INFRASTRUCTURE</text>
+        <text x="105" y="18" fill="#60a5fa" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" letter-spacing="1.5" text-anchor="middle">RESEARCH LAB</text>
 
         <!-- Main Title / Tagline -->
         <text x="0" y="70" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="36" font-weight="700" letter-spacing="-0.5">
-          Recursive, self-improving infrastructure
+          Building the infrastructure
         </text>
         <text x="0" y="112" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="400" letter-spacing="-0.5">
-          for scientific research.
+          for the agentic era.
         </text>
 
         <!-- Descriptive Subtitle -->
         <text x="0" y="165" fill="#64748b" font-family="system-ui, -apple-system, sans-serif" font-size="18">
-          In-context recursive learning • Multi-domain harnesses • Continuous discovery
+          Agent harnesses • Protocols • Multi-agent systems • AI safety
         </text>
       </g>
 

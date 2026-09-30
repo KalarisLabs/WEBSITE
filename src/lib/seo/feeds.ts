@@ -20,7 +20,7 @@ const FEED_META: Record<
   research: {
     title: 'Kalaris Labs Research',
     description:
-      'Research notes on self-improving scientific infrastructure from Kalaris Labs.',
+      'Research on agents, multi-agent systems, and AI safety from Kalaris Labs.',
     path: '/research/rss.xml',
   },
   blog: {
