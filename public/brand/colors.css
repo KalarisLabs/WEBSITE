@@ -1,0 +1,13 @@
+/* Kalaris Labs brand tokens. Dark is the default. */
+:root {
+  --kalaris-black: #050505; /* page background */
+  --kalaris-panel: #0a0a0b; /* subtle sections and controls */
+  --kalaris-panel-raised: #101012; /* hover and raised states */
+  --kalaris-ink: #f0eee8; /* primary text */
+  --kalaris-subtle: #949497; /* supporting copy */
+  --kalaris-line: #29292c; /* dividers and control borders */
+  --kalaris-blue: #4d7cff; /* primary action and active state */
+  --kalaris-green: #38d995; /* live/available status only */
+  --kalaris-font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --kalaris-font-mono: 'DM Mono', ui-monospace, monospace;
+}

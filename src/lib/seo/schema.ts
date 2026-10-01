@@ -1,6 +1,22 @@
+import { getPerson, type Person } from '../../data/people';
 import { absoluteSiteUrl, SITE } from './site';
 
 export type JsonLd = Record<string, unknown>;
+
+export const FOUNDER_SLUG = 'sayan-chowdhury';
+
+/** Stable entity id for a person: their profile page. */
+export function personId(slug: string) {
+  return `${SITE.url}/team/${slug}#person`;
+}
+
+export type SchemaPerson = Pick<
+  Person,
+  'slug' | 'name' | 'role' | 'summary' | 'socials'
+> &
+  Partial<Pick<Person, 'image' | 'focus'>>;
+
+export type ArticleSection = 'Blog' | 'Research' | 'Manifesto';
 
 export interface ArticleSchemaInput {
   title: string;
@@ -10,8 +26,9 @@ export interface ArticleSchemaInput {
   publishDate: Date;
   updatedDate?: Date | undefined;
   tags?: string[];
-  section: 'Blog' | 'Research';
-  authorName?: string;
+  section: ArticleSection;
+  /** Defaults to the founder. */
+  authors?: readonly Pick<Person, 'slug' | 'name'>[];
   wordCount?: number;
 }
 
@@ -32,29 +49,82 @@ export interface FaqItem {
   answer: string;
 }
 
-export function buildFounderPersonSchema(): JsonLd {
+function founder(): Person {
+  const person = getPerson(FOUNDER_SLUG);
+  if (!person) throw new Error(`Unknown founder slug: ${FOUNDER_SLUG}`);
+  return person;
+}
+
+export function buildPersonSchema(person: SchemaPerson): JsonLd {
+  const sameAs = person.socials.map((social) => social.href);
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': `${SITE.url}/#founder`,
-    name: 'Sayan Chowdhury',
-    jobTitle: 'Founder',
+    '@id': personId(person.slug),
+    name: person.name,
+    jobTitle: person.role,
+    url: absoluteSiteUrl(`/team/${person.slug}`),
+    image: person.image ? absoluteSiteUrl(person.image) : undefined,
     worksFor: { '@id': `${SITE.url}/#organization` },
-    url: SITE.founderLinkedin,
-    sameAs: [SITE.founderLinkedin, SITE.founderX].filter(Boolean),
-    description:
-      'Agentic researcher and builder focused on systems architecture, agent infrastructure, and the economic layer of agentic systems.',
+    description: person.summary,
+    knowsAbout: person.focus?.length ? person.focus : undefined,
+    sameAs: sameAs.length ? sameAs : undefined,
+  };
+}
+
+export function buildFounderPersonSchema(): JsonLd {
+  return {
+    ...buildPersonSchema(founder()),
     knowsAbout: [
       'Artificial Intelligence',
       'Agentic Systems',
       'Multi-Agent Systems',
+      'Agent Infrastructure',
       'Agent Economics',
-      'Recursive Self-Improvement',
     ],
   };
 }
 
+/** Google ProfilePage: a page whose main entity is one person. */
+export function buildProfilePageSchema(
+  person: SchemaPerson,
+  options: { dateModified?: Date | undefined } = {},
+): JsonLd {
+  // Nested entities do not repeat @context.
+  const entity = buildPersonSchema(person);
+  delete entity['@context'];
+  const url = absoluteSiteUrl(`/team/${person.slug}`);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    '@id': `${url}#profile`,
+    url,
+    dateModified: options.dateModified?.toISOString(),
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: entity,
+  };
+}
+
+export function buildAboutPageSchema(
+  name: string,
+  description: string,
+  url: string,
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    '@id': `${url}#about`,
+    name,
+    description,
+    url,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    about: { '@id': `${SITE.url}/#organization` },
+    mainEntity: { '@id': `${SITE.url}/#organization` },
+  };
+}
+
 export function buildOrganizationSchema(): JsonLd {
+  const lead = founder();
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -62,32 +132,36 @@ export function buildOrganizationSchema(): JsonLd {
     name: SITE.name,
     url: SITE.url,
     description: SITE.description,
+    slogan: 'Infrastructure for the agentic era',
     email: SITE.email,
     logo: {
       '@type': 'ImageObject',
       url: absoluteSiteUrl(SITE.logoPath),
+      width: 512,
+      height: 512,
     },
     sameAs: [SITE.linkedinUrl, SITE.githubUrl, SITE.xUrl].filter(Boolean),
     address: { '@type': 'PostalAddress', addressCountry: 'IN' },
     areaServed: 'Worldwide',
     founder: {
       '@type': 'Person',
-      '@id': `${SITE.url}/#founder`,
-      name: 'Sayan Chowdhury',
-      jobTitle: 'Founder',
-      url: SITE.founderLinkedin,
-      sameAs: [SITE.founderLinkedin, SITE.founderX].filter(Boolean),
+      '@id': personId(lead.slug),
+      name: lead.name,
+      url: absoluteSiteUrl(`/team/${lead.slug}`),
     },
     knowsAbout: [
       'Artificial Intelligence',
       'Agentic AI',
       'Agent Infrastructure',
+      'Agent Harnesses',
+      'Continual Learning',
       'Multi-Agent Systems',
       'Reinforcement Learning',
       'Game Theory',
       'Agent Protocols',
       'AI Safety',
       'AI Security',
+      'AI Evaluations',
     ],
     contactPoint: {
       '@type': 'ContactPoint',
@@ -139,13 +213,20 @@ export function buildFaqSchema(faqs: FaqItem[]): JsonLd {
   };
 }
 
+const ARTICLE_TYPES: Record<ArticleSection, string> = {
+  Research: 'TechArticle',
+  Blog: 'BlogPosting',
+  Manifesto: 'Article',
+};
+
 export function buildArticleSchema(input: ArticleSchemaInput): JsonLd {
   const image = absoluteSiteUrl(input.image ?? SITE.socialImagePath);
   const isResearch = input.section === 'Research';
+  const authors = input.authors?.length ? input.authors : [founder()];
 
   return {
     '@context': 'https://schema.org',
-    '@type': isResearch ? 'TechArticle' : 'BlogPosting',
+    '@type': ARTICLE_TYPES[input.section],
     additionalType: isResearch
       ? 'https://schema.org/ScholarlyArticle'
       : undefined,
@@ -166,15 +247,12 @@ export function buildArticleSchema(input: ArticleSchemaInput): JsonLd {
     })),
     inLanguage: SITE.language,
     isAccessibleForFree: true,
-    author: input.authorName
-      ? {
-          '@type': 'Person',
-          name: input.authorName,
-          url: absoluteSiteUrl('/team'),
-          sameAs: [SITE.founderLinkedin],
-          worksFor: { '@id': `${SITE.url}/#organization` },
-        }
-      : { '@id': `${SITE.url}/#founder` },
+    author: authors.map((person) => ({
+      '@type': 'Person',
+      '@id': personId(person.slug),
+      name: person.name,
+      url: absoluteSiteUrl(`/team/${person.slug}`),
+    })),
     publisher: { '@id': `${SITE.url}/#organization` },
     isPartOf: { '@id': `${SITE.url}/#website` },
   };

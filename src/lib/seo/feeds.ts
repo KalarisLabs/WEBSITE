@@ -4,9 +4,8 @@ import {
   getPublishedEntries,
   type PublishingCollection,
 } from '../content';
+import { authorNames } from './discovery';
 import { absoluteSiteUrl, SITE } from './site';
-
-const AUTHOR = 'Sayan Chowdhury';
 
 const FEED_META: Record<
   PublishingCollection | 'all',
@@ -86,7 +85,9 @@ export async function buildFeed(scope: PublishingCollection | 'all') {
         ...entry.data.tags,
       ],
       customData: [
-        `<dc:creator>${AUTHOR}</dc:creator>`,
+        ...authorNames(entry.data.authors).map(
+          (name) => `<dc:creator>${escapeXml(name)}</dc:creator>`,
+        ),
         entry.data.socialImage
           ? `<media:content url="${escapeXml(absoluteSiteUrl(entry.data.socialImage))}" medium="image"/>`
           : '',

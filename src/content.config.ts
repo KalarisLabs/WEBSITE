@@ -11,6 +11,8 @@ const contentSchema = z.object({
   tags: z.array(z.string()).default([]),
   draft: z.boolean().default(false),
   socialImage: z.string().optional(),
+  // Person slugs from src/data/people.ts; posts without one are the founder's.
+  authors: z.array(z.string()).min(1).default(['sayan-chowdhury']),
 });
 
 export const collections = {

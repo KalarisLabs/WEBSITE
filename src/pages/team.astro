@@ -4,10 +4,12 @@ import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from '../layouts/Layout.astro';
 import { buildFounderPersonSchema } from '../lib/seo/schema';
+import { initials, people } from '../data/people';
 
 export const prerender = true;
 const cultureParagraphs = cultureSource.trim().split(/\r?\n\r?\n/);
 const [cultureTitle, ...cultureBody] = cultureParagraphs;
+const teamMembers = people.filter((person) => person.group === 'team');
 ---
 
 <Layout
@@ -50,7 +52,7 @@ const [cultureTitle, ...cultureBody] = cultureParagraphs;
               agent infrastructure, and the economic layer of agentic systems.
             </p><a href="https://www.linkedin.com/in/sayanchowdhuryai"
               >LinkedIn ↗</a
-            >
+            ><a href="/team/sayan-chowdhury">View profile →</a>
           </div>
           <aside class="founder-fact">
             <span>Fun fact</span><p>
@@ -59,6 +61,41 @@ const [cultureTitle, ...cultureBody] = cultureParagraphs;
             </p>
           </aside>
         </article>
+      </div>
+    </section>
+
+    <section class="founders-section">
+      <div class="content-column">
+        <h2>Team</h2>
+        <ul class="person-grid" role="list">
+          {
+            teamMembers.map((person) => (
+              <li>
+                <a class="person-card" href={`/team/${person.slug}`}>
+                  {person.image ? (
+                    <img
+                      src={person.image}
+                      alt={person.name}
+                      class="person-avatar-img"
+                      width="48"
+                      height="48"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span class="person-monogram" aria-hidden="true">
+                      {initials(person.name)}
+                    </span>
+                  )}
+                  <span class="person-card-name">{person.name}</span>
+                  <span class="person-card-role">{person.role}</span>
+                  <span class="person-card-cta" aria-hidden="true">
+                    View profile →
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </section>
   </main>

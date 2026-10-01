@@ -1,0 +1,84 @@
+---
+title: 'Reasoning From First Principles: What Atom-Level AI Teaches Us About Agent Harnesses'
+seoTitle: 'What atom-level AI teaches us about agent harnesses'
+description: Markus Buehler's account of an AI that builds its own physical models of graphene, and why the real lesson for agent infrastructure is the loop around the model, not the model.
+publishDate: 2026-10-01
+tags:
+  - agents
+  - harnesses
+  - verification
+  - science
+draft: false
+socialImage: /images/content/2.jpg
+---
+
+On September 28, MIT professor Markus Buehler [posted](https://x.com/ProfBuehlerMIT/status/2104591839617511812) a short summary of a longer article: "AI that reasons from first principles, atom by atom. Physics becomes native to the reasoning process itself, and drives a powerful self-evolving loop where intelligence and matter merge."
+
+The headline is physics, and the physics is interesting. This post is about something else in the same article: what it shows about the structure that has to surround a model before its reasoning can be trusted. That structure is what we call a harness, and it is where most of the interesting infrastructure work for agents sits.
+
+Everything below is our reading of Buehler's published account. We have not reproduced the work, and the figures are his as reported. Read the original for the science.
+
+## What the article describes
+
+Buehler has studied materials from the atom upward for more than twenty years, across carbon nanotubes, graphene, proteins, and hierarchical composites. The article asks what happens when an AI system reasons at that same resolution. In his words, "the jiggling of atoms integrated over space and time becomes the native reasoning fabric."
+
+The test material is graphene, a sheet one atom thick, where geometry and atomic arrangement cannot be separated. Rather than calling an existing simulation package, the AI builds its own physical model. According to the article, it writes the energy and force calculations in PyTorch from scratch, then builds the geometry generators and the validation routines that check them. Those checks found discrepancies as small as 10⁻¹³ eV per atom.
+
+The model then uses what it built to explore consequences: which designs are strong, which fail, and why. Two results stand out in the account:
+
+- **Architecture mattered a great deal.** Strength varied by 6.6 times between designs of similar density, and the designs sorted into families defined by pores, slits, ligaments, and veins.
+- **Hierarchy helped twice.** Layered structures improved both strength and damage tolerance by controlling load paths, crack propagation, and the order in which things fail.
+
+Failed predictions were not discarded. They exposed missing mechanisms, and each one sent the model back to refine its understanding. The conclusion Buehler draws is that "physics supplies both the foundation and itself is manipulated": science becomes an explicit, executable process in which models build models.
+
+## The model is not the interesting part
+
+It is tempting to read this as a story about a smarter model. Look at what actually made the result credible.
+
+1. **The reasoning is executable.** The model's claims about physics are code that runs. A statement like "this design is stronger" resolves to a computation anyone can rerun.
+2. **Validation is built in, not bolted on.** The system writes validation routines next to the model it is validating. A discrepancy of 10⁻¹³ eV per atom is only visible because something was checking at that precision.
+3. **Failure is a first-class output.** A wrong prediction is treated as evidence about a missing mechanism. The loop of hypothesis, test, and falsification is the method, and it is what lets the system improve without anyone needing to trust it.
+
+None of those three properties comes from the weights of a model. They come from the environment the model operates in: the tools it can call, the checks that run on what it produces, and the record of what happened. That environment is a harness.
+
+## What this means for agent harnesses
+
+We work on harnesses, and this account sharpens four design principles we would apply well beyond materials science.
+
+### Make claims runnable
+
+An agent that says "I verified this" is making an assertion. An agent that emits the check as code is making a claim others can test. Harnesses should prefer outputs that can be re-executed by something other than the agent that produced them. This is the same idea behind our view that results must be verifiable by someone other than the system itself.
+
+### Separate the thing being checked from the checker's authority
+
+In Buehler's setup the validation routines are written by the same system that writes the model. That works when the checks are tight and independently runnable, as precise numerical comparisons are. In less well-defined domains, a checker the agent can rewrite is a checker the agent can quietly weaken. The harness should hold the checks in a place the agent cannot edit, even when the agent proposed them.
+
+### Treat failed predictions as data the system keeps
+
+An agent that resets after each task discards exactly the evidence that made the loop above work. Persisting failed predictions, with what was expected and what actually happened, is a prerequisite for the kind of improvement the article describes. This is the practical edge of continual learning: not only updating weights, but keeping a structured record of where the world disagreed with the agent.
+
+### Make the loop auditable
+
+A self-improving loop is powerful and, for the same reason, hard to govern. If a system can revise its own models, someone has to be able to see which revision changed which result and why. Hypotheses, tests, outcomes, and revisions should be logged by the host, in a place the loop cannot rewrite.
+
+## Where it gets harder
+
+Physics is a forgiving domain for this approach. Energy and force calculations have ground truth to compare against, and numerical agreement is a meaningful signal. Most of the places agents will be deployed do not have that.
+
+- In software, "tests pass" is a checker, but tests can be written to pass.
+- In markets and negotiations, there is no single ground truth, only incentives and outcomes.
+- In security, the adversary is actively trying to make the check lie.
+
+The lesson of the atomistic work is not that every domain can be turned into a clean simulation. It is that the credibility of an agent's reasoning scales with how much of that reasoning is made explicit, executable, and checkable by something outside the agent. Domains with weak checkers need more infrastructure, not less.
+
+## Open questions
+
+- Which of the article's results survive independent reproduction, and how sensitive are they to the specific graphene setup?
+- How much of the validation can be made independent of the system that wrote the model?
+- What does a harness need to record so that a self-evolving loop can be audited after the fact?
+- How should we measure whether an agent's accumulated failed predictions are actually improving its later work?
+
+## Sources
+
+- Markus J. Buehler, [post on X](https://x.com/ProfBuehlerMIT/status/2104591839617511812), September 28, 2026, and the linked article, "AI that reasons from first principles, atom by atom"
+- Related: [Closed-loop science](/blog/closed-loop-science) and [Research Agent Skills](/research/research-agent-skills) on this site

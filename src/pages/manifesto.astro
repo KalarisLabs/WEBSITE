@@ -3,10 +3,13 @@ import manifestoSource from '../../manifesto.md?raw';
 import Footer from '../components/layout/Footer.astro';
 import Header from '../components/layout/Header.astro';
 import Layout from '../layouts/Layout.astro';
+import { getPerson } from '../data/people';
+import { FOUNDER_SLUG } from '../lib/seo/schema';
 
 export const prerender = true;
 const paragraphs = manifestoSource.trim().split(/\r?\n\r?\n/);
 const [title, ...body] = paragraphs;
+const founder = getPerson(FOUNDER_SLUG);
 ---
 
 <Layout
@@ -15,8 +18,8 @@ const [title, ...body] = paragraphs;
   updatedDate={new Date('2026-09-30T00:00:00.000Z')}
   type="article"
   publishDate={new Date('2026-01-01T00:00:00.000Z')}
-  section="Research"
-  authorName="Sayan Chowdhury"
+  section="Manifesto"
+  authors={founder ? [founder] : []}
   breadcrumbs={[
     { name: 'Home', url: '/' },
     { name: 'Manifesto', url: '/manifesto' },

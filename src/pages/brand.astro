@@ -1,0 +1,427 @@
+---
+import { statSync } from 'node:fs';
+import path from 'node:path';
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import { company } from '../data/company';
+import { SITE } from '../lib/seo/site';
+
+export const prerender = true;
+
+const kb = (file: string) => {
+  const bytes = statSync(
+    path.join(process.cwd(), 'public', 'brand', file),
+  ).size;
+  return bytes >= 1024 * 1024
+    ? `${(bytes / 1024 / 1024).toFixed(1)} MB`
+    : `${Math.round(bytes / 1024)} KB`;
+};
+const url = (file: string) => `${SITE.url}/brand/${file}`;
+
+const kit = 'kalaris-brand-kit.zip';
+
+const logos = [
+  {
+    id: 'mark',
+    name: 'Mark',
+    note: 'Chrome mark for icons, avatars, and contained symbol surfaces.',
+    preview: 'kalaris-mark-512.png',
+    file: 'kalaris-mark.png',
+    size: '1254 × 1254',
+    bg: 'dark',
+    switchable: true,
+  },
+  {
+    id: 'wordmark-white',
+    name: 'Wordmark, white',
+    note: 'For dark backgrounds. Used in the footer signature.',
+    preview: 'kalaris-wordmark-white.png',
+    file: 'kalaris-wordmark-white.png',
+    size: '2172 × 724',
+    bg: 'dark',
+  },
+  {
+    id: 'wordmark-black',
+    name: 'Wordmark, black',
+    note: 'For light backgrounds. Used as the navigation brand.',
+    preview: 'kalaris-wordmark-black.png',
+    file: 'kalaris-wordmark-black.png',
+    size: '1200 × 400',
+    bg: 'light',
+  },
+  {
+    id: 'app-icon',
+    name: 'App icon',
+    note: 'Mark on a contained square for apps, bookmarks, and home screens.',
+    preview: 'app-icon-512.png',
+    file: 'app-icon-512.png',
+    size: '512 × 512',
+    bg: 'dark',
+    extra: [
+      { label: '180 px', file: 'app-icon-180.png' },
+      { label: '64 px favicon', file: 'favicon-64.png' },
+    ],
+  },
+  {
+    id: 'banner',
+    name: 'Social banner',
+    note: 'Wide image for link previews and presentations.',
+    preview: 'kalaris-banner.png',
+    file: 'kalaris-banner.png',
+    size: '1024 × 173',
+    bg: 'dark',
+    wide: true,
+  },
+];
+
+const colors = [
+  ['Black', '--kalaris-black', '#050505', 'Page background'],
+  ['Panel', '--kalaris-panel', '#0a0a0b', 'Sections and controls'],
+  ['Raised', '--kalaris-panel-raised', '#101012', 'Hover and raised states'],
+  ['Ink', '--kalaris-ink', '#f0eee8', 'Primary text'],
+  ['Subtle', '--kalaris-subtle', '#949497', 'Supporting copy'],
+  ['Line', '--kalaris-line', '#29292c', 'Dividers and borders'],
+  ['Blue', '--kalaris-blue', '#4d7cff', 'Primary action, active state'],
+  ['Green', '--kalaris-green', '#38d995', 'Live and available status only'],
+] as const;
+
+const installs = [
+  {
+    title: 'Terminal (macOS and Linux)',
+    code: `curl -fsSLO ${url(kit)}\nunzip ${kit}`,
+  },
+  {
+    title: 'PowerShell (Windows)',
+    code: `Invoke-WebRequest ${url(kit)} -OutFile ${kit}\nExpand-Archive ${kit} -DestinationPath .`,
+  },
+  {
+    title: 'Fonts',
+    code: `<link rel="preconnect" href="https://fonts.googleapis.com" />\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n<link\n  rel="stylesheet"\n  href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700&display=swap"\n/>`,
+  },
+  {
+    title: 'Colour and font tokens',
+    code: `<link rel="stylesheet" href="${url('colors.css')}" />`,
+  },
+  {
+    title: 'Favicon and app icons',
+    code: `<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />\n<link rel="apple-touch-icon" sizes="180x180" href="/app-icon-180.png" />`,
+  },
+  {
+    title: 'Embed the wordmark',
+    code: `<img\n  src="${url('kalaris-wordmark-white.png')}"\n  alt="Kalaris Labs"\n  height="40"\n/>`,
+  },
+];
+
+const dos = [
+  'Use the wordmark for headers and signatures, and the mark for icons.',
+  'Place the white wordmark on dark and the black wordmark on light.',
+  'Keep clear space around every mark and preserve its proportions.',
+  'Write the name as “Kalaris Labs”.',
+];
+const donts = [
+  'Recolour, stretch, rotate, outline, or add effects to a mark.',
+  'Rebuild a mark with live text or substitute glyphs.',
+  'Place a mark on a busy or low-contrast background.',
+  'Imply endorsement, partnership, or affiliation without our written agreement.',
+];
+---
+
+<Layout
+  title="Brand"
+  description="The Kalaris Labs brand kit: original logo marks, colour tokens, and typography, with live previews, one-click downloads, and install snippets."
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Company', url: '/company' },
+    { name: 'Brand', url: '/brand' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="brand-page">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Company / Brand</p>
+        <div>
+          <h1>Kalaris Labs brand kit.</h1>
+          <p class="page-lede">
+            {company.oneLiner} The original marks, colours, and type, ready to use.
+          </p>
+          <div class="brand-hero-actions">
+            <a class="button button-primary" href={`/brand/${kit}`} download>
+              Download brand kit <span class="brand-meta">ZIP · {kb(kit)}</span>
+            </a>
+            <a class="button" href="#install">Install from terminal</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="press-section section-rule" id="logos">
+      <div class="site-container">
+        <div class="press-intro">
+          <p class="eyebrow">Logos / 01</p>
+          <div>
+            <h2>Marks, as they ship.</h2>
+            <p>
+              Every preview is the production file, shown on the background it
+              is designed for. Download the file or copy its URL.
+            </p>
+          </div>
+        </div>
+
+        <ul class="brand-grid" role="list">
+          {
+            logos.map((logo) => (
+              <li class:list={['brand-card', logo.wide && 'brand-card-wide']}>
+                <div
+                  class="brand-tile"
+                  data-bg={logo.bg}
+                  data-tile={logo.switchable ? logo.id : undefined}
+                >
+                  <img
+                    src={`/brand/${logo.preview}`}
+                    alt={`Kalaris Labs ${logo.name.toLowerCase()}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="brand-card-body">
+                  <div class="brand-card-head">
+                    <h3>{logo.name}</h3>
+                    {logo.switchable && (
+                      <div
+                        class="brand-bg-switch"
+                        role="group"
+                        aria-label="Preview background"
+                      >
+                        <button
+                          type="button"
+                          data-set-bg="dark"
+                          data-for={logo.id}
+                          aria-pressed="true"
+                        >
+                          Dark
+                        </button>
+                        <button
+                          type="button"
+                          data-set-bg="light"
+                          data-for={logo.id}
+                          aria-pressed="false"
+                        >
+                          Light
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <p>{logo.note}</p>
+                  <p class="brand-meta">
+                    PNG · {logo.size} · {kb(logo.file)}
+                  </p>
+                  <div class="brand-actions">
+                    <a href={`/brand/${logo.file}`} download>
+                      Download ↓
+                    </a>
+                    <button type="button" data-copy-text={url(logo.file)}>
+                      Copy URL
+                    </button>
+                    {logo.extra?.map((item) => (
+                      <a href={`/brand/${item.file}`} download>
+                        {item.label} ↓
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="press-section dark-band" id="colour">
+      <div class="site-container">
+        <div class="press-intro">
+          <p class="eyebrow">Colour / 02</p>
+          <div>
+            <h2>Black is the default.</h2>
+            <p>
+              Dark is the brand, not a theme variant. Use blue sparingly, for
+              actions and active states. Green marks live status only. Select a
+              swatch to copy its value.
+            </p>
+          </div>
+        </div>
+        <ul class="brand-swatches" role="list">
+          {
+            colors.map(([name, token, hex, use]) => (
+              <li>
+                <button
+                  type="button"
+                  class="brand-swatch"
+                  data-copy-text={hex}
+                  aria-label={`Copy ${name} ${hex}`}
+                >
+                  <span class="brand-swatch-chip" style={`background:${hex}`} />
+                  <span class="brand-swatch-name">{name}</span>
+                  <span class="brand-swatch-hex">{hex}</span>
+                  <span class="brand-swatch-use">{use}</span>
+                  <code>{token}</code>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="press-section section-rule" id="type">
+      <div class="site-container">
+        <div class="press-intro">
+          <p class="eyebrow">Type / 03</p>
+          <div>
+            <h2>Two typefaces.</h2>
+            <p>Both are free from Google Fonts. Install snippets are below.</p>
+          </div>
+        </div>
+        <div class="brand-type">
+          <div class="brand-type-card">
+            <p class="brand-type-label">Manrope · display and body</p>
+            <p class="brand-type-display">
+              Infrastructure for the agentic era.
+            </p>
+            <p class="brand-type-weights">
+              Regular 400 · Medium 500 · Semibold 600 · Bold 700
+            </p>
+          </div>
+          <div class="brand-type-card">
+            <p class="brand-type-label">DM Mono · technical labels</p>
+            <p class="brand-type-mono">SAFE / CLEAN / GOVERNABLE</p>
+            <p class="brand-type-weights">
+              Light 300 · Regular 400 · Medium 500
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section dark-band" id="usage">
+      <div class="site-container">
+        <div class="press-intro">
+          <p class="eyebrow">Usage / 04</p>
+          <div>
+            <h2>Using the marks.</h2>
+            <div class="brand-rules">
+              <div>
+                <h3>Do</h3>
+                <ul>{dos.map((item) => <li>{item}</li>)}</ul>
+              </div>
+              <div>
+                <h3>Don’t</h3>
+                <ul>{donts.map((item) => <li>{item}</li>)}</ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section section-rule" id="install">
+      <div class="site-container">
+        <div class="press-intro">
+          <p class="eyebrow">Install / 05</p>
+          <div>
+            <h2>Install the kit.</h2>
+            <p>
+              Download the zip, or pull it from a terminal. For production,
+              self-host the files rather than linking to ours.
+            </p>
+          </div>
+        </div>
+        <ul class="brand-installs" role="list">
+          {
+            installs.map((item) => (
+              <li class="brand-code">
+                <div class="brand-code-head">
+                  <h3>{item.title}</h3>
+                  <button type="button" data-copy-text={item.code}>
+                    Copy
+                  </button>
+                </div>
+                <pre>
+                  <code>{item.code}</code>
+                </pre>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="press-contact-section">
+      <div class="site-container press-contact-card">
+        <p class="eyebrow">Questions / 06</p>
+        <h2>Need something that is not here?</h2>
+        <p>
+          For company facts and media assets, see the <a href="/press"
+            >press page</a
+          >. For a different format or a use we have not covered, write to us.
+        </p>
+        <a
+          class="button button-primary"
+          href="mailto:hello@kalarislabs.com?subject=Brand%20request"
+        >
+          Contact Kalaris Labs →
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Copy buttons: copy `data-copy-text`, then confirm in place.
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-copy-text]')
+    .forEach((button) => {
+      const original = button.dataset.label ?? button.textContent;
+      button.addEventListener('click', async () => {
+        const flash = (text: string) => {
+          if (button.classList.contains('brand-swatch')) {
+            button.dataset.state = text;
+          } else {
+            button.textContent = text;
+          }
+          setTimeout(() => {
+            delete button.dataset.state;
+            if (!button.classList.contains('brand-swatch'))
+              button.textContent = original;
+          }, 1600);
+        };
+        try {
+          await navigator.clipboard.writeText(button.dataset.copyText ?? '');
+          flash('Copied');
+        } catch {
+          flash('Copy failed');
+        }
+      });
+    });
+
+  // Mark preview background switch.
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-set-bg]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const tile = document.querySelector<HTMLElement>(
+          `[data-tile="${button.dataset.for}"]`,
+        );
+        if (!tile) return;
+        tile.dataset.bg = button.dataset.setBg!;
+        button
+          .closest('.brand-bg-switch')
+          ?.querySelectorAll('button')
+          .forEach((other) =>
+            other.setAttribute('aria-pressed', String(other === button)),
+          );
+      });
+    });
+</script>

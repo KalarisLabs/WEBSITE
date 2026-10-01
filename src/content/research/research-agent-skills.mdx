@@ -1,0 +1,137 @@
+---
+title: 'Research Agent Skills: An open library of 280+ skills for AI-assisted research'
+seoTitle: 'Research Agent Skills: 280+ open skills for research agents'
+description: An MIT-licensed library of agent skills for writing, citation checking, literature review, data analysis, and lab work, with the first small-sample measurements of what the skills change.
+publishDate: 2026-10-01
+tags:
+  - skills
+  - agents
+  - evaluation
+  - research-tooling
+draft: false
+socialImage: /research-agent-skills-banner.webp
+---
+
+> **Release status:** This note describes [Research Agent Skills v1.1.0](https://github.com/KalarisLabs/research-agent-skills), released under the MIT license. Every figure below comes from the repository's own README and benchmarks, run on small samples, and is labelled with its sample size. Treat them as pilot results, not as established performance. Where the repository's documents differ, this note says so.
+
+A general-purpose coding agent can write a literature review in minutes. It can also invent half of the references, pad every paragraph with the same stock phrases, and format the result for a journal template that was retired two years ago. The model is rarely the limiting factor. The missing piece is the working knowledge a careful researcher carries: how to verify a citation, what a venue currently requires, which analysis library fits the data.
+
+[Research Agent Skills](https://github.com/KalarisLabs/research-agent-skills) packages that knowledge as **skills**: folders of instructions, references, and tested scripts that an agent loads on demand. The library contains more than 280 of them, across writing, review, data science, machine learning, the life and physical sciences, and lab automation.
+
+## Why skills, and why for research
+
+Skills are one layer of an agent harness. The model supplies general ability. The harness decides what the agent can see, which tools it can call, and which procedures it follows. A skill is the smallest useful unit of procedure: a `SKILL.md` playbook that the agent reads only when a task calls for it, so the context stays small until the knowledge is needed.
+
+The repository follows the open [Agent Skills specification](https://agentskills.io), which is why the same folder works in Claude Code, OpenAI Codex, Cursor, Gemini CLI, GitHub Copilot, Windsurf, and any harness that reads a `.agents/skills` directory. Procedures that live in an open format outlast any single vendor's agent.
+
+The library targets three failure modes that show up repeatedly when agents assist with research:
+
+| Failure mode           | What it looks like                                            | Skill that addresses it                          |
+| :--------------------- | :------------------------------------------------------------ | :----------------------------------------------- |
+| AI slop                | Stock phrases, empty emphasis, uniform rhythm                 | `unslop-academic-writing`                        |
+| Hallucinated citations | References that do not exist, or exist with the wrong authors | `citation-verification`                          |
+| Outdated formatting    | Templates and limits from a previous year's call for papers   | `ml-paper-writing` and the journal-format skills |
+
+## What is in the library
+
+The skills are grouped by the work a researcher does. Counts are as listed in the repository README.
+
+| Category                     | Skills | Examples                                                            |
+| :--------------------------- | -----: | :------------------------------------------------------------------ |
+| Research writing             |     15 | `scientific-writing`, `peer-review`, `research-grants`              |
+| Journal formats              |     11 | Nature, Cell Press, IEEE, ACM, arXiv, NeurIPS, ICML, ICLR           |
+| Literature review            |     18 | `literature-review`, `systematic-review-prisma`, `paper-corpus-rag` |
+| Data science and ML          |     30 | `scikit-learn`, `pytorch-lightning`, `polars`, `pymc`               |
+| Life sciences                |     33 | `scanpy`, `pydeseq2`, `biopython`, `nextflow`                       |
+| Chemistry and drug discovery |     12 | `rdkit`, `deepchem`, `pymatgen`                                     |
+| Clinical and health          |      7 | `pydicom`, `clinical-reports`, `pyhealth`                           |
+| Physical sciences            |     10 | `astropy`, `qiskit`, `geopandas`                                    |
+| ML training                  |     32 | `pytorch-fsdp2`, `deepspeed`, `axolotl`                             |
+| ML evaluation and safety     |     11 | `evaluating-llms-harness`, `constitutional-ai`, `llamaguard`        |
+| Lab automation               |     11 | `opentrons-integration`, `benchling-integration`                    |
+| Visualization                |     11 | `matplotlib`, `seaborn`, `scientific-visualization`                 |
+| Multimodal and emerging      |     18 | `llava`, `clip`, `model-merging`                                    |
+
+The collection mixes original skills with skills adapted from other MIT-licensed projects. The adapted material is credited in the repository's `THIRD_PARTY_NOTICES.md`, and the benchmarks distinguish the two groups.
+
+## Six skills worth knowing
+
+- **`citation-verification`** checks each reference against Crossref, OpenAlex, and arXiv and flags entries that are fabricated or whose metadata does not match the real record.
+- **`unslop-academic-writing`** removes AI clichés while keeping the author's voice, rather than rewriting the text into a different register.
+- **`ml-paper-writing`** carries the current NeurIPS, ICML, ICLR, and ACL templates and their submission rules.
+- **`systematic-review-prisma`** drives a PRISMA 2020 workflow from search strategy to flow diagram.
+- **`paper-corpus-rag`** answers questions over a personal collection of PDFs, with pointers back to the passages used.
+- **`research-knowledge-graph`** builds and visualizes citation networks.
+
+## Using it
+
+Install the full library into whichever agent harness you use:
+
+```bash
+npx skills add KalarisLabs/research-agent-skills
+```
+
+Install a single skill instead of the whole library:
+
+```bash
+npx skills add KalarisLabs/research-agent-skills --skill ml-paper-writing
+```
+
+Then ask for the outcome in plain language:
+
+```text
+Verify every reference in refs.bib
+Reformat this manuscript for Cell: Summary, Highlights, eTOC
+Run a PRISMA 2020 systematic review on exercise and depression
+Analyze this scRNA-seq dataset with scanpy
+```
+
+The README lists seven installation routes in total, including a Claude Code plugin marketplace entry and shell and PowerShell installers. Releases are checksummed and signed, and the installers detect files that have been modified.
+
+## What has been measured
+
+The repository evaluates the library in three tiers: a static rubric, trigger routing, and task outcomes, plus two focused checks on citations and writing. These are the figures from the top-level README.
+
+| Metric                              | Result                                     | Sample                       |
+| :---------------------------------- | :----------------------------------------- | :--------------------------- |
+| Static quality rubric               | 95.5 / 100 (original skills), 95.3 overall | All skills, automated rubric |
+| Trigger routing, hit@1              | 1.00                                       | 50 reviewed prompts          |
+| Trigger routing, false-trigger rate | 0.12                                       | 50 reviewed prompts          |
+| Citation verification               | Precision 1.00, recall 1.00                | 18 labelled references       |
+| Slop index with the skill loaded    | 83% lower; clean share 68% → 89%           | Pilot study                  |
+| Blind task outcomes                 | Skill won 21 of 23; mean score 7.4 vs 4.3  | 23 tasks, blind LLM judge    |
+
+Three of these deserve a closer reading.
+
+**Citation verification is a perfect score on a tiny set.** Eighteen labelled references is enough to show the skill works on clear cases and far too few to estimate how it behaves on the long tail: books, preprints that were later retitled, non-English titles, and references with legitimate metadata variation. The 1.00 should be read as "no failures observed in 18", not as a guarantee.
+
+**The task-outcome result uses a model as the judge.** The 23 tasks were scored blind and in randomized order, but the judge is a single small language model, and the repository itself notes that LLM judges carry biases. The direction of the result, 21 wins in 23, is encouraging. The size of the gap should not be quoted without that caveat.
+
+**The benchmark documentation is not fully consistent.** The `benchmarks` directory describes other runs, including a 100-prompt routing test with a small model at 0.92 hit@1 and a slightly different static-rubric mean. Which run a number comes from matters, so check the repository's results files before citing any figure from this note.
+
+## What has not been measured
+
+- **Generalization across agents.** Results are reported for one judging setup. The library is meant to run in many harnesses and with many models, and no cross-harness comparison has been published.
+- **Domain correctness at scale.** The rubric checks structure, clarity, and trigger quality. It does not check whether an analysis skill produces scientifically correct results across the datasets in its field. That needs domain experts and domain benchmarks.
+- **Long-run effects on research quality.** Whether skills change the quality of finished papers, or only the surface of drafts, is an open question this pilot cannot answer.
+- **Staleness.** Journal rules and library APIs change. A skill that was correct at release can quietly go out of date, and the repository does not yet publish a measure of how fast that happens.
+
+## Why this belongs in infrastructure research
+
+Agents are starting to do research work with real consequences: drafting papers, reviewing literature, running analyses. The infrastructure around them should make good practice the default and make failures visible. A citation checker that runs before submission, a rubric that scores a skill before it ships, and an open format that anyone can audit are small pieces of that. They are also the kind of piece that is easier to build in the open than to retrofit.
+
+The same reasoning applies to the files themselves. A skill is code in everything but name, and it should be scanned like code. Our [Skill Doctor](/research/skill-doctor) analyser exists for exactly that, and the two projects are meant to be used together.
+
+## Next
+
+- larger labelled sets for citation verification, including books and retitled preprints;
+- routing and task evaluations with more than one judge model, and with human spot checks;
+- domain-expert review for the analysis skills in the life and physical sciences;
+- a freshness check that flags skills whose referenced rules or APIs have changed.
+
+## Sources
+
+- Repository: [github.com/KalarisLabs/research-agent-skills](https://github.com/KalarisLabs/research-agent-skills)
+- Benchmarks: the [`benchmarks` directory](https://github.com/KalarisLabs/research-agent-skills/tree/main/benchmarks) in the repository
+- Format: [Agent Skills specification](https://agentskills.io)
+- Related: [Skill Doctor](/research/skill-doctor), security analysis for agent skill files

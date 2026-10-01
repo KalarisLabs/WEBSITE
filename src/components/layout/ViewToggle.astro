@@ -1,0 +1,152 @@
+---
+interface Props {
+  /** Markdown twin of the page. Pages without one fall back to their text. */
+  markdownPath?: string | undefined;
+  class?: string;
+}
+
+const { markdownPath, class: className = '' } = Astro.props;
+---
+
+<button
+  type="button"
+  role="switch"
+  aria-checked="false"
+  aria-label="Agent view: read this page as Markdown"
+  class:list={['view-toggle', className]}
+  data-view-toggle
+  data-markdown-path={markdownPath}
+>
+  <span class="view-toggle-thumb" aria-hidden="true"></span>
+  <span class="view-toggle-option" data-side="human">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="8" r="4"></circle>
+      <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+    </svg>
+    Human
+  </span>
+  <span class="view-toggle-option" data-side="agent">
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m4 17 6-5-6-5"></path>
+      <path d="M12 19h8"></path>
+    </svg>
+    Agent
+  </span>
+</button>
+
+<script>
+  // Every page opens in Human view. Agent view only opens when the visitor
+  // asks for it, and it is never remembered or restored on navigation.
+  const toggle =
+    document.querySelector<HTMLButtonElement>('[data-view-toggle]');
+
+  if (toggle) {
+    const markdownPath = toggle.dataset.markdownPath ?? '';
+    const cache = new Map<string, string>();
+    let panel: HTMLElement | null = null;
+    let requestId = 0;
+
+    const pageText = () => {
+      const main = document.querySelector<HTMLElement>('body > main');
+      return (main?.innerText ?? '').replace(/\n{3,}/g, '\n\n').trim();
+    };
+
+    const buildPanel = () => {
+      const el = document.createElement('section');
+      el.id = 'agent-view';
+      el.className = 'agent-view';
+      el.setAttribute('aria-label', 'Agent view of this page');
+      el.innerHTML = `
+        <div class="agent-view-bar">
+          <span class="agent-view-path"></span>
+          <span class="agent-view-actions">
+            <button type="button" data-agent-copy>Copy</button>
+            <a data-agent-raw target="_blank" rel="noopener">Open raw ↗</a>
+          </span>
+        </div>
+        <pre class="agent-view-body" tabindex="0"><code></code></pre>`;
+      el.querySelector<HTMLElement>('.agent-view-path')!.textContent =
+        markdownPath ? `GET ${markdownPath}` : 'Plain text of this page';
+      const raw = el.querySelector<HTMLAnchorElement>('[data-agent-raw]')!;
+      if (markdownPath) raw.href = markdownPath;
+      else raw.remove();
+      (document.querySelector('body > footer') ?? document.body).after(el);
+      return el;
+    };
+
+    function hide() {
+      requestId++;
+      delete document.body.dataset.view;
+      if (panel) delete panel.dataset.ready;
+      toggle!.setAttribute('aria-checked', 'false');
+    }
+
+    const show = async () => {
+      const id = ++requestId;
+      // Read the page text before the page is hidden.
+      const fallback = pageText();
+      panel ??= buildPanel();
+      const code = panel.querySelector('code')!;
+      const copy = panel.querySelector<HTMLButtonElement>('[data-agent-copy]')!;
+      document.body.dataset.view = 'agent';
+      toggle.setAttribute('aria-checked', 'true');
+      window.scrollTo({ top: 0 });
+
+      let text = markdownPath ? cache.get(markdownPath) : undefined;
+      if (text === undefined) {
+        code.textContent = 'Loading…';
+        if (markdownPath) {
+          try {
+            const response = await fetch(markdownPath, {
+              headers: { Accept: 'text/markdown' },
+            });
+            if (!response.ok) throw new Error(String(response.status));
+            text = await response.text();
+            cache.set(markdownPath, text);
+          } catch {
+            text = undefined;
+          }
+        }
+        if (id !== requestId) return;
+        text ??= fallback || 'This page has no text content.';
+      }
+      code.textContent = text;
+      panel.dataset.ready = 'true';
+      const finalText = text;
+      copy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(finalText);
+          copy.textContent = 'Copied';
+        } catch {
+          copy.textContent = 'Copy failed';
+        }
+        setTimeout(() => (copy.textContent = 'Copy'), 1800);
+      };
+    };
+
+    toggle.addEventListener('click', () => {
+      if (toggle.getAttribute('aria-checked') === 'true') hide();
+      else void show();
+    });
+  }
+</script>

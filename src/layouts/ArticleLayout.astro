@@ -11,6 +11,7 @@ import Header from '../components/layout/Header.astro';
 import { HookSidebar } from '../components/ui/hook-sidebar';
 import Layout from './Layout.astro';
 import { entryOgImage } from '../lib/seo/og';
+import { getPerson, initials, people } from '../data/people';
 
 interface Heading {
   depth: number;
@@ -25,6 +26,13 @@ interface Props {
 }
 
 const { entry, collection, headings = [] } = Astro.props;
+const authors = entry.data.authors.map((slug) => getPerson(slug) ?? people[0]!);
+const author = authors[0]!;
+const authorNames = authors.map((person) => person.name);
+const bibtexName = (name: string) => {
+  const parts = name.split(' ');
+  return `${parts.at(-1)}, ${parts.slice(0, -1).join(' ')}`;
+};
 const isResearch = collection === 'research';
 const sectionName = isResearch ? 'Research' : 'Blog';
 const backUrl = `/${collection}`;
@@ -86,7 +94,7 @@ const newerEntry = timeline[position + 1];
 
 const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${entry.id.replace(/[^a-zA-Z0-9]/g, '_')},
   title = {${entry.data.title}},
-  author = {Chowdhury, Sayan},
+  author = {${authors.map((person) => bibtexName(person.name)).join(' and ')}},
   journal = {Kalaris Labs Research Notes},
   year = {${entry.data.publishDate.getUTCFullYear()}},
   url = {${canonicalUrl}}
@@ -103,7 +111,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
   updatedDate={entry.data.updatedDate}
   tags={entry.data.tags}
   section={sectionName}
-  authorName="Sayan Chowdhury"
+  authors={authors}
   wordCount={wordCount}
   markdownPath={markdownPath}
   breadcrumbs={[
@@ -163,18 +171,31 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
       <div class="article-layout-grid">
         {/* Left Column: Author Bio & Social Sharing (Sticky) */}
         <aside class="article-left-sidebar">
-          <a class="author-block" href="/team" rel="author">
-            <img
-              src="/founders/sayan-chowdhury.jpg"
-              alt="Sayan Chowdhury"
-              class="author-avatar-img"
-              width="48"
-              height="48"
-              loading="lazy"
-            />
+          <a class="author-block" href={`/team/${author.slug}`} rel="author">
+            {
+              author.image ? (
+                <img
+                  src={author.image}
+                  alt={author.name}
+                  class="author-avatar-img"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                />
+              ) : (
+                <span
+                  class="author-avatar-img person-monogram"
+                  aria-hidden="true"
+                >
+                  {initials(author.name)}
+                </span>
+              )
+            }
             <div class="author-meta-block">
-              <span class="author-display-name">Sayan Chowdhury</span>
-              <span class="author-display-role">Founder & Research Lead</span>
+              <span class="author-display-name">{authorNames.join(', ')}</span>
+              <span class="author-display-role">
+                {author.byline ?? author.role}
+              </span>
             </div>
           </a>
 
@@ -289,6 +310,7 @@ const bibtex = `@article{kalaris${entry.data.publishDate.getUTCFullYear()}_${ent
                   alt={entry.data.title}
                   class="article-featured-image"
                   loading="eager"
+                  fetchpriority="high"
                 />
               </div>
             )

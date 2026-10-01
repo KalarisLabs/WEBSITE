@@ -5,7 +5,7 @@ export const SITE = {
     'Kalaris Labs is a research lab building the infrastructure for the agentic era.',
   email: 'hello@kalarislabs.com',
   language: 'en',
-  logoPath: '/kalaris-logo-geometric.png',
+  logoPath: '/icon-512.png',
   socialImagePath: '/og/default.jpg',
   socialImageAlt:
     'Kalaris Labs: building the infrastructure for the agentic era.',

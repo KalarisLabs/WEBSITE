@@ -1,4 +1,5 @@
 ---
+import { SITE } from '../../lib/seo/site';
 import FooterWordmark from './FooterWordmark';
 
 const year = new Date().getUTCFullYear();
@@ -39,7 +40,9 @@ const year = new Date().getUTCFullYear();
         <div class="footer-nav-col">
           <span class="footer-nav-heading">About</span>
           <ul class="footer-nav-list" role="list">
+            <li><a href="/company">Company</a></li>
             <li><a href="/press">Press</a></li>
+            <li><a href="/brand">Brand kit</a></li>
             <li><a href="/team">Research Team</a></li>
             <li><a href="/careers">Careers</a></li>
             <li>
@@ -72,11 +75,7 @@ const year = new Date().getUTCFullYear();
               </a>
             </li>
             <li>
-              <a
-                href="https://twitter.com/kalarislabs"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={SITE.xUrl} target="_blank" rel="noopener noreferrer">
                 X / Twitter <span class="arrow-glyph" aria-hidden="true">↗</span
                 >
               </a>

@@ -1,0 +1,16 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import ViewToggle from './ViewToggle.astro';
+
+interface Props {
+  /** Markdown twin of the current page; omit to hide the Human/Agent toggle. */
+  markdownPath?: string | undefined;
+}
+
+const { markdownPath } = Astro.props;
+---
+
+<div class="view-dock" role="group" aria-label="Page view settings">
+  <ViewToggle markdownPath={markdownPath} class="view-toggle-corner" />
+  <ThemeToggle />
+</div>

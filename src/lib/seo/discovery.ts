@@ -1,4 +1,6 @@
+import { company } from '../../data/company';
 import { FAQS } from '../../data/faqs';
+import { getPerson } from '../../data/people';
 import { absolutizeMarkdownLinks, shiftHeadings } from './markdown';
 import { absoluteSiteUrl, CONTENT_SIGNAL, SITE } from './site';
 
@@ -15,8 +17,16 @@ export interface DiscoveryEntry {
       publishDate: Date;
       updatedDate?: Date | undefined;
       tags: string[];
+      /** Person slugs; defaults to the founder. */
+      authors?: string[];
     };
   };
+}
+
+/** Display names for an entry's authors, falling back to the slug. */
+export function authorNames(authors: readonly string[] | undefined) {
+  const slugs = authors?.length ? authors : ['sayan-chowdhury'];
+  return slugs.map((slug) => getPerson(slug)?.name ?? slug);
 }
 
 export function entryPath(
@@ -107,7 +117,17 @@ export const SITE_PAGES: SitePage[] = [
     description:
       'Infrastructure for the agentic era, and why it must be safe, clean, and governable.',
   },
-  { title: 'Team', path: '/team', description: 'Founder and culture.' },
+  {
+    title: 'Company',
+    path: '/company',
+    description:
+      'Mission, principles, research areas, and how to partner with Kalaris Labs.',
+  },
+  {
+    title: 'Team',
+    path: '/team',
+    description: 'Founder, team profiles, and culture.',
+  },
   {
     title: 'Careers',
     path: '/careers',
@@ -118,6 +138,12 @@ export const SITE_PAGES: SitePage[] = [
     path: '/fellowship',
     description:
       'The Kalaris Labs Fellowship for high-agency designers, growth marketers, and marketers; pick your hats, print a badge, and apply.',
+  },
+  {
+    title: 'Brand',
+    path: '/brand',
+    description:
+      'Brand kit: logo marks, colour tokens, typography, and install snippets.',
   },
   {
     title: 'Press',
@@ -164,7 +190,7 @@ export function buildEntryMarkdown(
     '',
     `- Canonical URL: ${canonical}`,
     `- Section: ${collection === 'research' ? 'Research' : 'Blog'}`,
-    `- Author: Sayan Chowdhury, ${SITE.name}`,
+    `- Author: ${authorNames(data.authors).join(', ')}, ${SITE.name}`,
     `- Published: ${data.publishDate.toISOString().slice(0, 10)}`,
     ...(data.updatedDate
       ? [`- Updated: ${data.updatedDate.toISOString().slice(0, 10)}`]
@@ -192,7 +218,9 @@ export function buildLlmsTxt(entries: DiscoveryEntry[]) {
     '',
     `> ${SITE.description}`,
     '',
-    'AI systems already produce research-level advances in mathematics, where results can be verified quickly and reliably. Kalaris Labs builds infrastructure that gives the rest of science a comparable loop: reproducible environments, traceable results, and verified context carried from papers, codebases, and experiments into the agents that run the next iteration.',
+    `${company.description} Mission: ${company.mission}`,
+    '',
+    `Research areas: ${company.researchAreas.join('; ')}.`,
     '',
     'Research notes separate measured results from pre-registered targets and state the provenance of every figure.',
     '',

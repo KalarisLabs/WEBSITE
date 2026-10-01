@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import AnalyticsConsent from '../components/integrations/AnalyticsConsent.astro';
+import ViewDock from '../components/layout/ViewDock.astro';
 import AnnouncementBar from '../components/layout/AnnouncementBar.astro';
 import StructuredData from '../components/seo/StructuredData.astro';
 import {
@@ -8,9 +9,11 @@ import {
   buildBreadcrumbSchema,
   buildOrganizationSchema,
   buildWebsiteSchema,
+  type ArticleSection,
   type BreadcrumbItem,
   type JsonLd,
 } from '../lib/seo/schema';
+import type { Person } from '../data/people';
 import { markdownPathFor } from '../lib/seo/markdown';
 import {
   isGeneratedOgImage,
@@ -31,8 +34,9 @@ interface Props {
   publishDate?: Date;
   updatedDate?: Date | undefined;
   tags?: string[];
-  section?: 'Blog' | 'Research';
-  authorName?: string;
+  section?: ArticleSection;
+  /** Article authors; defaults to the founder. */
+  authors?: readonly Pick<Person, 'slug' | 'name'>[];
   wordCount?: number;
   breadcrumbs?: BreadcrumbItem[];
   extraSchemas?: JsonLd[];
@@ -53,7 +57,7 @@ const {
   updatedDate,
   tags = [],
   section,
-  authorName,
+  authors = [],
   wordCount,
   breadcrumbs = [],
   extraSchemas = [],
@@ -67,9 +71,15 @@ const markdownAlternate = noindex
   ? undefined
   : (markdownPath ?? markdownPathFor(Astro.url.pathname));
 const titleForSearch = seoTitle ?? title;
-const pageTitle = titleForSearch.includes('Kalaris Labs')
-  ? titleForSearch
-  : `${titleForSearch} | Kalaris Labs`;
+// Search results truncate near 60 characters; long titles drop the brand
+// suffix rather than lose their own words.
+const MAX_TITLE_LENGTH = 60;
+const brandedTitle = `${titleForSearch} | ${SITE.name}`;
+const pageTitle =
+  titleForSearch.includes(SITE.name) || brandedTitle.length > MAX_TITLE_LENGTH
+    ? titleForSearch
+    : brandedTitle;
+const authorNames = authors.map((person) => person.name);
 const imageURL = new URL(image, Astro.site);
 const isDefaultImage = image === SITE.socialImagePath;
 const socialImageAlt = isDefaultImage
@@ -99,7 +109,7 @@ if (type === 'article' && publishDate && section) {
       updatedDate,
       tags,
       section,
-      ...(authorName ? { authorName } : {}),
+      ...(authors.length ? { authors } : {}),
       ...(wordCount ? { wordCount } : {}),
     }),
   );
@@ -117,9 +127,25 @@ if (type === 'article' && publishDate && section) {
         ? 'noindex, follow'
         : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
     />
-    <meta name="author" content={authorName ?? SITE.name} />
+    <meta
+      name="author"
+      content={authorNames.length ? authorNames.join(', ') : SITE.name}
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#08080a" />
+    <script is:inline>
+      // Apply the saved theme before first paint so there is no flash.
+      try {
+        if (localStorage.getItem('kalaris:theme') === 'light') {
+          document.documentElement.dataset.theme = 'light';
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute('content', '#f7f7f5');
+        }
+      } catch {
+        /* storage unavailable; default to dark */
+      }
+    </script>
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -231,10 +257,11 @@ if (type === 'article' && publishDate && section) {
       type === 'article' && section === 'Research' && (
         <>
           <meta name="citation_title" content={title} />
-          <meta
-            name="citation_author"
-            content={authorName ?? 'Sayan Chowdhury'}
-          />
+          {(authorNames.length ? authorNames : ['Sayan Chowdhury']).map(
+            (name) => (
+              <meta name="citation_author" content={name} />
+            ),
+          )}
           {publishDate && (
             <meta
               name="citation_publication_date"
@@ -260,6 +287,7 @@ if (type === 'article' && publishDate && section) {
     <a class="skip-link" href="#main-content">Skip to content</a>
     <AnnouncementBar />
     <slot />
+    <ViewDock markdownPath={markdownAlternate} />
     <AnalyticsConsent />
 
     <script>

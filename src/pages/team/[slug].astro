@@ -1,0 +1,199 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Footer from '../../components/layout/Footer.astro';
+import Header from '../../components/layout/Header.astro';
+import Layout from '../../layouts/Layout.astro';
+import {
+  getPerson,
+  initials,
+  isIndexableProfile,
+  people,
+} from '../../data/people';
+import { getAuthoredEntries } from '../../lib/content';
+import { getPersonStats } from '../../lib/people';
+import { buildProfilePageSchema } from '../../lib/seo/schema';
+
+export const prerender = true;
+
+export const getStaticPaths = (() =>
+  people.map((person) => ({
+    params: { slug: person.slug },
+  }))) satisfies GetStaticPaths;
+
+const person = getPerson(Astro.params.slug!)!;
+const stats = getPersonStats(person.slug, await getAuthoredEntries());
+
+const formatDate = (date: Date, style: 'full' | 'month' = 'full') =>
+  date.toLocaleDateString('en-US', {
+    month: style === 'month' ? 'long' : 'short',
+    year: 'numeric',
+    ...(style === 'full' ? { day: 'numeric' } : {}),
+    timeZone: 'UTC',
+  });
+
+const metrics = [
+  { label: 'Blog posts', value: String(stats.posts) },
+  { label: 'Research notes', value: String(stats.researchNotes) },
+  { label: 'Words published', value: stats.words.toLocaleString('en-US') },
+  { label: 'Reading time', value: `${stats.readingMinutes} min` },
+  {
+    label: 'Publishing since',
+    value: stats.firstPublished
+      ? formatDate(stats.firstPublished, 'month')
+      : '—',
+  },
+];
+---
+
+<Layout
+  title={person.name}
+  description={`${person.name}, ${person.role} at Kalaris Labs: profile, publishing activity, and writing.`}
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Team', url: '/team' },
+    { name: person.name, url: `/team/${person.slug}` },
+  ]}
+  noindex={!isIndexableProfile(person)}
+  extraSchemas={[
+    buildProfilePageSchema(person, { dateModified: stats.latestPublished }),
+  ]}
+>
+  <Header />
+  <main id="main-content" class="person-page">
+    <div class="content-column">
+      <a href="/team" class="article-back-link">
+        <span aria-hidden="true">←</span> Team
+      </a>
+
+      <header class="person-header">
+        <div class="person-portrait">
+          {
+            person.image ? (
+              <img
+                src={person.image}
+                alt={person.name}
+                width="460"
+                height="460"
+                loading="eager"
+              />
+            ) : (
+              <span
+                class="person-monogram person-monogram-lg"
+                aria-hidden="true"
+              >
+                {initials(person.name)}
+              </span>
+            )
+          }
+        </div>
+        <div class="person-intro">
+          <p class="eyebrow">{person.role}</p>
+          <h1>{person.name}</h1>
+          <p class="person-summary">{person.summary}</p>
+          {
+            person.socials.length > 0 ? (
+              <ul class="person-socials" role="list">
+                {person.socials.map((social) => (
+                  <li>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer me"
+                    >
+                      {social.label} <span aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="person-pending">Social accounts will be added here.</p>
+            )
+          }
+        </div>
+      </header>
+
+      <dl
+        class="person-metrics"
+        aria-label={`${person.name} publishing metrics`}
+      >
+        {
+          metrics.map((metric) => (
+            <div class="person-metric">
+              <dd>{metric.value}</dd>
+              <dt>{metric.label}</dt>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="person-body">
+        <section aria-labelledby="about-heading">
+          <h2 id="about-heading">About</h2>
+          {
+            person.bio.length > 0 ? (
+              person.bio.map((paragraph) => <p>{paragraph}</p>)
+            ) : (
+              <p class="person-pending">
+                {person.name} is part of the Kalaris Labs team. A full profile
+                will appear here.
+              </p>
+            )
+          }
+          {
+            person.focus.length > 0 && (
+              <ul class="person-tags" role="list" aria-label="Focus areas">
+                {person.focus.map((area) => (
+                  <li>{area}</li>
+                ))}
+              </ul>
+            )
+          }
+          {
+            stats.topics.length > 0 && (
+              <>
+                <h3>Writes about</h3>
+                <ul class="person-tags" role="list">
+                  {stats.topics.map((topic) => (
+                    <li>{topic.replaceAll('-', ' ')}</li>
+                  ))}
+                </ul>
+              </>
+            )
+          }
+        </section>
+
+        <section aria-labelledby="writing-heading">
+          <h2 id="writing-heading">
+            Writing <span class="careers-count">{stats.total}</span>
+          </h2>
+          {
+            stats.entries.length > 0 ? (
+              <ul class="person-writing" role="list">
+                {stats.entries.map((entry) => (
+                  <li>
+                    <a href={`/${entry.collection}/${entry.id}`}>
+                      <span class="person-writing-meta">
+                        {entry.collection === 'research' ? 'Research' : 'Blog'}{' '}
+                        / {formatDate(entry.publishDate)}
+                      </span>
+                      <span class="person-writing-title">{entry.title}</span>
+                      <span class="person-writing-desc">
+                        {entry.description}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="person-pending">
+                Nothing published yet. New posts and research notes will be
+                listed here.
+              </p>
+            )
+          }
+        </section>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -21,6 +21,18 @@ export const company = {
       body: 'Infrastructure that only one company can read is a toll booth. We publish our protocol and research work openly.',
     },
   ],
+  researchAreas: [
+    'Agent harnesses',
+    'Continual learning',
+    'Reinforcement learning',
+    'Agent simulations',
+    'Multi-agent systems',
+    'Game theory and economics of agents',
+    'Agent protocols',
+    'Alignment and AI safety',
+    'AI security',
+    'Evaluations and benchmarks',
+  ],
   audiences: [
     'AI researchers',
     'Agent builders',

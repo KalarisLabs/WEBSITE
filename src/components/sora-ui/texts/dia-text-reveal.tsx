@@ -251,6 +251,15 @@ export function DiaTextReveal({
     indexRef.current = 0;
     setActiveIndex(0);
     clearCycle();
+
+    // Reduced motion shows the first text fully revealed. The motion values
+    // must be set too: they outlive the server-rendered (animated) style.
+    if (prefersReducedMotion) {
+      sweep.set(0);
+      textOpacity.set(1);
+      return clearCycle;
+    }
+
     sweep.set(100);
     textOpacity.set(0);
 
@@ -259,7 +268,7 @@ export function DiaTextReveal({
     }
 
     return clearCycle;
-  }, [canAnimate, texts]);
+  }, [canAnimate, prefersReducedMotion, texts]);
 
   const MotionComponent = useMemo(
     () =>
@@ -278,33 +287,21 @@ export function DiaTextReveal({
     <MotionComponent
       className={cn('inline-block bg-clip-text', className)}
       ref={elementRef}
-      style={
-        prefersReducedMotion
-          ? {
-              color: resolvedColor,
-              WebkitTextFillColor: 'transparent',
-              backgroundImage: buildGradient(colors, textColor, angle),
-              backgroundSize: '300% 100%',
-              backgroundPosition: '0% 50%',
-              opacity: 1,
-              ...(lockedWidth != null && {
-                width: lockedWidth,
-                whiteSpace: 'nowrap',
-              }),
-            }
-          : {
-              color: resolvedColor,
-              WebkitTextFillColor: 'transparent',
-              backgroundImage: buildGradient(colors, textColor, angle),
-              backgroundSize: '300% 100%',
-              backgroundPosition,
-              opacity: textOpacity,
-              ...(lockedWidth != null && {
-                width: lockedWidth,
-                whiteSpace: 'nowrap',
-              }),
-            }
-      }
+      // Always bound to the motion values: swapping to static values after
+      // hydration leaves the server-rendered opacity 0 in place. The effect
+      // above sets them fully revealed under reduced motion.
+      style={{
+        color: resolvedColor,
+        WebkitTextFillColor: 'transparent',
+        backgroundImage: buildGradient(colors, textColor, angle),
+        backgroundSize: '300% 100%',
+        backgroundPosition,
+        opacity: textOpacity,
+        ...(lockedWidth != null && {
+          width: lockedWidth,
+          whiteSpace: 'nowrap',
+        }),
+      }}
     >
       {prefersReducedMotion ? texts[0] : texts[activeIndex]}
     </MotionComponent>

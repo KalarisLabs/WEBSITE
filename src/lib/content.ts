@@ -3,6 +3,7 @@ import {
   type CollectionEntry,
   type CollectionKey,
 } from 'astro:content';
+import { countWords, type AuthoredEntry } from './people';
 
 export type PublishingCollection = Extract<CollectionKey, 'blog' | 'research'>;
 export type PublishingEntry = CollectionEntry<PublishingCollection>;
@@ -41,4 +42,25 @@ export function coverTransitionStyle(
     '-',
   );
   return `view-transition-name: ${name}; view-transition-class: cover;`;
+}
+
+/** Every published post and research note, flattened for author metrics. */
+export async function getAuthoredEntries(): Promise<AuthoredEntry[]> {
+  const collections: PublishingCollection[] = ['blog', 'research'];
+  const groups = await Promise.all(
+    collections.map(async (collection) =>
+      (await getPublishedEntries(collection)).map((entry): AuthoredEntry => ({
+        collection,
+        id: entry.id,
+        title: entry.data.title,
+        description: entry.data.description,
+        publishDate: entry.data.publishDate,
+        tags: entry.data.tags,
+        authors: entry.data.authors,
+        wordCount: countWords(entry.body),
+        socialImage: entry.data.socialImage,
+      })),
+    ),
+  );
+  return groups.flat();
 }

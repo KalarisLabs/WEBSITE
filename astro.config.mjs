@@ -6,8 +6,16 @@ import sentry from '@sentry/astro';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
 import markdownTwins from './integrations/markdown-twins.mjs';
+import { isIndexableProfile, people } from './src/data/people.ts';
 
 const site = process.env.PUBLIC_SITE_URL ?? 'https://kalarislabs.com';
+
+// Placeholder team profiles render with noindex; keep them out of the sitemap.
+const noindexPaths = new Set(
+  people
+    .filter((person) => !isIndexableProfile(person))
+    .map((person) => `/team/${person.slug}`),
+);
 
 export default defineConfig({
   site,
@@ -66,7 +74,9 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter(page) {
-        const pathname = new URL(page).pathname;
+        const pathname = new URL(page).pathname.replace(/\/$/, '');
+        if (noindexPaths.has(pathname)) return false;
+        // Articles are listed, with images, in /content-sitemap.xml.
         return !/^\/(?:blog|research)\/[^/]+$/.test(pathname);
       },
       customSitemaps: [new URL('/content-sitemap.xml', site).toString()],

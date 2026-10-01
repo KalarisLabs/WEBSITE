@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { coverTransitionStyle } from '../../lib/content';
+import { getPerson, initials, people } from '../../data/people';
 import '../react-bits/BorderGlow.css';
 import { cardGlowStyle } from './card-glow';
 
@@ -19,6 +20,8 @@ const sorted = [...entries].sort(
 );
 
 const featured = sorted[0];
+const featuredAuthor =
+  (featured && getPerson(featured.data.authors[0] ?? '')) ?? people[0]!;
 const gridPosts = sorted.slice(1);
 
 // Extract unique categories/tags
@@ -72,18 +75,27 @@ function estimateReadingTime(text: string) {
             <p class="featured-desc">{featured.data.description}</p>
 
             <div class="featured-author-badge">
-              <img
-                src="/founders/sayan-chowdhury.jpg"
-                alt="Sayan Chowdhury"
-                class="featured-author-avatar"
-                width="42"
-                height="42"
-                loading="lazy"
-              />
+              {featuredAuthor.image ? (
+                <img
+                  src={featuredAuthor.image}
+                  alt={featuredAuthor.name}
+                  class="featured-author-avatar"
+                  width="42"
+                  height="42"
+                  loading="lazy"
+                />
+              ) : (
+                <span
+                  class="featured-author-avatar person-monogram"
+                  aria-hidden="true"
+                >
+                  {initials(featuredAuthor.name)}
+                </span>
+              )}
               <div class="featured-author-info">
-                <span class="featured-author-name">Sayan Chowdhury</span>
+                <span class="featured-author-name">{featuredAuthor.name}</span>
                 <span class="featured-author-role">
-                  Founder & Research Lead
+                  {featuredAuthor.byline ?? featuredAuthor.role}
                 </span>
               </div>
             </div>
@@ -100,15 +112,11 @@ function estimateReadingTime(text: string) {
                   alt={featured.data.title}
                   class="featured-artwork-img"
                   loading="eager"
+                  fetchpriority="high"
                 />
               ) : (
                 <div class="featured-artwork-placeholder" />
               )}
-              <div class="artwork-gradient-overlay" />
-              <div class="artwork-badge">
-                <span class="badge-square" />
-                <span class="badge-text">Kalaris Research</span>
-              </div>
             </div>
           </div>
         </a>

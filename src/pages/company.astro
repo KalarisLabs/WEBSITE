@@ -1,0 +1,173 @@
+---
+import Footer from '../components/layout/Footer.astro';
+import Header from '../components/layout/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import { company } from '../data/company';
+import { initials, people } from '../data/people';
+import { buildAboutPageSchema } from '../lib/seo/schema';
+import { absoluteSiteUrl } from '../lib/seo/site';
+
+export const prerender = true;
+
+const description =
+  'Kalaris Labs is a research lab building the infrastructure for the agentic era: mission, principles, research areas, team, and partnerships.';
+
+const partnershipTopics = [
+  'Agent protocols and open standards',
+  'Evaluations and benchmarks',
+  'AI safety and security research',
+  'Game theory and economics of agents',
+];
+---
+
+<Layout
+  title="Company"
+  description={description}
+  extraSchemas={[
+    buildAboutPageSchema(
+      'About Kalaris Labs',
+      description,
+      absoluteSiteUrl('/company'),
+    ),
+  ]}
+  breadcrumbs={[
+    { name: 'Home', url: '/' },
+    { name: 'Company', url: '/company' },
+  ]}
+>
+  <Header />
+  <main id="main-content" class="company-page">
+    <header class="page-hero">
+      <div class="site-container page-hero-grid">
+        <p class="eyebrow">Company</p>
+        <div>
+          <h1>{company.oneLiner}</h1>
+          <p class="page-lede">{company.description}</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="press-section section-rule">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Mission / 01</p>
+          <div>
+            <h2>{company.mission}</h2>
+            <ol class="company-principles" role="list">
+              {
+                company.principles.map((principle) => (
+                  <li>
+                    <span>{principle.number}</span>
+                    <div>
+                      <h3>{principle.title}</h3>
+                      <p>{principle.body}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section dark-band">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Research / 02</p>
+          <div>
+            <h2>What we work on.</h2>
+            <ul class="person-tags" role="list">
+              {company.researchAreas.map((area) => <li>{area}</li>)}
+            </ul>
+            <div class="press-assets">
+              <a href="/research">Read the research →</a>
+              <a href="/blog">Read the blog →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section section-rule">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">People / 03</p>
+          <div>
+            <h2>The team.</h2>
+            <ul class="company-people" role="list">
+              {
+                people.map((person) => (
+                  <li>
+                    <a href={`/team/${person.slug}`}>
+                      {person.image ? (
+                        <img
+                          src={person.image}
+                          alt=""
+                          width="40"
+                          height="40"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span class="person-monogram" aria-hidden="true">
+                          {initials(person.name)}
+                        </span>
+                      )}
+                      <span>{person.name}</span>
+                      <span class="person-card-role">{person.role}</span>
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+            <div class="press-assets">
+              <a href="/team">Meet the team →</a>
+              <a href="/careers">Open positions →</a>
+              <a href="/fellowship">Fellowship →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-section dark-band" id="partnerships">
+      <div class="site-container press-shell">
+        <div class="press-intro">
+          <p class="eyebrow">Partnerships / 04</p>
+          <div>
+            <h2>Work with us.</h2>
+            <p>
+              We collaborate with research groups, labs, and builders who care
+              about agent infrastructure that is safe, clean, and governable.
+              Protocols and research are published in the open, so collaboration
+              usually starts with a shared problem and a shared write-up.
+            </p>
+            <ul class="press-focus-list">
+              {partnershipTopics.map((topic) => <li>{topic}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="press-contact-section">
+      <div class="site-container press-contact-card">
+        <p class="eyebrow">Partnership inquiries / 05</p>
+        <h2>Have a problem we should look at together?</h2>
+        <p>
+          Tell us who you are, what you are working on, and what a good outcome
+          would look like. For news and brand assets, see the <a href="/press"
+            >press page</a
+          >.
+        </p>
+        <a
+          class="button button-primary"
+          href="mailto:hello@kalarislabs.com?subject=Partnership%20inquiry"
+        >
+          Start a conversation →
+        </a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

@@ -1,4 +1,4 @@
-# Research notes retired on 2026-09-29. Skill Doctor is the only published note.
+# Research notes retired on 2026-09-29.
 /research/deterministic-evals /research 301
 /research/deterministic-evals.md /research 301
 /research/edge-delivery /research 301
@@ -9,9 +9,8 @@
 /research/topological-routing.md /research 301
 
 # Routes from the previous site that search engines still list.
+# /company itself is a live page again (2026-10-01); do not redirect it.
 /contact / 301
-/company /team 301
-/company.md /team.md 301
 /company/careers /careers 301
 /company/careers.md /careers.md 301
 /company/news /press 301
